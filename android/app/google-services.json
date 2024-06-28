@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "157221241612",
+    "firebase_url": "https://stepup-a1095-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "stepup-a1095",
+    "storage_bucket": "stepup-a1095.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157221241612:android:8f2e8f4ccdb5f71353bf29",
+        "android_client_info": {
+          "package_name": "com.example.stepup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtM1KY0ZnEl1d2WdQiuUiU9byW4J2rDn0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
