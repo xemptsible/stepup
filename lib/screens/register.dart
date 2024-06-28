@@ -60,14 +60,14 @@ class _RegisterState extends State<RegisterScreen> {
                             textField(
                               _emailController,
                               "Email",
-                              "Enter your email",
+                              "",
                               const Icon(Icons.email),
                               false,
                             ),
                             textField(
                               _usernameController,
-                              "Username",
-                              "Enter your username",
+                              "Tên người dùng",
+                              "",
                               const Icon(Icons.person),
                               false,
                             ),
@@ -75,7 +75,7 @@ class _RegisterState extends State<RegisterScreen> {
                               _passwordController,
                               _confirmPWController,
                               "New password",
-                              "Enter your password",
+                              "",
                               const Icon(Icons.password),
                               true,
                             ),
@@ -83,22 +83,25 @@ class _RegisterState extends State<RegisterScreen> {
                               _confirmPWController,
                               _passwordController,
                               "Confirm password",
-                              "Re-enter your password",
+                              "",
                               const Icon(Icons.check),
                               true,
                             ),
                             SizedBox(
                               width: double.infinity,
-                              child: FilledButton(
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    await linkAnonInFirebase(
-                                      _emailController,
-                                      _passwordController,
-                                    );
-                                  }
-                                },
-                                child: const Text("Đăng ký"),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: FilledButton(
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      await taoTaiKhoanTrongFirebase(
+                                        _emailController,
+                                        _passwordController,
+                                      );
+                                    }
+                                  },
+                                  child: const Text("Đăng ký"),
+                                ),
                               ),
                             ),
                           ],
@@ -121,13 +124,23 @@ class _RegisterState extends State<RegisterScreen> {
 
     if (context != null && context.mounted) {
       /// statements after async gap without warning
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(message.toString()),
-      ));
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Lỗi đăng ký'),
+          content: Text(message ?? 'Không biết lỗi'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
     }
   }
 
-  Future<void> createUserInFirebase(
+  Future<void> taoTaiKhoanTrongFirebase(
       TextEditingController tecEmail, TextEditingController tecPassword) async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -137,19 +150,27 @@ class _RegisterState extends State<RegisterScreen> {
     } on FirebaseAuthException catch (e) {
       logger.e('Failed with error code: ${e.code}');
       logger.e(e.message);
-      fetchData(e.message);
+      if (e.code == 'weak-password') {
+        fetchData('Mật khẩu nên đặt từ 6 ký tự trở lên');
+      } else if (e.code == 'email-already-in-use') {
+        fetchData('Tài khoản đã tồn tại');
+      } else if (e.code == 'network-request-failed') {
+        fetchData('Bị mất hoặc không có kết nối mạng khi đang tạo tài khoản');
+      } else {
+        fetchData(e.message);
+      }
     }
   }
 
-  Future<void> linkAnonInFirebase(
-      TextEditingController tecEmail, TextEditingController tecPassword) async {
-    final credential = EmailAuthProvider.credential(
-        email: tecEmail.text, password: tecPassword.text);
+  // Future<void> linkAnonInFirebase(
+  //     TextEditingController tecEmail, TextEditingController tecPassword) async {
+  //   final credential = EmailAuthProvider.credential(
+  //       email: tecEmail.text, password: tecPassword.text);
 
-    try {
-      await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
-    } on FirebaseAuthException catch (e) {
-      fetchData(e.message);
-    }
-  }
+  //   try {
+  //     await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
+  //   } on FirebaseAuthException catch (e) {
+  //     fetchData(e.message);
+  //   }
+  // }
 }

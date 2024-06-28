@@ -131,42 +131,4 @@ class _StartScreenState extends State<StartScreen> {
       ),
     );
   }
-
-  // Future<void> fetchData(String? message) async {
-  //   /// Getting the current context of the widget in the widget tree
-  //   final context = _formKey.currentContext;
-
-  //   if (context != null && context.mounted) {
-  //     /// statements after async gap without warning
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //       content: Text(message.toString()),
-  //     ));
-  //   }
-  // }
-
-  // Future<void> createUserInFirebase(
-  //     TextEditingController tecEmail, TextEditingController tecPassword) async {
-  //   try {
-  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: tecEmail.text,
-  //       password: tecPassword.text,
-  //     );
-  //   } on FirebaseAuthException catch (e) {
-  //     logger.e('Failed with error code: ${e.code}');
-  //     logger.e(e.message);
-  //     fetchData(e.message);
-  //   }
-  // }
-
-  // Future<void> linkAnonInFirebase(
-  //     TextEditingController tecEmail, TextEditingController tecPassword) async {
-  //   final credential = EmailAuthProvider.credential(
-  //       email: tecEmail.text, password: tecPassword.text);
-
-  //   try {
-  //     await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
-  //   } on FirebaseAuthException catch (e) {
-  //     fetchData(e.message);
-  //   }
-  // }
 }

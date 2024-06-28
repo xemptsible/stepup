@@ -1,4 +1,5 @@
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stepup/screens/register.dart';
 import 'package:stepup/utilities/const.dart';
@@ -54,47 +55,40 @@ class _LoginState extends State<LoginScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            textField(
-                                _emailController,
-                                "Email",
-                                "Enter your username",
-                                const Icon(Icons.email),
-                                false),
+                            textField(_emailController, "Email", "",
+                                const Icon(Icons.email), false),
                             textField(
                               _passwordController,
-                              "Password",
-                              "Enter your password",
+                              "Mật khẩu",
+                              "",
                               const Icon(Icons.password),
                               true,
                             ),
                           ],
                         ),
                       ),
-                      TextButton(
-                        onPressed: () async {
-                          // await FirebaseAuth.instance.signOut();
-                        },
-                        child: const Text(
-                          "Quên mật khẩu?",
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: TextButton(
+                          onPressed: () async {
+                            await FirebaseAuth.instance.signOut();
+                          },
+                          child: const Text(
+                            "Quên mật khẩu?",
+                          ),
                         ),
                       ),
                       SizedBox(
                         width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 0),
-                          child: FilledButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                        'Your username is ${_emailController.text}'),
-                                  ),
-                                );
-                              }
-                            },
-                            child: const Text("Đăng nhập"),
-                          ),
+                        child: FilledButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              FirebaseAuth.instance.signInWithEmailAndPassword(
+                                  email: _emailController.text,
+                                  password: _passwordController.text);
+                            }
+                          },
+                          child: const Text("Đăng nhập"),
                         ),
                       ),
                       TextButton(
@@ -119,5 +113,15 @@ class _LoginState extends State<LoginScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> xuLyDangNhap() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: "barry.allen@example.com", password: "SuperSecretPassword!");
+    } on FirebaseAuthException catch (e) {
+      logger.e('Failed with error code: ${e.code}');
+      logger.e(e.message);
+    }
   }
 }

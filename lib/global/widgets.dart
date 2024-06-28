@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 textField(TextEditingController tec, String label, String hint, Icon icon,
     bool isObscure) {
   return Padding(
-    padding: const EdgeInsets.only(bottom: 8, top: 8),
+    padding: const EdgeInsets.only(bottom: 4, top: 4),
     child: TextFormField(
       controller: tec,
       obscureText: isObscure,
@@ -18,10 +18,10 @@ textField(TextEditingController tec, String label, String hint, Icon icon,
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please type something';
+          return 'Vui lòng nhập';
         }
         if (label.toLowerCase() == "email" && !EmailValidator.validate(value)) {
-          return 'Please enter a valid email';
+          return 'Vui lòng nhập địa chỉ email';
         }
         return null;
       },
@@ -32,7 +32,7 @@ textField(TextEditingController tec, String label, String hint, Icon icon,
 pwTextField(TextEditingController tec, TextEditingController tec2, String label,
     String hint, Icon icon, bool isObscure) {
   return Padding(
-    padding: const EdgeInsets.only(bottom: 8, top: 8),
+    padding: const EdgeInsets.only(bottom: 4, top: 4),
     child: TextFormField(
       controller: tec,
       obscureText: isObscure,
@@ -46,14 +46,14 @@ pwTextField(TextEditingController tec, TextEditingController tec2, String label,
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please type something';
+          return 'Vui lòng nhập';
         }
-        if (label.toLowerCase().contains("confirm") && tec.text != tec2.text) {
-          return 'Please re-type the same password';
+        if (label.toLowerCase().contains("xác nhận")  && tec.text != tec2.text) {
+          return 'Vui lòng ghi lại mật khẩu';
         }
-        if (label.toLowerCase().contains("new password") && value.length < 6) {
-          return 'Password should be at least 6 characters';
-        }
+        // if (label.toLowerCase().contains("new password") && value.length < 6) {
+        //   return 'Password should be at least 6 characters';
+        // }
         return null;
       },
     ),
