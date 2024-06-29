@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:stepup/utilities/const.dart';
-import 'package:stepup/global/widgets.dart';
+import 'package:stepup/global/functions.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -41,9 +42,12 @@ class _RegisterState extends State<RegisterScreen> {
               children: [
                 const SizedBox(
                   width: double.infinity,
+                  height: double.infinity,
                   child: Image(
                     image: AssetImage(imagePath),
-                    fit: BoxFit.fill,
+                    alignment: Alignment.center,
+                    fit: BoxFit.fitWidth,
+                    opacity: AlwaysStoppedAnimation(.4),
                   ),
                 ),
                 Container(
@@ -74,7 +78,7 @@ class _RegisterState extends State<RegisterScreen> {
                             pwTextField(
                               _passwordController,
                               _confirmPWController,
-                              "New password",
+                              "Mật khẩu mới",
                               "",
                               const Icon(Icons.password),
                               true,
@@ -82,7 +86,7 @@ class _RegisterState extends State<RegisterScreen> {
                             pwTextField(
                               _confirmPWController,
                               _passwordController,
-                              "Confirm password",
+                              "Xác nhận mật khẩu",
                               "",
                               const Icon(Icons.check),
                               true,
@@ -118,7 +122,7 @@ class _RegisterState extends State<RegisterScreen> {
     );
   }
 
-  Future<void> fetchData(String? message) async {
+  Future<void> errorDialogDangKy(String? message) async {
     /// Getting the current context of the widget in the widget tree
     final context = _formKey.currentContext;
 
@@ -151,13 +155,13 @@ class _RegisterState extends State<RegisterScreen> {
       logger.e('Failed with error code: ${e.code}');
       logger.e(e.message);
       if (e.code == 'weak-password') {
-        fetchData('Mật khẩu nên đặt từ 6 ký tự trở lên');
+        errorDialogDangKy('Mật khẩu nên đặt từ 6 ký tự trở lên');
       } else if (e.code == 'email-already-in-use') {
-        fetchData('Tài khoản đã tồn tại');
+        errorDialogDangKy('Tài khoản đã tồn tại');
       } else if (e.code == 'network-request-failed') {
-        fetchData('Bị mất hoặc không có kết nối mạng khi đang tạo tài khoản');
+        errorDialogDangKy('Bị mất hoặc không có kết nối mạng khi đang tạo tài khoản');
       } else {
-        fetchData(e.message);
+        errorDialogDangKy(e.message);
       }
     }
   }

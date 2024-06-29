@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stepup/screens/register.dart';
 import 'package:stepup/utilities/const.dart';
-import 'package:stepup/global/widgets.dart';
+import 'package:stepup/global/functions.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -39,9 +39,12 @@ class _LoginState extends State<LoginScreen> {
               children: [
                 const SizedBox(
                   width: double.infinity,
+                  height: double.infinity,
                   child: Image(
                     image: AssetImage(imagePath),
-                    fit: BoxFit.fill,
+                    alignment: Alignment.center,
+                    fit: BoxFit.fitWidth,
+                    opacity: AlwaysStoppedAnimation(.4),
                   ),
                 ),
                 Container(
@@ -83,9 +86,8 @@ class _LoginState extends State<LoginScreen> {
                         child: FilledButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              FirebaseAuth.instance.signInWithEmailAndPassword(
-                                  email: _emailController.text,
-                                  password: _passwordController.text);
+                              xuLyDangNhap(
+                                  _emailController, _passwordController);
                             }
                           },
                           child: const Text("Đăng nhập"),
@@ -115,13 +117,37 @@ class _LoginState extends State<LoginScreen> {
     );
   }
 
-  Future<void> xuLyDangNhap() async {
+  Future<void> errorDialogDangNhap(String? message) async {
+    /// Getting the current context of the widget in the widget tree
+    final context = _formKey.currentContext;
+
+    if (context != null && context.mounted) {
+      /// statements after async gap without warning
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Lỗi đăng nhập'),
+          content: Text(message ?? 'Không biết lỗi'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  Future<void> xuLyDangNhap(
+      TextEditingController email, TextEditingController password) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: "barry.allen@example.com", password: "SuperSecretPassword!");
+          email: email.text, password: password.text);
     } on FirebaseAuthException catch (e) {
       logger.e('Failed with error code: ${e.code}');
       logger.e(e.message);
+      errorDialogDangNhap(e.message);
     }
   }
 }

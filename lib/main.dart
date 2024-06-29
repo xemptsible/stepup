@@ -1,40 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:stepup/global/functions.dart';
 import 'package:stepup/screens/login.dart';
 import 'package:stepup/screens/register.dart';
 import 'package:stepup/utilities/const.dart';
 // import 'utilities/font.dart';
 import 'global/theme.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-
-  // Đăng nhập tài khoản ẩn danh tạm thời
-
-  // try {
-  //   await FirebaseAuth.instance.signInAnonymously();
-  // } on FirebaseAuthException catch (e) {
-  //   switch (e.code) {
-  //     case "operation-not-allowed":
-  //       logger.e("Anonymous auth hasn't been enabled for this project.");
-  //       break;
-  //     default:
-  //       logger.e("Unknown error.");
-  //   }
-  // }
-
-  FirebaseAuth.instance.authStateChanges().listen((User? user) {
-    if (user == null) {
-      logger.d('User is currently signed out!');
-    } else if (user.isAnonymous) {
-      logger.d("Signed in with temporary account.");
-    } else {
-      logger.d('User is signed in!');
-    }
-  });
-
+void main() {
   runApp(const MyApp());
 }
 
@@ -61,11 +33,18 @@ class MyApp extends StatelessWidget {
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
+
   @override
   State<StartScreen> createState() => _StartScreenState();
 }
 
 class _StartScreenState extends State<StartScreen> {
+  @override
+  void initState() {
+    kiemTraTaiKhoan();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,9 +59,12 @@ class _StartScreenState extends State<StartScreen> {
               children: [
                 const SizedBox(
                   width: double.infinity,
+                  height: double.infinity,
                   child: Image(
                     image: AssetImage(imagePath),
-                    fit: BoxFit.fill,
+                    alignment: Alignment.center,
+                    fit: BoxFit.fitWidth,
+                    opacity: AlwaysStoppedAnimation(.4),
                   ),
                 ),
                 Container(
