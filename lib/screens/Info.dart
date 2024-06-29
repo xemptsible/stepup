@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:stepup/screens/Account.dart';
+import 'package:stepup/screens/account.dart';
 
 class InfoPage extends StatefulWidget {
   const InfoPage({super.key});

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:stepup/global/functions.dart';
-import 'package:stepup/screens/Account.dart';
+import 'package:stepup/screens/account.dart';
 import 'package:stepup/screens/Info.dart';
-import 'package:stepup/screens/Payment.dart';
+import 'package:stepup/screens/payment.dart';
 import 'package:stepup/screens/login.dart';
 import 'package:stepup/screens/register.dart';
-import 'package:stepup/test/testScreen.dart';
+import 'package:stepup/screens/orderTracking.dart';
 import 'package:stepup/utilities/const.dart';
 // import 'utilities/font.dart';
 import 'global/theme.dart';
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp(
         theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-        home: const AccountPage());
+        home: const StartScreen());
   }
 }
 
