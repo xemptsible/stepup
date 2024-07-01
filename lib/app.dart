@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:stepup/screens/account.dart';
+import 'package:stepup/screens/favorite.dart';
 import 'package:stepup/screens/home_body.dart';
 import 'package:stepup/screens/product_detail_page.dart';
 
@@ -36,7 +37,12 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final screens = [HomePage(), ProductDetail(), AccountPage()];
+    final screens = [
+      HomePage(),
+      FavoritePage(),
+      ProductDetail(),
+      AccountPage()
+    ];
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -57,7 +63,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                 setState(() {
                   selectedIndex = value;
                   _pageController.animateToPage(value,
-                      duration: Duration(milliseconds: 400),
+                      duration: Duration(milliseconds: 600),
                       curve: Curves.easeIn);
                 });
               },
@@ -80,25 +86,25 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                     Icons.home_outlined,
                     color: Colors.black,
                   ),
-                  label: "Home",
+                  label: "Trang chủ",
                 ),
-                // BottomNavigationBarItem(
-                //     activeIcon: Container(
-                //       width: 60,
-                //       height: 30,
-                //       child: Icon(
-                //         Icons.favorite,
-                //         color: Colors.white,
-                //       ),
-                //       decoration: BoxDecoration(
-                //           color: Colors.blue,
-                //           borderRadius: BorderRadius.circular(20)),
-                //     ),
-                //     icon: Icon(
-                //       Icons.favorite_border_outlined,
-                //       color: Colors.black,
-                //     ),
-                // label: "A"),
+                BottomNavigationBarItem(
+                    activeIcon: Container(
+                      width: 60,
+                      height: 30,
+                      child: Icon(
+                        Icons.favorite,
+                        color: Colors.white,
+                      ),
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(20)),
+                    ),
+                    icon: Icon(
+                      Icons.favorite_border_outlined,
+                      color: Colors.black,
+                    ),
+                    label: "Yêu thích"),
                 BottomNavigationBarItem(
                     activeIcon: Container(
                       width: 60,

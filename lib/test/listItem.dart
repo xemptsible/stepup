@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stepup/test/model/shoe.dart';
+import 'package:stepup/utilities/const.dart';
 
 class ProductListItem extends StatelessWidget {
   final int page;
@@ -24,8 +25,7 @@ class ProductListItem extends StatelessWidget {
             children: [
               SizedBox(
                 width: 120,
-                child: Image.network(
-                    "https://ananas.vn/wp-content/uploads/pro_track6_A6T002_1.jpg"),
+                child: Image.asset(urlimg + "giayNike1.png"),
                 // child: thumbnail,
               ),
               Expanded(
@@ -98,8 +98,7 @@ class ProductListItem extends StatelessWidget {
             children: [
               SizedBox(
                 width: 120,
-                child: Image.network(
-                    "https://ananas.vn/wp-content/uploads/pro_track6_A6T002_1.jpg"),
+                child: Image.asset(urlimg + "giayNike1.png"),
                 // child: thumbnail,
               ),
               Expanded(
@@ -172,8 +171,7 @@ class ProductListItem extends StatelessWidget {
             children: [
               SizedBox(
                 width: 120,
-                child: Image.network(
-                    "https://ananas.vn/wp-content/uploads/pro_track6_A6T002_1.jpg"),
+                child: Image.asset(urlimg + "giayNike1.png"),
                 // child: thumbnail,
               ),
               Expanded(

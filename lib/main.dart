@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
 
     MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         routes: {
           "/homePage": (context) => App(),
           "/productDetail": (context) => const ProductDetail(),
