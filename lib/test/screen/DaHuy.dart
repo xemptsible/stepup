@@ -11,6 +11,7 @@ class DaHuyPage extends StatelessWidget {
         body: ListView.builder(
       itemCount: shoes.length,
       itemBuilder: (context, index) => ProductListItem(
+          page: 3,
           thumbnail: Container(
             color: Colors.red,
           ),

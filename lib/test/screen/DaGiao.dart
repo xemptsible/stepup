@@ -11,6 +11,7 @@ class DagiaoPage extends StatelessWidget {
         body: ListView.builder(
       itemCount: shoes.length,
       itemBuilder: (context, index) => ProductListItem(
+          page: 1,
           thumbnail: Container(
             color: Colors.red,
           ),

@@ -5,22 +5,22 @@ import 'package:stepup/test/model/shoe.dart';
 
 List<Shoe> shoes = generateShoe(5);
 
-class ListProductScreen extends StatelessWidget {
-  const ListProductScreen({super.key});
+// class ListProductScreen extends StatelessWidget {
+//   const ListProductScreen({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: ListView.builder(
-      itemCount: shoes.length,
-      itemBuilder: (context, index) => ProductListItem(
-          thumbnail: Container(
-            color: Colors.red,
-          ),
-          shoe: shoes[index]),
-    ));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         body: ListView.builder(
+//       itemCount: shoes.length,
+//       itemBuilder: (context, index) => ProductListItem(
+//           thumbnail: Container(
+//             color: Colors.red,
+//           ),
+//           shoe: shoes[index]),
+//     ));
+//   }
+// }
 
 // ListView(
 //         padding: const EdgeInsets.all(8),

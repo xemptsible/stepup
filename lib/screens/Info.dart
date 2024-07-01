@@ -19,7 +19,8 @@ class _InfoPageState extends State<InfoPage> {
   TextEditingController _ngaySinhController = TextEditingController();
   TextEditingController _soDienThoaiController = TextEditingController();
 
-  Widget _inputField(String label, TextEditingController _textController) {
+  Widget _inputField(
+      String label, TextEditingController _textController, TextInputType type) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,6 +46,7 @@ class _InfoPageState extends State<InfoPage> {
               ),
             ),
             child: TextField(
+              keyboardType: type,
               decoration: InputDecoration(border: InputBorder.none),
             ),
           ),
@@ -71,44 +73,49 @@ class _InfoPageState extends State<InfoPage> {
               child: Column(
                 children: [
                   //Image
-                  Container(
-                    margin: EdgeInsets.only(top: 16),
-                    height: 150,
-                    width: 150,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.amber,
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color.fromARGB(255, 14, 6, 133)),
-                            child: Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                            ),
+                  Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 16),
+                        height: 150,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          // color: Colors.amber,
+                        ),
+                        child: Image.network(
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD3OmwXK7xXXVWJZiocRJOasPkHLK27kGGOQ&s"),
+                      ),
+                      Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromARGB(255, 14, 6, 133)),
+                          child: Icon(
+                            Icons.edit,
+                            color: Colors.white,
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
 
                   //Input
                   SizedBox(height: 16),
-                  _inputField("Họ tên:", _hoTenController),
+                  _inputField("Họ tên:", _hoTenController, TextInputType.text),
                   SizedBox(height: 16),
-                  _inputField("Địa chỉ:", _diaChiController),
+                  _inputField(
+                      "Địa chỉ:", _diaChiController, TextInputType.text),
                   SizedBox(height: 16),
-                  _inputField("Ngày sinh:", _ngaySinhController),
+                  _inputField("Ngày sinh:", _ngaySinhController,
+                      TextInputType.datetime),
                   SizedBox(height: 16),
-                  _inputField("Số điện thoại:", _soDienThoaiController),
+                  _inputField("Số điện thoại:", _soDienThoaiController,
+                      TextInputType.phone),
                   SizedBox(height: 24),
 
                   //TextButton

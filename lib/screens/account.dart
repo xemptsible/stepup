@@ -26,8 +26,10 @@ class _AccountPageState extends State<AccountPage> {
                 width: 150,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.amber,
+                  // color: Colors.amber,
                 ),
+                child: Image.network(
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD3OmwXK7xXXVWJZiocRJOasPkHLK27kGGOQ&s"),
               ),
 
               //Text

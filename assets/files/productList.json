@@ -1,0 +1,82 @@
+{
+  "product": [
+    {
+      "id": 1,
+      "name": "Nike jordan",
+      "price": 1000000,
+      "des": "BEST SELLER",
+      "img": "giayNike1.png",
+      "brand": 1,
+      "detail": [
+        { "quantity": 10, "size": 43, "color": "0x14117E" },
+        { "quantity": 10, "size": 42, "color": "0x14117E" }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Nike jordan Low",
+      "price": 1500000,
+      "des": "BEST SELLER",
+      "img": "giayNike2.png",
+      "size": 43,
+      "quantity": 10,
+      "brand": 1,
+      "color": "0x14117E"
+    },
+    {
+      "id": 3,
+      "name": "Nike jordan Low",
+      "price": 1500000,
+      "des": "BEST SELLER",
+      "img": "giayNike2.png",
+      "size": 43,
+      "quantity": 10,
+      "brand": 1,
+      "color": "0x14117E"
+    },
+    {
+      "id": 6,
+      "name": "Nike jordan Low",
+      "price": 1500000,
+      "des": "BEST SELLER",
+      "img": "giayNike2.png",
+      "size": 43,
+      "quantity": 10,
+      "brand": 1,
+      "color": "0x14117E"
+    },
+    {
+      "id": 4,
+      "name": "Puma 1",
+      "price": 1500000,
+      "des": "BEST SELLER",
+      "img": "giayNike2.png",
+      "size": 43,
+      "quantity": 10,
+      "brand": 2,
+      "color": "0x14117E"
+    },
+    {
+      "id": 8,
+      "name": "Puma 2",
+      "price": 1500000,
+      "des": "BEST SELLER",
+      "img": "giayNike2.png",
+      "size": 43,
+      "quantity": 10,
+      "brand": 2,
+      "color": "0x14117E"
+    },
+    {
+      "id": 9,
+      "name": "Puma 3",
+      "price": 1500000,
+      "des": "BEST SELLER",
+      "img": "giayNike2.png",
+      "size": 43,
+      "quantity": 10,
+      "brand": 2,
+      "color": "0x14117E"
+    }
+  ]
+}
