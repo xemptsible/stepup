@@ -39,7 +39,7 @@ class _FavoritePageState extends State<FavoritePage> {
                 child: Container(
                   margin: EdgeInsets.only(left: 20),
                   child: Text(
-                    "StepUP",
+                    "Mong muốn",
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 24),
                   ),
                 ),

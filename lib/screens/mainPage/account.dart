@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:stepup/main.dart';
-import 'package:stepup/screens/Info.dart';
+import 'package:stepup/screens/mainPage/Info.dart';
 import 'package:stepup/screens/orderTracking.dart';
 
 class AccountPage extends StatefulWidget {

@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:stepup/screens/account.dart';
-import 'package:stepup/screens/favorite.dart';
-import 'package:stepup/screens/home_body.dart';
-import 'package:stepup/screens/product_detail_page.dart';
+import 'package:stepup/screens/mainPage/account.dart';
+import 'package:stepup/screens/mainPage/cart_page.dart';
+import 'package:stepup/screens/mainPage/favorite.dart';
+import 'package:stepup/screens/mainPage/home_body.dart';
+import 'package:stepup/screens/mainPage/product_detail_page.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -37,12 +38,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final screens = [
-      HomePage(),
-      FavoritePage(),
-      ProductDetail(),
-      AccountPage()
-    ];
+    final screens = [HomePage(), FavoritePage(), CartPage(), AccountPage()];
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -53,17 +49,22 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
               controller: _pageController,
               onPageChanged: (index) {
                 setState(() {
-                  selectedIndex = index;
+                  if (index == selectedIndex) {
+                    selected = false;
+                  }
+                  if (!selected) selectedIndex = index;
                 });
               },
               children: screens,
             ),
             bottomNavigationBar: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
               onTap: (value) {
                 setState(() {
+                  selected = true;
                   selectedIndex = value;
                   _pageController.animateToPage(value,
-                      duration: Duration(milliseconds: 600),
+                      duration: Duration(milliseconds: 500),
                       curve: Curves.easeIn);
                 });
               },

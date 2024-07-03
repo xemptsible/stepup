@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 
 import '../test/model/shoe.dart';
-import '../test/screen/DaHuy.dart';
-import '../test/screen/DaGiao.dart';
-import '../test/screen/DangGiao.dart';
+import 'orderTrackingScreen/DaHuy.dart';
+import 'orderTrackingScreen/DaGiao.dart';
+import 'orderTrackingScreen/DangGiao.dart';
 
 class OrderTracking extends StatefulWidget {
   const OrderTracking({super.key});
@@ -15,7 +15,7 @@ class OrderTracking extends StatefulWidget {
 }
 
 class _OrderTrackingState extends State<OrderTracking> {
-  Shoe newShoe = Shoe(name: "Giay", price: 10000, discount: 10, brand: "brand");
+  Shoe newShoe = Shoe(name: "Giay", price: 10000, brand: "brand");
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

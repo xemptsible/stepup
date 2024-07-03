@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../data/providers/brand_vm.dart';
-import '../widgets/brandBar/brand_select_bar.dart';
-import '../widgets/filtedProducts/brand_selected_product.dart';
-import '../widgets/filtedProducts/product_list.dart';
+import '../../data/providers/brand_vm.dart';
+import '../../widgets/brandBar/brand_select_bar.dart';
+import '../../widgets/filtedProducts/brand_selected_product.dart';
+import '../../widgets/filtedProducts/product_list.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

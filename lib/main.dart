@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stepup/app.dart';
 import 'package:stepup/global/functions.dart';
-import 'package:stepup/screens/account.dart';
-import 'package:stepup/screens/Info.dart';
+import 'package:stepup/screens/mainPage/account.dart';
+import 'package:stepup/screens/mainPage/Info.dart';
 import 'package:stepup/screens/payment.dart';
-import 'package:stepup/screens/login.dart';
-import 'package:stepup/screens/product_detail_page.dart';
-import 'package:stepup/screens/register.dart';
+import 'package:stepup/screens/signIn_Up/login.dart';
+import 'package:stepup/screens/mainPage/product_detail_page.dart';
+import 'package:stepup/screens/signIn_Up/register.dart';
 import 'package:stepup/screens/orderTracking.dart';
 import 'package:stepup/utilities/const.dart';
 // import 'utilities/font.dart';
