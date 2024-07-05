@@ -18,7 +18,6 @@ class _FavoritePageState extends State<FavoritePage> {
   List<ShoeAPI> proList = [];
   Future<String> _loadProData() async {
     proList = await GetDataAPI().fetchData();
-    print(proList);
     return '';
   }
 

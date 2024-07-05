@@ -1,11 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:stepup/screens/mainPage/account.dart';
 import 'package:stepup/screens/mainPage/cart_page.dart';
 import 'package:stepup/screens/mainPage/favorite.dart';
 import 'package:stepup/screens/mainPage/home_body.dart';
-import 'package:stepup/screens/mainPage/product_detail_page.dart';
 
 class App extends StatefulWidget {
   const App({super.key});

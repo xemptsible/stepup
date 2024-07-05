@@ -14,11 +14,6 @@ class _DagiaoPageState extends State<DagiaoPage> {
   List<ShoeAPI> proList = [];
   Future<String> _LoadData() async {
     proList = await GetDataAPI().fetchData();
-    print(proList);
-    for (final shoe in proList) {
-      print(
-          'NameShoe: ${shoe.NameShoe}, Price: ${shoe.Price}, Size: ${shoe.Image}');
-    }
     return '';
   }
 

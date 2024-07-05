@@ -1,6 +1,7 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:stepup/app.dart';
 import 'package:stepup/screens/signIn_Up/register.dart';
 import 'package:stepup/utilities/const.dart';
 import 'package:stepup/global/functions.dart';
@@ -144,6 +145,12 @@ class _LoginState extends State<LoginScreen> {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email.text, password: password.text);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const App(),
+        ),
+      );
     } on FirebaseAuthException catch (e) {
       logger.e('Failed with error code: ${e.code}');
       logger.e(e.message);

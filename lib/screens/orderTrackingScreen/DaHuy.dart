@@ -15,11 +15,6 @@ class _DaHuyPageState extends State<DaHuyPage> {
   List<ShoeAPI> proList = [];
   Future<String> _LoadData() async {
     proList = await GetDataAPI().fetchData();
-    print(proList);
-    for (final shoe in proList) {
-      print(
-          'NameShoe: ${shoe.NameShoe}, Price: ${shoe.Price}, Size: ${shoe.Image}');
-    }
     return '';
   }
 

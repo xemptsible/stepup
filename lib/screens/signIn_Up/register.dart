@@ -1,6 +1,13 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:stepup/data/Api/getDataAPI.dart';
+import 'package:stepup/data/models/account.dart';
+
+import 'package:stepup/screens/signIn_Up/login.dart';
 import 'package:stepup/utilities/const.dart';
 import 'package:stepup/global/functions.dart';
 
@@ -144,12 +151,25 @@ class _RegisterState extends State<RegisterScreen> {
     }
   }
 
+  CreateAccount(String email, String pass) {
+    Account acc = new Account(Email: email, Password: pass);
+    GetDataAPI().createUser(acc);
+  }
+
   Future<void> taoTaiKhoanTrongFirebase(
       TextEditingController tecEmail, TextEditingController tecPassword) async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: tecEmail.text,
         password: tecPassword.text,
+      );
+      await CreateAccount(tecEmail.text, tecPassword.text);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ),
       );
     } on FirebaseAuthException catch (e) {
       logger.e('Failed with error code: ${e.code}');
@@ -159,7 +179,8 @@ class _RegisterState extends State<RegisterScreen> {
       } else if (e.code == 'email-already-in-use') {
         errorDialogDangKy('Tài khoản đã tồn tại');
       } else if (e.code == 'network-request-failed') {
-        errorDialogDangKy('Bị mất hoặc không có kết nối mạng khi đang tạo tài khoản');
+        errorDialogDangKy(
+            'Bị mất hoặc không có kết nối mạng khi đang tạo tài khoản');
       } else {
         errorDialogDangKy(e.message);
       }
