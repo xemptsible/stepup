@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stepup/data/models/product_model.dart';
-import 'package:stepup/test/model/shoe.dart';
-import 'package:stepup/utilities/const.dart';
+import 'package:stepup/data/models/shoe.dart';
 
-Widget ListItemDaHuy(BuildContext context, Product shoe) {
+import 'package:stepup/utilities/const.dart';
+import 'package:stepup/widgets/cartList/cart_item.dart';
+
+Widget ListItemCart(BuildContext context, ShoeAPI shoe) {
   return SizedBox(
     height: 150,
     child: Card.outlined(
@@ -17,7 +19,7 @@ Widget ListItemDaHuy(BuildContext context, Product shoe) {
               color: Colors.grey,
               height: 150,
               width: 120,
-              child: Image.asset(urlimg + "giayNike1.png"),
+              child: Image.network(shoe.Image),
               // child: thumbnail,
             ),
             Expanded(
@@ -33,10 +35,10 @@ Widget ListItemDaHuy(BuildContext context, Product shoe) {
                       child: Padding(
                         padding: const EdgeInsets.all(8),
                         child: Shoe(
-                          name: shoe.name!,
-                          brand: shoe.brand.toString(),
+                          name: shoe.NameShoe!,
+                          brand: shoe.Brand.toString(),
                           // discount: shoe.discount,
-                          price: double.parse(shoe.price.toString()),
+                          price: double.parse(shoe.Price.toString()),
                         ),
                       ),
                     ),

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:stepup/data/Api/getDataAPI.dart';
+import 'package:stepup/data/models/shoe.dart';
 
 import '../../data/providers/brand_vm.dart';
 import '../../widgets/brandBar/brand_select_bar.dart';
@@ -19,6 +21,27 @@ class _HomePageState extends State<HomePage> {
   int selectedIndex = 0;
   bool selected = false;
   TextEditingController searchController = TextEditingController();
+
+  List<ShoeAPI> proList = [];
+  Future<String> _LoadData() async {
+    proList = await GetDataAPI().fetchData();
+    print(proList);
+    for (final shoe in proList) {
+      print(
+          'NameShoe: ${shoe.NameShoe}, Price: ${shoe.Price}, Size: ${shoe.Image}');
+    }
+    return '';
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      _LoadData();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<BrandsVM>(

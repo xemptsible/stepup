@@ -1,24 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:stepup/test/model/generator.dart';
-import 'package:stepup/test/model/shoe.dart';
+import 'package:stepup/data/Api/getDataAPI.dart';
+import 'package:stepup/data/models/shoe.dart';
+
 import 'package:stepup/widgets/filtedProducts/listItem.dart';
 
-
-class DaHuyPage extends StatelessWidget {
+class DaHuyPage extends StatefulWidget {
   const DaHuyPage({super.key});
 
   @override
+  State<DaHuyPage> createState() => _DaHuyPageState();
+}
+
+class _DaHuyPageState extends State<DaHuyPage> {
+  List<ShoeAPI> proList = [];
+  Future<String> _LoadData() async {
+    proList = await GetDataAPI().fetchData();
+    print(proList);
+    for (final shoe in proList) {
+      print(
+          'NameShoe: ${shoe.NameShoe}, Price: ${shoe.Price}, Size: ${shoe.Image}');
+    }
+    return '';
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      _LoadData();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List<Shoe> shoes = generateShoe(5);
     return Scaffold(
-        body: ListView.builder(
-      itemCount: shoes.length,
-      itemBuilder: (context, index) => ProductListItem(
-          page: 3,
-          thumbnail: Container(
-            color: Colors.red,
-          ),
-          shoe: shoes[index]),
-    ));
+      body: FutureBuilder(
+          future: _LoadData(),
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: proList.length,
+              itemBuilder: (context, index) =>
+                  ProductListItem(page: 3, shoe: proList[index]),
+            );
+          }),
+    );
   }
 }

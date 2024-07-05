@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:stepup/test/model/shoe.dart';
+import 'package:stepup/data/models/shoe.dart';
 import 'package:stepup/utilities/const.dart';
+import 'package:stepup/widgets/cartList/cart_item.dart';
 
-class ProductListItem extends StatelessWidget {
+class ProductListItem extends StatefulWidget {
   final int page;
-  final Widget thumbnail;
-  final Shoe shoe;
+  // final Widget thumbnail;
+  final ShoeAPI shoe;
 
   const ProductListItem({
     super.key,
-    required this.thumbnail,
+    // required this.thumbnail,
     required this.shoe,
     required this.page,
   });
 
+  @override
+  State<ProductListItem> createState() => _ProductListItemState();
+}
+
+class _ProductListItemState extends State<ProductListItem> {
   Widget ListItemDonHang(BuildContext context, String text) {
     return SizedBox(
       height: 150,
@@ -25,7 +31,7 @@ class ProductListItem extends StatelessWidget {
             children: [
               SizedBox(
                 width: 120,
-                child: Image.asset(urlimg + "giayNike1.png"),
+                child: Image.network(widget.shoe.Image),
                 // child: thumbnail,
               ),
               Expanded(
@@ -41,10 +47,10 @@ class ProductListItem extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8),
                           child: Shoe(
-                            name: shoe.name,
-                            brand: shoe.brand,
+                            name: widget.shoe.NameShoe,
+                            brand: widget.shoe.Brand,
                             // discount: shoe.discount,
-                            price: shoe.price,
+                            price: widget.shoe.Price.toDouble(),
                           ),
                         ),
                       ),
@@ -90,9 +96,9 @@ class ProductListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(child: () {
-      if (page == 1)
+      if (widget.page == 1)
         return ListItemDonHang(context, "Xem sản phẩm");
-      else if (page == 2)
+      else if (widget.page == 2)
         return ListItemDonHang(context, "Xem chi tiết");
       else
         return ListItemDonHang(context, "Hủy bỏ");

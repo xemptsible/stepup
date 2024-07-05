@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
+import 'package:stepup/data/Api/getDataAPI.dart';
 import 'package:stepup/data/models/product_model.dart';
+import 'package:stepup/data/models/shoe.dart';
 import 'package:stepup/data/providers/provider.dart';
 import 'package:stepup/widgets/filtedProducts/GridItem.dart';
 
@@ -13,9 +15,10 @@ class FavoritePage extends StatefulWidget {
 }
 
 class _FavoritePageState extends State<FavoritePage> {
-  List<Product> proList = [];
+  List<ShoeAPI> proList = [];
   Future<String> _loadProData() async {
-    proList = await ReadData().loadProductData();
+    proList = await GetDataAPI().fetchData();
+    print(proList);
     return '';
   }
 
@@ -99,13 +102,13 @@ class _FavoritePageState extends State<FavoritePage> {
                                     },
                                     child: GridItem(
                                         isFavorited: false,
-                                        img: proList[index].img.toString(),
-                                        brand: proList[index].brand.toString(),
+                                        img: proList[index].Image.toString(),
+                                        brand: proList[index].Brand.toString(),
                                         name: proList[index]
-                                            .name
+                                            .NameShoe
                                             .toString()
                                             .trim(),
-                                        price: proList[index].price as int),
+                                        price: proList[index].Price as int),
                                   ),
                                 ),
                               );

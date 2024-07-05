@@ -50,8 +50,8 @@ class _GridItemState extends State<GridItem> {
                       width: MediaQuery.of(context).size.width,
                       height: 110,
                       color: Colors.grey[200],
-                      child: Image.asset(
-                        urlimg + widget.img,
+                      child: Image.network(
+                        widget.img,
                         fit: BoxFit.cover,
                         width: 100,
                       ),

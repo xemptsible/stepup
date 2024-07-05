@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:stepup/data/Api/getDataAPI.dart';
 import 'package:stepup/data/models/product_model.dart';
+import 'package:stepup/data/models/shoe.dart';
 import 'package:stepup/data/providers/provider.dart';
 import 'package:stepup/widgets/cartList/cart_item_detail.dart';
 
@@ -11,9 +13,10 @@ class CartList extends StatefulWidget {
 }
 
 class _CartListState extends State<CartList> {
-  List<Product> proList = [];
+  List<ShoeAPI> proList = [];
   Future<String> _loadProData() async {
-    proList = await ReadData().loadProductData();
+    proList = await GetDataAPI().fetchData();
+    print(proList);
     return '';
   }
 
@@ -34,7 +37,7 @@ class _CartListState extends State<CartList> {
           return ListView.builder(
               itemCount: proList.length,
               itemBuilder: (context, index) {
-                return ListItemDaHuy(context, proList[index]);
+                return ListItemCart(context, proList[index]);
               });
         },
       ),

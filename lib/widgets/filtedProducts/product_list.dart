@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stepup/data/Api/getDataAPI.dart';
+import 'package:stepup/data/models/shoe.dart';
 import 'package:stepup/widgets/filtedProducts/GridItem.dart';
 
 import '../../data/models/product_model.dart';
@@ -15,9 +17,10 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
-  List<Product> proList = [];
+  List<ShoeAPI> proList = [];
   Future<String> _loadProData() async {
-    proList = await ReadData().loadProductData();
+    proList = await GetDataAPI().fetchData();
+    print(proList);
     return '';
   }
 
@@ -62,10 +65,13 @@ class _ProductListState extends State<ProductList> {
                                 },
                                 child: GridItem(
                                     isFavorited: false,
-                                    img: proList[index].img.toString(),
-                                    brand: proList[index].brand.toString(),
-                                    name: proList[index].name.toString().trim(),
-                                    price: proList[index].price as int),
+                                    img: proList[index].Image.toString(),
+                                    brand: proList[index].Brand.toString(),
+                                    name: proList[index]
+                                        .NameShoe
+                                        .toString()
+                                        .trim(),
+                                    price: proList[index].Price as int),
                               ),
                             ),
                           );
