@@ -80,7 +80,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                       color: Colors.white,
                     ),
                     decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Color.fromARGB(255, 26, 28, 127),
                         borderRadius: BorderRadius.circular(20)),
                   ),
                   icon: Icon(
@@ -98,7 +98,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                         color: Colors.white,
                       ),
                       decoration: BoxDecoration(
-                          color: Colors.blue,
+                          color: Color.fromARGB(255, 26, 28, 127),
                           borderRadius: BorderRadius.circular(20)),
                     ),
                     icon: Icon(
@@ -115,7 +115,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                         color: Colors.white,
                       ),
                       decoration: BoxDecoration(
-                          color: Colors.blue,
+                          color: Color.fromARGB(255, 26, 28, 127),
                           borderRadius: BorderRadius.circular(20)),
                     ),
                     icon: Icon(
@@ -132,7 +132,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                         color: Colors.white,
                       ),
                       decoration: BoxDecoration(
-                          color: Colors.blue,
+                          color: Color.fromARGB(255, 26, 28, 127),
                           borderRadius: BorderRadius.circular(20)),
                     ),
                     icon: Icon(

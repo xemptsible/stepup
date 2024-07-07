@@ -1,7 +1,8 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
+import 'package:stepup/data/models/brand_model.dart';
 import 'package:stepup/utilities/const.dart';
+
+import '../../data/providers/provider.dart';
 
 class ProductCard extends StatelessWidget {
   final String image;
@@ -18,6 +19,11 @@ class ProductCard extends StatelessWidget {
       required this.image,
       required this.name,
       required this.price});
+  Brand? brand;
+  Future<String> _loadBrand(int id) async {
+    brand = await ReadData().getBrandById(id);
+    return '';
+  }
 
   @override
   Widget build(BuildContext context) {

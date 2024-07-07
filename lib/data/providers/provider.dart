@@ -12,6 +12,17 @@ class ReadData {
     return cateList;
   }
 
+  Future<Brand?> getBrandById(int id) async {
+    List<Brand> brandList = await loadBrandData();
+    try {
+      Brand brand = brandList.firstWhere((brand) => brand.id == id);
+
+      return brand;
+    } catch (e) {
+      return null; // If no brand with the given ID is found
+    }
+  }
+
   Future<List<Product>> loadProductData() async {
     var data = await rootBundle.loadString("assets/files/productList.json");
     var dataJson = jsonDecode(data);

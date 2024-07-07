@@ -47,9 +47,6 @@ class _BestSellerProductListState extends State<BestSellerProductList> {
             return Builder(
               builder: (BuildContext context) {
                 return GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, "/productDetail");
-                  },
                   child: SliderCard(
                     title: e['title'].toString(),
                     detail: e['detail'].toString(),

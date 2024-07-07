@@ -75,7 +75,7 @@ class _CartPageState extends State<CartPage> {
                         height: 50,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
-                            color: Colors.blue),
+                            color: Color.fromARGB(255, 26, 28, 127)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

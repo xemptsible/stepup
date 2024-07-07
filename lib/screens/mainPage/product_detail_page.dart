@@ -3,6 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
+import 'package:stepup/data/models/product_model.dart';
 import 'package:stepup/utilities/const.dart';
 
 class ProductDetail extends StatefulWidget {
@@ -17,6 +19,8 @@ class _ProductDetailState extends State<ProductDetail> {
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
+    final Product product =
+        ModalRoute.of(context)!.settings.arguments as Product;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(),
@@ -33,7 +37,7 @@ class _ProductDetailState extends State<ProductDetail> {
                   alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.4,
-                  child: Image.asset(urlimg + "giayNike1.png"),
+                  child: Image.asset(urlimg + product.img!),
                 ),
               ),
               Container(
@@ -48,22 +52,37 @@ class _ProductDetailState extends State<ProductDetail> {
                         child: Row(
                           children: [
                             Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.7,
-                                    child: Text(
-                                      maxLines: 3,
-                                      "MELO x DEXTER'S LAB MB.03 Men's Basketball Shoes ",
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.7,
+                                      child: Text(
+                                        maxLines: 3,
+                                        product.name.toString(),
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.7,
+                                      child: Text(
+                                        "${NumberFormat().format(product.price)} D",
+                                        style: TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(
@@ -240,8 +259,9 @@ class _ProductDetailState extends State<ProductDetail> {
                           child: Container(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                                style: TextStyle(color: Colors.grey),
-                                "Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở  Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở  Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở phía trên. Điều này có các lỗ để đảm bảo không khí lưu thông đến chân, ngay cả trong những ngày nắng nóng."),
+                              product.des.toString(),
+                              style: TextStyle(color: Colors.grey),
+                            ),
                           ),
                         )),
                     Expanded(
