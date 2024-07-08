@@ -13,7 +13,7 @@ class GridItem extends StatefulWidget {
   final String name;
   final int price;
   final String img;
-  bool isFavorited = false;
+  bool isFavorited;
   GridItem({
     Key? key,
     required this.brand,
@@ -90,8 +90,10 @@ class _GridItemState extends State<GridItem> {
                                 Row(
                                   children: [
                                     Text(
-                                      '${NumberFormat('###,###.###').format(widget.price)} VND',
-                                      style: TextStyle(fontSize: 14),
+                                      '${NumberFormat('###,###.###').format(widget.price)}đ',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ],
                                 )

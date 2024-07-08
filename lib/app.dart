@@ -6,6 +6,7 @@ import 'package:stepup/screens/mainPage/cart_page.dart';
 import 'package:stepup/screens/mainPage/favorite.dart';
 import 'package:stepup/screens/mainPage/home_body.dart';
 import 'package:stepup/screens/mainPage/product_detail_page.dart';
+import 'package:stepup/screens/mainPage/search_page.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -38,7 +39,12 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final screens = [HomePage(), FavoritePage(), CartPage(), AccountPage()];
+    final screens = [
+      HomePage(),
+      FavoritePage(),
+      CartPage(),
+      AccountPage(),
+    ];
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();

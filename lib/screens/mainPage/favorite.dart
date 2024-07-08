@@ -98,7 +98,7 @@ class _FavoritePageState extends State<FavoritePage> {
                                           context, "/productDetail");
                                     },
                                     child: GridItem(
-                                        isFavorited: false,
+                                        isFavorited: true,
                                         img: proList[index].img.toString(),
                                         brand: proList[index].brand.toString(),
                                         name: proList[index]

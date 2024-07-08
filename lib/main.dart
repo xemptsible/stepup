@@ -3,6 +3,7 @@ import 'package:stepup/app.dart';
 import 'package:stepup/global/functions.dart';
 import 'package:stepup/screens/mainPage/account.dart';
 import 'package:stepup/screens/mainPage/Info.dart';
+import 'package:stepup/screens/mainPage/search_page.dart';
 import 'package:stepup/screens/payment.dart';
 import 'package:stepup/screens/signIn_Up/login.dart';
 import 'package:stepup/screens/mainPage/product_detail_page.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
           "/productDetail": (context) => const ProductDetail(),
           // "/favoriteProducts": (context) => ProductDetail(),
           "/account": (context) => AccountPage(),
+          "/search": (context) => SearchPage(),
         },
         theme: brightness == Brightness.light ? theme.light() : theme.dark(),
         home: const App());

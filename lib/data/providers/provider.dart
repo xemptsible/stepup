@@ -16,7 +16,6 @@ class ReadData {
     List<Brand> brandList = await loadBrandData();
     try {
       Brand brand = brandList.firstWhere((brand) => brand.id == id);
-
       return brand;
     } catch (e) {
       return null; // If no brand with the given ID is found
@@ -29,6 +28,20 @@ class ReadData {
     List<Product> proList =
         (dataJson['product'] as List).map((e) => Product.fromJson(e)).toList();
     return proList;
+  }
+
+  Future<List<Product>> searchProduct(String text) async {
+    var data = await rootBundle.loadString("assets/files/productList.json");
+    var dataJson = jsonDecode(data);
+    List<Product> proList =
+        (dataJson['product'] as List).map((e) => Product.fromJson(e)).toList();
+
+    // Lọc danh sách sản phẩm dựa trên từ khóa tìm kiếm
+    List<Product> filteredList = proList.where((product) {
+      return product.name!.toLowerCase().contains(text.toLowerCase());
+    }).toList();
+
+    return filteredList;
   }
 
   Future<List<Product>> loadProductUseBrand(int brand) async {
