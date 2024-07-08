@@ -32,10 +32,15 @@ class _CartPageState extends State<CartPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Container(
-                      child: Icon(
-                        Icons.search,
-                        size: MediaQuery.of(context).size.height * 0.033,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, "/search");
+                      },
+                      child: Container(
+                        child: Icon(
+                          Icons.search,
+                          size: MediaQuery.of(context).size.height * 0.033,
+                        ),
                       ),
                     ),
                     Container(

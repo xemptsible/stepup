@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:provider/provider.dart';
 import 'package:stepup/utilities/const.dart';
+
 import 'package:stepup/widgets/brandBar/brand_logo_selected.dart';
 
 import '../../data/models/brand_model.dart';
 import '../../data/providers/brand_vm.dart';
 import '../../data/providers/provider.dart';
 
-class BrandBar extends StatefulWidget {
-  const BrandBar({super.key});
+class BrandGrid extends StatefulWidget {
+  const BrandGrid({super.key});
 
   @override
-  State<BrandBar> createState() => _BrandBarState();
+  State<BrandGrid> createState() => _BrandGridState();
 }
 
-class _BrandBarState extends State<BrandBar> {
+class _BrandGridState extends State<BrandGrid> {
   int _selectedIndex = 0;
 
   List<Brand> brandList = [];
@@ -36,14 +38,16 @@ class _BrandBarState extends State<BrandBar> {
         future: loadBrandList(),
         builder: (context, snapshot) {
           return Container(
-            height: 35,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: brandList.length,
-                itemBuilder: (context, index) {
-                  return Consumer<BrandsVM>(
-                    builder: (context, value, child) {
-                      return GestureDetector(
+            height: 70,
+            child: MasonryGridView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: brandList.length,
+              itemBuilder: (context, index) {
+                return Consumer<BrandsVM>(
+                  builder: (context, value, child) {
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: 2),
+                      child: GestureDetector(
                           onTap: () {
                             value.select(index);
                             _selectedIndex = value.selectedIndex;
@@ -53,10 +57,14 @@ class _BrandBarState extends State<BrandBar> {
                                 imgLogoUrl + brandList[index].img.toString(),
                             brandName: brandList[index].name.toString(),
                             isSelected: _selectedIndex == index ? true : false,
-                          ));
-                    },
-                  );
-                }),
+                          )),
+                    );
+                  },
+                );
+              },
+              gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2),
+            ),
           );
         });
     // return FutureBuilder(

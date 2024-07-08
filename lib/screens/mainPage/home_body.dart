@@ -97,7 +97,10 @@ class _HomePageState extends State<HomePage> {
                           child: Text("see all")),
                     ],
                   ),
-                  BrandBar(),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: BrandBar(),
+                  ),
                   SizedBox(
                     height: 15,
                   ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/widgets/filtedProducts/product_list.dart';
+import 'package:stepup/widgets/filter/filter_widget.dart';
 
 import '../../data/models/product_model.dart';
 import '../../data/providers/provider.dart';
@@ -40,6 +41,7 @@ class _SearchPageState extends State<SearchPage> {
                 create: (context) => ProductVMS(),
                 child: Container(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         margin:
@@ -77,12 +79,32 @@ class _SearchPageState extends State<SearchPage> {
                                 ),
                               ),
                             )),
-                            Container(
-                                margin: EdgeInsets.symmetric(horizontal: 10),
-                                child: Icon(Icons.filter_alt_outlined)),
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return FilterWidget();
+                                    });
+                              },
+                              child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  child: Icon(Icons.filter_alt_outlined)),
+                            ),
                           ],
                         ),
                       ),
+                      _searchController.text == ''
+                          ? Container()
+                          : Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.start,
+                                  'Kết quả tìm kiếm cho \'${_searchController.text}\''),
+                            ),
                       FutureBuilder(
                           future: _loadProData(_searchController.text),
                           builder: (BuildContext context, snapshot) {
