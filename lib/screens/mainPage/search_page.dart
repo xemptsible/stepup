@@ -48,6 +48,7 @@ class _SearchPageState extends State<SearchPage> {
                             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
+                            color: Colors.white,
                             border: Border.all(),
                             borderRadius: BorderRadius.circular(30)),
                         child: Row(
