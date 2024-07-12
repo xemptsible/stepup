@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Shoe extends StatelessWidget {
   final String name;
@@ -26,6 +27,9 @@ class Shoe extends StatelessWidget {
         ),
         Text(
           brand,
+        ),
+        Text(
+          '${NumberFormat('###,###.###').format(price)}đ',
         ),
         // discount > 0
         //     ? Text(

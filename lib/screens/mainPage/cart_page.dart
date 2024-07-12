@@ -1,6 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/widgets/cartList/cart_list.dart';
 
 class CartPage extends StatefulWidget {
@@ -66,10 +71,15 @@ class _CartPageState extends State<CartPage> {
                     SizedBox(
                       height: 5,
                     ),
-                    Text(
-                      "Tổng giá: 100.000.000đ",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    Consumer<ProductVMS>(
+                      builder: (BuildContext context, ProductVMS value,
+                          Widget? child) {
+                        return Text(
+                          'Tổng Giá: ${NumberFormat('###,###.###').format(value.total)}đ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 16),
+                        );
+                      },
                     ),
                     SizedBox(
                       height: 10,

@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/data/models/product_model.dart';
+import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/data/providers/quantity_vm.dart';
 import 'package:stepup/utilities/const.dart';
 
@@ -190,31 +191,40 @@ class _ProductDetailState extends State<ProductDetail> {
                         ],
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 26, 28, 127)),
-                        onPressed: () {},
-                        child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.all(15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.add_shopping_cart,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  textAlign: TextAlign.center,
-                                  "Thêm vào giỏ hàng",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                              ],
-                            )),
-                      ),
+                    Consumer<ProductVMS>(
+                      builder: (BuildContext context, ProductVMS value,
+                          Widget? child) {
+                        return Container(
+                          alignment: Alignment.center,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 26, 28, 127)),
+                            onPressed: () {
+                              print(product.price);
+                              value.add(product);
+                            },
+                            child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.all(15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.add_shopping_cart,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      textAlign: TextAlign.center,
+                                      "Thêm vào giỏ hàng",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 16),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        );
+                      },
                     ),
                     SizedBox(
                       height: 20,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 import 'package:stepup/data/models/brand_model.dart';
+import 'package:stepup/data/models/product_model.dart';
 import 'package:stepup/utilities/const.dart';
 
 import '../../data/providers/provider.dart';
@@ -29,15 +30,20 @@ class GridItem extends StatefulWidget {
 
 class _GridItemState extends State<GridItem> {
   Brand? brand;
-  Future<String> _loadBrandUseId() async {
-    brand = await ReadData().getBrandById(int.parse(widget.brand));
+  // Future<String> _loadBrandUseId() async {
+  //   brand = await ReadData().getBrandById(int.parse(widget.brand));
+  //   return '';
+  // }
+  List<Product> proList = [];
+  Future<String> _loadProData() async {
+    proList = await ReadData().loadProductData();
     return '';
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _loadBrandUseId(),
+        future: _loadProData(),
         builder: (context, snapshot) {
           return Align(
             child: Stack(children: [
@@ -83,7 +89,8 @@ class _GridItemState extends State<GridItem> {
                                   ),
                                 ),
                                 Text(
-                                  brand != null ? brand!.name.toString() : '',
+                                  // brand != null ? brand!.name.toString() : '',
+                                  widget.brand,
                                   style: TextStyle(
                                       fontSize: 14, color: Colors.grey),
                                 ),

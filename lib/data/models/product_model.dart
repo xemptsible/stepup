@@ -7,7 +7,7 @@ class Product {
   String? img;
   int? size;
   int? quantity;
-  int? brand;
+  String? brand;
   String? color;
 
   Product({

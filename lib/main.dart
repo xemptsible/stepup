@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stepup/app.dart';
+import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/global/functions.dart';
 import 'package:stepup/screens/mainPage/account.dart';
 import 'package:stepup/screens/mainPage/Info.dart';
@@ -32,17 +34,24 @@ class MyApp extends StatelessWidget {
     // TextTheme textTheme = createTextTheme(context, "Alata", "Alata");
 
     MaterialTheme theme = MaterialTheme(textTheme);
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        routes: {
-          "/homePage": (context) => App(),
-          "/productDetail": (context) => const ProductDetail(),
-          // "/favoriteProducts": (context) => ProductDetail(),
-          "/account": (context) => AccountPage(),
-          "/search": (context) => SearchPage(),
-        },
-        theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-        home: const App());
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ProductVMS(),
+        ),
+      ],
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          routes: {
+            "/homePage": (context) => App(),
+            "/productDetail": (context) => const ProductDetail(),
+            // "/favoriteProducts": (context) => ProductDetail(),
+            "/account": (context) => AccountPage(),
+            "/search": (context) => SearchPage(),
+          },
+          theme: brightness == Brightness.light ? theme.light() : theme.dark(),
+          home: const App()),
+    );
   }
 }
 
