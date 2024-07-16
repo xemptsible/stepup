@@ -19,4 +19,8 @@ class QuantityVMS with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  clear() {
+    quantity = 0;
+  }
 }

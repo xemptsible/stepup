@@ -43,7 +43,8 @@ class _CartListState extends State<CartList> {
               return ListView.builder(
                   itemCount: value.lst.length,
                   itemBuilder: (context, index) {
-                    return itemListView(context, value.lst[index]);
+                    return itemListView(
+                        context, value.lst[index].product, index);
                   });
             },
           ),
@@ -53,7 +54,7 @@ class _CartListState extends State<CartList> {
   }
 }
 
-Widget itemListView(BuildContext context, Product shoe) {
+Widget itemListView(BuildContext context, Product shoe, int index) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8.0),
     child: SizedBox(
@@ -106,19 +107,18 @@ Widget itemListView(BuildContext context, Product shoe) {
                             Positioned(
                                 left: 10,
                                 child: Container(
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.3,
-                                    height: MediaQuery.sizeOf(context).height *
-                                        0.05,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    // color: Color.fromARGB(255, 57, 82, 196),
-                                    child: ChangeNotifierProvider<QuantityVMS>(
-                                      create: (context) =>
-                                          QuantityVMS(quantity: 0),
-                                      child: QuantityWidget(),
-                                    )))
+                                  width: MediaQuery.sizeOf(context).width * 0.3,
+                                  height:
+                                      MediaQuery.sizeOf(context).height * 0.05,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  // color: Color.fromARGB(255, 57, 82, 196),
+                                  child: QuantityWidget(
+                                    shoe: shoe,
+                                    index: index,
+                                  ),
+                                ))
                           ],
                         ),
                       )
@@ -126,14 +126,25 @@ Widget itemListView(BuildContext context, Product shoe) {
                   ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(top: 20),
-                alignment: Alignment.topCenter,
-                width: 50,
-                child: Icon(
-                  Icons.more_vert_outlined,
-                  size: 30,
-                ),
+              Consumer<ProductVMS>(
+                builder:
+                    (BuildContext context, ProductVMS value, Widget? child) {
+                  return InkWell(
+                    onTap: () {
+                      value.del(index);
+                    },
+                    child: Container(
+                      height: MediaQuery.sizeOf(context).height * 0.1,
+                      padding: EdgeInsets.only(top: 20),
+                      alignment: Alignment.topCenter,
+                      width: 50,
+                      child: Icon(
+                        Icons.more_vert_outlined,
+                        size: 30,
+                      ),
+                    ),
+                  );
+                },
               )
             ],
           ),

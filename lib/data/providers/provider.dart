@@ -30,6 +30,16 @@ class ReadData {
     return proList;
   }
 
+  Future<List<Product>> loadProductBrand(String brand) async {
+    var data = await rootBundle.loadString("assets/files/productList.json");
+    var dataJson = jsonDecode(data);
+    List<Product> proList = (dataJson['product'] as List)
+        .map((e) => Product.fromJson(e))
+        .where((element) => element.brand == brand)
+        .toList();
+    return proList;
+  }
+
   Future<List<Product>> searchProduct(String text) async {
     var data = await rootBundle.loadString("assets/files/productList.json");
     var dataJson = jsonDecode(data);
