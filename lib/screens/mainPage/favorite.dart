@@ -100,7 +100,8 @@ class _FavoritePageState extends State<FavoritePage> {
                                   child: GestureDetector(
                                     onTap: () {
                                       Navigator.pushNamed(
-                                          context, "/productDetail");
+                                          context, "/productDetail",
+                                          arguments: proList[index]);
                                     },
                                     child: GridItem(
                                         isFavorited: true,
