@@ -195,7 +195,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           height: 50,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: 8,
+                            itemCount: product.size!.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
@@ -209,7 +209,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                     alignment: Alignment.center,
                                     padding: EdgeInsets.all(10),
                                     child: Text(
-                                      "${41 + index}",
+                                      "${product.size![index]}",
                                       style: TextStyle(
                                           color: selectedIndex == index
                                               ? Colors.white

@@ -5,7 +5,7 @@ class Product {
   int? price;
   String? des;
   String? img;
-  int? size;
+  List<dynamic>? size;
   int? quantity;
   String? brand;
   String? color;

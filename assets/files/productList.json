@@ -7,10 +7,7 @@
       "des": "Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở  Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở  Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở phía trên. Điều này có các lỗ để đảm bảo không khí lưu thông đến chân, ngay cả trong những ngày nắng nóng.",
       "img": "giayNike1.png",
       "brand": "Nike",
-      "detail": [
-        { "quantity": 10, "size": 43, "color": "0x14117E" },
-        { "quantity": 10, "size": 42, "color": "0x14117E" }
-      ]
+      "size": [40, 41]
     },
     {
       "id": 2,
@@ -18,7 +15,7 @@
       "price": 1500000,
       "des": "BEST SELLER",
       "img": "giayNike2.png",
-      "size": 43,
+      "size": [40, 41, 42, 43],
       "quantity": 10,
       "brand": "Nike",
       "color": "0x14117E"
@@ -29,7 +26,7 @@
       "price": 1500000,
       "des": "BEST SELLER",
       "img": "giayNike2.png",
-      "size": 43,
+      "size": [40, 41, 42, 43],
       "quantity": 10,
       "brand": "Nike",
       "color": "0x14117E"
@@ -40,7 +37,7 @@
       "price": 1500000,
       "des": "BEST SELLER",
       "img": "giayNike2.png",
-      "size": 43,
+      "size": [40, 41, 42, 43],
       "quantity": 10,
       "brand": "Nike",
       "color": "0x14117E"
@@ -51,7 +48,7 @@
       "price": 1500000,
       "des": "BEST SELLER",
       "img": "giayNike2.png",
-      "size": 43,
+      "size": [40, 41, 42, 43],
       "quantity": 10,
       "brand": "Puma",
       "color": "0x14117E"
@@ -62,7 +59,7 @@
       "price": 1500000,
       "des": "BEST SELLER",
       "img": "giayNike2.png",
-      "size": 43,
+      "size": [40, 41, 42, 43],
       "quantity": 10,
       "brand": "Puma",
       "color": "0x14117E"
@@ -73,7 +70,7 @@
       "price": 1500000,
       "des": "BEST SELLER",
       "img": "giayNike2.png",
-      "size": 43,
+      "size": [40, 41, 42, 43],
       "quantity": 10,
       "brand": "Puma",
       "color": "0x14117E"
