@@ -22,8 +22,8 @@ class _ProductListState extends State<ProductList> {
     return '';
   }
 
-  Future<String> _loadProDataUseBrand(int id) async {
-    proList = await ReadData().loadProductUseBrand(id);
+  Future<String> _loadProDataUseBrand(String name) async {
+    proList = await ReadData().loadProductUseBrand(name);
     return '';
   }
 
@@ -31,7 +31,7 @@ class _ProductListState extends State<ProductList> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _loadProDataUseBrand(1);
+    _loadProDataUseBrand("Nike");
   }
 
   @override
@@ -41,7 +41,7 @@ class _ProductListState extends State<ProductList> {
         return FutureBuilder(
             future: value.selectedIndex == 0
                 ? _loadProData()
-                : _loadProDataUseBrand(value.selectedIndex),
+                : _loadProDataUseBrand(value.selectedBrand),
             builder: (BuildContext context, snapshot) {
               return SingleChildScrollView(
                 child: Container(

@@ -3,12 +3,8 @@ import 'package:flutter/material.dart';
 class BrandsVM with ChangeNotifier {
   int selectedIndex = 0;
   String selectedBrand = '';
-  select(int index) {
+  select(int index, String brand) {
     selectedIndex = index;
-    notifyListeners();
-  }
-
-  selectBrand(String brand) {
     selectedBrand = brand;
     notifyListeners();
   }

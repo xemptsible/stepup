@@ -45,7 +45,8 @@ class _BrandBarState extends State<BrandBar> {
                     builder: (context, value, child) {
                       return GestureDetector(
                           onTap: () {
-                            value.select(index);
+                            value.select(
+                                index, brandList[index].name.toString());
                             _selectedIndex = value.selectedIndex;
                           },
                           child: BrandLogoSelected(

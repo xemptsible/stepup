@@ -49,7 +49,8 @@ class _BrandGridState extends State<BrandGrid> {
                       margin: EdgeInsets.symmetric(vertical: 2),
                       child: GestureDetector(
                           onTap: () {
-                            value.select(index);
+                            value.select(
+                                index, brandList[index].name.toString());
                             _selectedIndex = value.selectedIndex;
                           },
                           child: BrandLogoSelected(

@@ -54,12 +54,13 @@ class ReadData {
     return filteredList;
   }
 
-  Future<List<Product>> loadProductUseBrand(int brand) async {
+  Future<List<Product>> loadProductUseBrand(String brand) async {
     var data = await rootBundle.loadString("assets/files/productList.json");
     var dataJson = jsonDecode(data);
     List<Product> proList = (dataJson['product'] as List)
         .map((e) => Product.fromJson(e))
-        .where((element) => element.brand == brand)
+        .where((element) =>
+            element.brand!.toLowerCase().contains(brand.toLowerCase()))
         .toList();
     return proList;
   }

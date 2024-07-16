@@ -53,16 +53,9 @@ class _SearchPageState extends State<SearchPage> {
                             borderRadius: BorderRadius.circular(30)),
                         child: Row(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _searchController.text;
-                                });
-                              },
-                              child: Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 10),
-                                  child: Icon(Icons.search)),
-                            ),
+                            Container(
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                child: Icon(Icons.search)),
                             Expanded(
                                 child: TextField(
                               controller: _searchController,
