@@ -40,12 +40,43 @@ class _CartListState extends State<CartList> {
           child: FutureBuilder(
             future: _loadProData(),
             builder: (context, snapshot) {
-              return ListView.builder(
-                  itemCount: value.lst.length,
-                  itemBuilder: (context, index) {
-                    return itemListView(
-                        context, value.lst[index].product, index);
-                  });
+              return Consumer<ProductVMS>(
+                builder: (context, value, child) {
+                  return ListView.builder(
+                      itemCount: value.lst.length,
+                      itemBuilder: (context, index) {
+                        return Dismissible(
+                          key: Key(proList[index].id.toString()),
+                          onDismissed: (direction) {
+                            value.del(index);
+                          },
+                          background: Container(
+                              padding: EdgeInsets.only(right: 50),
+                              alignment: Alignment.centerRight,
+                              color: Colors.red,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    'Remove from cart',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
+                                  SizedBox(
+                                    width: 50,
+                                  ),
+                                  Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              )),
+                          child: itemListView(
+                              context, value.lst[index].product, index),
+                        );
+                      });
+                },
+              );
             },
           ),
         );

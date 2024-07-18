@@ -75,7 +75,7 @@ class ProductVMS with ChangeNotifier {
   // }
 
   del(int index) {
-    total -= lst[index].product.price!;
+    total -= lst[index].product.price! * lst[index].quantity!;
     lst.removeAt(index);
     print(index);
     notifyListeners();
