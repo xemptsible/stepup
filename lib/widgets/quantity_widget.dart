@@ -8,7 +8,12 @@ import 'package:stepup/data/providers/quantity_vm.dart';
 class QuantityWidget extends StatefulWidget {
   final Product shoe;
   final int index;
-  QuantityWidget({super.key, required this.shoe, required this.index});
+  final int quantity;
+  QuantityWidget(
+      {super.key,
+      required this.shoe,
+      required this.index,
+      required this.quantity});
 
   @override
   State<QuantityWidget> createState() => _QuantityWidgetState();
@@ -46,11 +51,14 @@ class _QuantityWidgetState extends State<QuantityWidget> {
             ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
-              child: Text(value.lst[widget.index].quantity.toString()),
+              // child: Text(value.lst[widget.index].quantity.toString()),
+              child: Text(widget.quantity.toString()),
             ),
             InkWell(
               onTap: () {
-                value.increaseCart(value.lst[widget.index]);
+                setState(() {
+                  value.increaseCart(value.lst[widget.index]);
+                });
               },
               child: Container(
                   decoration: BoxDecoration(

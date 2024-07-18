@@ -32,4 +32,18 @@ class Product {
     brand = json['brand'];
     color = json['color'];
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'price': price,
+      'des': des,
+      'img': img,
+      'size': size,
+      'quantity': quantity,
+      'brand': brand,
+      'color': color,
+    };
+  }
 }

@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:stepup/data/models/cart_item.dart';
 import 'package:stepup/data/providers/product_vm.dart';
+import 'package:stepup/data/shared_preferences/sharedPre.dart';
 import 'package:stepup/screens/mainPage/checkout.dart';
 import 'package:stepup/widgets/cartList/cart_list.dart';
 
@@ -17,6 +19,23 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  List<CartItem> proList = [];
+
+  Future<List<CartItem>> _loadProData() async {
+    SharePreHelper sharePreHelper = SharePreHelper();
+    proList = await sharePreHelper.getCartItemList() as List<CartItem>;
+    Provider.of<ProductVMS>(context, listen: false).ListFromShared_pre(proList);
+    Provider.of<ProductVMS>(context, listen: false).totalPrice();
+    return proList;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadProData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -59,102 +78,86 @@ class _CartPageState extends State<CartPage> {
                   )),
             ],
           ),
-          body: Consumer<ProductVMS>(
-            builder: (context, value, child) {
-              return Container(child: () {
-                if (value.lst.isEmpty) {
-                  return Center(
+          body: Container(child: () {
+            return Container(
+              child: Column(
+                children: [
+                  Expanded(flex: 4, child: CartList()),
+                  Expanded(
+                    flex: 1,
                     child: Container(
-                      child: Image.network(
-                          "https://newnet.vn/themes/newnet/assets/img/empty-cart.png"),
-                    ),
-                  );
-                }
-                return Container(
-                  child: Column(
-                    children: [
-                      Expanded(flex: 4, child: CartList()),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                            child: Column(
-                          children: [
-                            Divider(),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Consumer<ProductVMS>(
-                              builder: (BuildContext context, ProductVMS value,
-                                  Widget? child) {
-                                return Text(
-                                  'Tổng Giá: ${NumberFormat('###,###.###').format(value.total)}đ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Consumer<ProductVMS>(
-                              builder: (BuildContext context, ProductVMS value,
-                                  Widget? child) {
-                                return InkWell(
-                                  onTap: () {
-                                    value.getQuantity();
-                                    // value.clear();
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Checkout(),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.8,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                          color:
-                                              Color.fromARGB(255, 26, 28, 127)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.credit_card_outlined,
-                                            color: Colors.white,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            "Thanh toán",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500),
-                                          )
-                                        ],
-                                      ),
-                                    ),
+                        child: Column(
+                      children: [
+                        Divider(),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Consumer<ProductVMS>(
+                          builder: (BuildContext context, ProductVMS value,
+                              Widget? child) {
+                            return Text(
+                              'Tổng Giá: ${NumberFormat('###,###.###').format(value.total)}đ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 16),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Consumer<ProductVMS>(
+                          builder: (BuildContext context, ProductVMS value,
+                              Widget? child) {
+                            return InkWell(
+                              onTap: () {
+                                value.getQuantity();
+                                // value.clear();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Checkout(),
                                   ),
                                 );
                               },
-                            ),
-                          ],
-                        )),
-                      )
-                    ],
-                  ),
-                );
-              }());
-            },
-          )),
+                              child: Container(
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30),
+                                      color: Color.fromARGB(255, 26, 28, 127)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.credit_card_outlined,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "Thanh toán",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    )),
+                  )
+                ],
+              ),
+            );
+          }())),
     );
   }
 }
