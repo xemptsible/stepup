@@ -34,10 +34,16 @@ class _SearchPageState extends State<SearchPage> {
     return '';
   }
 
+  Future<String> _loadAllProData() async {
+    proList = await ReadData().loadProductData();
+    return '';
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    widget.isSearch = false;
   }
 
   @override
@@ -90,6 +96,9 @@ class _SearchPageState extends State<SearchPage> {
                           )),
                           GestureDetector(
                             onTap: () {
+                              setState(() {
+                                widget.isSearch = true;
+                              });
                               showModalBottomSheet(
                                   context: context,
                                   builder: (context) {
@@ -130,8 +139,10 @@ class _SearchPageState extends State<SearchPage> {
                     Consumer<FilterVMS>(
                       builder: (context, myType, child) {
                         return FutureBuilder(
-                          future: _loadProData(_searchController.text,
-                              myType.brand, myType.price, myType.size),
+                          future: widget.isSearch!
+                              ? _loadProData(_searchController.text,
+                                  myType.brand, myType.price, myType.size)
+                              : _loadAllProData(),
                           builder: (BuildContext context, snapshot) {
                             return SingleChildScrollView(
                               child: Container(
@@ -169,19 +180,8 @@ class _SearchPageState extends State<SearchPage> {
                                                               proList[index]);
                                                     },
                                                     child: GridItem(
-                                                        isFavorited: false,
-                                                        img: proList[index]
-                                                            .img
-                                                            .toString(),
-                                                        brand: proList[index]
-                                                            .brand
-                                                            .toString(),
-                                                        name: proList[index]
-                                                            .name
-                                                            .toString()
-                                                            .trim(),
-                                                        price: proList[index]
-                                                            .price as int),
+                                                        product:
+                                                            proList[index]),
                                                   ),
                                                 ),
                                               );

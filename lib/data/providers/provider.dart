@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:stepup/data/shared_preferences/sharedPre.dart';
 import '../models/brand_model.dart';
 import '../models/product_model.dart';
 
@@ -80,5 +81,10 @@ class ReadData {
             element.brand!.toLowerCase().contains(brand.toLowerCase()))
         .toList();
     return proList;
+  }
+
+  Future<List<Product>> loadFavoritedProduct() async {
+    List<Product> data = await SharePreHelper().getFavoriteItemList();
+    return data;
   }
 }

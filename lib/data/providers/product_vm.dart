@@ -9,6 +9,7 @@ import 'package:stepup/data/shared_preferences/sharedPre.dart';
 class ProductVMS with ChangeNotifier {
   SharePreHelper sharePreHelper = SharePreHelper();
   List<CartItem> lst = [];
+
   int total = 0;
   int quatity = 0;
 

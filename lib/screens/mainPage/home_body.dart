@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                                       )),
                             );
                           },
-                          child: Text("see all")),
+                          child: Text("Xem tất cả")),
                     ],
                   ),
                   Container(

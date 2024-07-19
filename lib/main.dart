@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/app.dart';
+import 'package:stepup/data/providers/favorite_vm.dart';
 import 'package:stepup/data/providers/filter_vm.dart';
 import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/global/functions.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
           create: (context) => ProductVMS(),
         ),
         ChangeNotifierProvider(create: (context) => FilterVMS()),
+        ChangeNotifierProvider(create: (context) => FavoriteVm()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

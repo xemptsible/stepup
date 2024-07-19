@@ -15,7 +15,7 @@ class FavoritePage extends StatefulWidget {
 class _FavoritePageState extends State<FavoritePage> {
   List<Product> proList = [];
   Future<String> _loadProData() async {
-    proList = await ReadData().loadProductData();
+    proList = await ReadData().loadFavoritedProduct();
     return '';
   }
 
@@ -103,15 +103,7 @@ class _FavoritePageState extends State<FavoritePage> {
                                           context, "/productDetail",
                                           arguments: proList[index]);
                                     },
-                                    child: GridItem(
-                                        isFavorited: true,
-                                        img: proList[index].img.toString(),
-                                        brand: proList[index].brand.toString(),
-                                        name: proList[index]
-                                            .name
-                                            .toString()
-                                            .trim(),
-                                        price: proList[index].price as int),
+                                    child: GridItem(product: proList[index]),
                                   ),
                                 ),
                               );
