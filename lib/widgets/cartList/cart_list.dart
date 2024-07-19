@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stepup/data/models/cart_item.dart';
 import 'package:stepup/data/models/product_model.dart';
 import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/data/providers/provider.dart';
 import 'package:stepup/data/providers/quantity_vm.dart';
+import 'package:stepup/data/shared_preferences/sharedPre.dart';
 import 'package:stepup/test/model/shoe.dart';
 import 'package:stepup/utilities/const.dart';
 import 'package:stepup/widgets/cartList/cart_item_detail.dart';
@@ -18,10 +20,12 @@ class CartList extends StatefulWidget {
 }
 
 class _CartListState extends State<CartList> {
-  List<Product> proList = [];
-  Future<String> _loadProData() async {
-    proList = await ReadData().loadProductData();
-    return '';
+  Future<List<CartItem>> _loadProData() async {
+    SharePreHelper sharePreHelper = SharePreHelper();
+    print("Cart list");
+    List<CartItem> lstPro = await sharePreHelper.getCartItemList() ?? [];
+    Provider.of<ProductVMS>(context, listen: false).ListFromShared_pre(lstPro);
+    return lstPro;
   }
 
   @override
@@ -40,43 +44,22 @@ class _CartListState extends State<CartList> {
           child: FutureBuilder(
             future: _loadProData(),
             builder: (context, snapshot) {
-              return Consumer<ProductVMS>(
-                builder: (context, value, child) {
-                  return ListView.builder(
-                      itemCount: value.lst.length,
-                      itemBuilder: (context, index) {
-                        return Dismissible(
-                          key: Key(proList[index].id.toString()),
-                          onDismissed: (direction) {
-                            value.del(index);
-                          },
-                          background: Container(
-                              padding: EdgeInsets.only(right: 50),
-                              alignment: Alignment.centerRight,
-                              color: Colors.red,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    'Remove from cart',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                  SizedBox(
-                                    width: 50,
-                                  ),
-                                  Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                  ),
-                                ],
-                              )),
-                          child: itemListView(
-                              context, value.lst[index].product, index),
-                        );
-                      });
-                },
-              );
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                return Center(
+                    child: Container(
+                  child: Image.network(
+                      "https://newnet.vn/themes/newnet/assets/img/empty-cart.png"),
+                ));
+              }
+              return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return itemListView(context, snapshot.data![index], index);
+                  });
             },
           ),
         );
@@ -85,7 +68,7 @@ class _CartListState extends State<CartList> {
   }
 }
 
-Widget itemListView(BuildContext context, Product shoe, int index) {
+Widget itemListView(BuildContext context, CartItem shoe, int index) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8.0),
     child: SizedBox(
@@ -105,7 +88,7 @@ Widget itemListView(BuildContext context, Product shoe, int index) {
                 width: 120,
                 child: Image.asset(
                   width: 100,
-                  urlimg + shoe.img.toString(),
+                  urlimg + shoe.product.img.toString(),
                   fit: BoxFit.contain,
                 ),
                 // child: thumbnail,
@@ -123,10 +106,10 @@ Widget itemListView(BuildContext context, Product shoe, int index) {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 8, left: 10),
                           child: Shoe(
-                            name: shoe.name!,
-                            brand: shoe.brand.toString(),
+                            name: shoe.product.name!,
+                            brand: shoe.product.brand.toString(),
                             // discount: shoe.discount,
-                            price: double.parse(shoe.price.toString()),
+                            price: double.parse(shoe.product.price.toString()),
                           ),
                         ),
                       ),
@@ -146,7 +129,8 @@ Widget itemListView(BuildContext context, Product shoe, int index) {
                                   ),
                                   // color: Color.fromARGB(255, 57, 82, 196),
                                   child: QuantityWidget(
-                                    shoe: shoe,
+                                    shoe: shoe.product,
+                                    quantity: shoe.quantity!,
                                     index: index,
                                   ),
                                 ))

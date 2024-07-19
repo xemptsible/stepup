@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:provider/provider.dart';
+import 'package:stepup/data/providers/filter_vm.dart';
 import 'package:stepup/utilities/const.dart';
 
 import 'package:stepup/widgets/brandBar/brand_logo_selected.dart';
@@ -43,15 +44,17 @@ class _BrandGridState extends State<BrandGrid> {
               scrollDirection: Axis.horizontal,
               itemCount: brandList.length,
               itemBuilder: (context, index) {
-                return Consumer<BrandsVM>(
+                return Consumer<FilterVMS>(
                   builder: (context, value, child) {
                     return Container(
                       margin: EdgeInsets.symmetric(vertical: 2),
                       child: GestureDetector(
                           onTap: () {
                             value.select(
-                                index, brandList[index].name.toString());
-                            _selectedIndex = value.selectedIndex;
+                              brandList[index].name.toString(),
+                              index,
+                            );
+                            _selectedIndex = value.brandSelectedIndex;
                           },
                           child: BrandLogoSelected(
                             logoImg:

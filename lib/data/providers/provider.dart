@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/brand_model.dart';
 import '../models/product_model.dart';
@@ -40,18 +41,34 @@ class ReadData {
     return proList;
   }
 
-  Future<List<Product>> searchProduct(String text) async {
+  Future<List<Product>> searchProduct(
+    String text, {
+    String? brand,
+    RangeValues? price,
+    int? size,
+  }) async {
     var data = await rootBundle.loadString("assets/files/productList.json");
     var dataJson = jsonDecode(data);
     List<Product> proList =
         (dataJson['product'] as List).map((e) => Product.fromJson(e)).toList();
 
-    // Lọc danh sách sản phẩm dựa trên từ khóa tìm kiếm
-    List<Product> filteredList = proList.where((product) {
-      return product.name!.toLowerCase().contains(text.toLowerCase());
+    // Lọc danh sách sản phẩm dựa trên từ khóa tìm kiếm và các tiêu chí khác
+    List<Product> searchList = proList.where((product) {
+      bool matchesText =
+          product.name!.toLowerCase().contains(text.toLowerCase());
+      bool matchesBrand =
+          brand == null || brand == "Tất cả" || product.brand == brand;
+      bool matchesPrice = price == null ||
+          (product.price != null &&
+              product.price! >= price.start &&
+              product.price! <= price.end);
+      bool matchesSize = size == null ||
+          (product.size != null && product.size!.contains(size));
+
+      return matchesText && matchesBrand && matchesPrice && matchesSize;
     }).toList();
 
-    return filteredList;
+    return searchList;
   }
 
   Future<List<Product>> loadProductUseBrand(String brand) async {

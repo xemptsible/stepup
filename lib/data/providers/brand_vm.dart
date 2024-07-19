@@ -6,6 +6,7 @@ class BrandsVM with ChangeNotifier {
   select(int index, String brand) {
     selectedIndex = index;
     selectedBrand = brand;
+    print(brand);
     notifyListeners();
   }
 }

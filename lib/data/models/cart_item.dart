@@ -19,4 +19,18 @@ class CartItem {
       print("tang ${this.quantity}");
     }
   }
+
+  factory CartItem.fromJson(Map<String, dynamic> json) {
+    return CartItem(
+      product: Product.fromJson(json["product"]),
+      quantity: json['quantity'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "product": product.toJson(),
+      "quantity": quantity,
+    };
+  }
 }

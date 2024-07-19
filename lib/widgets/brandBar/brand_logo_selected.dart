@@ -38,7 +38,7 @@ class _BrandLogoSelectedState extends State<BrandLogoSelected> {
         borderRadius: BorderRadius.circular(10),
         border: widget.isSelected ? null : Border.all(),
         color:
-            widget.isSelected ? Color.fromRGBO(53, 114, 239, 1) : Colors.white,
+            widget.isSelected ? Color.fromARGB(255, 26, 28, 127) : Colors.white,
       ),
       child: Row(
         children: [
@@ -50,7 +50,7 @@ class _BrandLogoSelectedState extends State<BrandLogoSelected> {
                   height: 40,
                   decoration: BoxDecoration(
                     color: widget.isSelected
-                        ? Color.fromRGBO(53, 114, 239, 1)
+                        ? Color.fromARGB(255, 26, 28, 127)
                         : Colors.white,
                     borderRadius: BorderRadius.circular(10),
                   ),

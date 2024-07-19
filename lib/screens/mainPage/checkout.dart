@@ -23,6 +23,7 @@ class _CheckoutState extends State<Checkout> {
   List<Product> proList = [];
   Future<String> _loadProData() async {
     proList = await ReadData().loadProductData();
+    Provider.of<ProductVMS>(context, listen: false).getQuantity();
     return '';
   }
 

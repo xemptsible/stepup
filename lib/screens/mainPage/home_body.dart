@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:stepup/screens/mainPage/search_page.dart';
 import '../../data/providers/brand_vm.dart';
 import '../../data/providers/product_vm.dart';
 import '../../widgets/brandBar/brand_select_bar.dart';
@@ -92,7 +93,13 @@ class _HomePageState extends State<HomePage> {
                       ),
                       TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, "/productsPage");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SearchPage(
+                                        isSearch: false,
+                                      )),
+                            );
                           },
                           child: Text("see all")),
                     ],
