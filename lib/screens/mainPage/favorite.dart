@@ -78,48 +78,74 @@ class _FavoritePageState extends State<FavoritePage> {
             return FutureBuilder(
                 future: _loadProData(),
                 builder: (BuildContext context, snapshot) {
-                  return SingleChildScrollView(
-                    child: Container(
-                      // height: MediaQuery.of(context).size.height,
-                      color: Colors.white,
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(top: 5),
-                            height: MediaQuery.of(context).size.height * 0.78,
-                            child: Container(
-                              child: GridView.builder(
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  childAspectRatio: 0.8,
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 1,
-                                ),
-                                itemCount: proList.length,
-                                itemBuilder: (context, index) {
-                                  return Center(
-                                    child: Container(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, "/productDetail",
-                                              arguments: proList[index]);
-                                        },
-                                        child:
-                                            GridItem(product: proList[index]),
+                  return myType.favoriteLst.length > 0
+                      ? SingleChildScrollView(
+                          child: Container(
+                            // height: MediaQuery.of(context).size.height,
+                            color: Colors.white,
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.78,
+                                  child: Container(
+                                    child: GridView.builder(
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        childAspectRatio: 0.8,
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 10,
+                                        crossAxisSpacing: 1,
                                       ),
+                                      itemCount: proList.length,
+                                      itemBuilder: (context, index) {
+                                        return Center(
+                                          child: Container(
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.pushNamed(
+                                                    context, "/productDetail",
+                                                    arguments: proList[index]);
+                                              },
+                                              child: GridItem(
+                                                  product: proList[index]),
+                                            ),
+                                          ),
+                                        );
+                                      },
                                     ),
-                                  );
-                                },
-                              ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  );
+                        )
+                      : Center(
+                          child: Container(
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.favorite_border,
+                                size: 100,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "NO FAVORITE ITEM",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 54, 57, 99)),
+                              ),
+                            ],
+                          ),
+                        ));
                 });
           },
         ),
