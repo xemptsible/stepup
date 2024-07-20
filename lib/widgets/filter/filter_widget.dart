@@ -56,47 +56,43 @@ class _FilterWidgetState extends State<FilterWidget> {
                 SizedBox(
                   height: 5,
                 ),
-                Consumer<FilterVMS>(
-                  builder: (context, myType, child) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 40,
-                      child: ListView.builder(
-                          itemCount: 10,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () => setState(() {
-                                _selectedIndex = index;
-                                selectedSize = 39 + index;
-                                myType.selectSize(selectedSize);
-                              }),
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                child: Container(
-                                    width: 35,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: _selectedIndex == index
-                                                ? 0
-                                                : 1),
-                                        color: _selectedIndex == index
-                                            ? Color.fromARGB(255, 26, 28, 127)
-                                            : Colors.white,
-                                        shape: BoxShape.circle),
-                                    child: Center(
-                                        child: Text(
-                                      "${39 + index}",
-                                      style: TextStyle(
-                                          color: _selectedIndex == index
-                                              ? Colors.white
-                                              : Colors.black),
-                                    ))),
-                              ),
-                            );
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 40,
+                  child: ListView.builder(
+                      itemCount: 10,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () => setState(() {
+                            _selectedIndex = index;
+                            selectedSize = 40 + index;
+                            filterVMS.selectSize(selectedSize);
                           }),
-                    );
-                  },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Container(
+                                width: 35,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: filterVMS.size - 40 == index
+                                            ? 0
+                                            : 1),
+                                    color: filterVMS.size - 40 == index
+                                        ? Color.fromARGB(255, 26, 28, 127)
+                                        : Colors.white,
+                                    shape: BoxShape.circle),
+                                child: Center(
+                                    child: Text(
+                                  "${40 + index}",
+                                  style: TextStyle(
+                                      color: filterVMS.size - 40 == index
+                                          ? Colors.white
+                                          : Colors.black),
+                                ))),
+                          ),
+                        );
+                      }),
                 ),
                 SizedBox(
                   height: 15,

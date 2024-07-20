@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,17 +25,30 @@ class _SearchPageState extends State<SearchPage> {
   List<Product> proList = [];
   TextEditingController _searchController = TextEditingController();
   String searchText = '';
-
+  bool isLoading = false;
   Future<String> _loadProData(
       String text, String brand, RangeValues price, int size) async {
+    isLoading = true;
     proList = await ReadData()
         .searchProduct(text, brand: brand, price: price, size: size);
+    print("${text}, ${brand}, ${size}, ${price}");
+    isLoading = false;
     return '';
   }
 
   Future<String> _loadAllProData() async {
     proList = await ReadData().loadProductData();
     return '';
+  }
+
+  bool isSearch(String text, String brand, int size, RangeValues price) {
+    if (!text.isEmpty ||
+        brand != "" ||
+        size != 0 ||
+        price != RangeValues(0.0, 10.0)) {
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -93,6 +105,12 @@ class _SearchPageState extends State<SearchPage> {
                                         .transparent), // Tắt gạch dưới khi focus
                               ),
                             ),
+                            onSubmitted: (value) {
+                              setState(() {
+                                searchText = value;
+                                widget.isSearch = true;
+                              });
+                            },
                           )),
                           GestureDetector(
                             onTap: () {
@@ -119,7 +137,7 @@ class _SearchPageState extends State<SearchPage> {
                         ],
                       ),
                     ),
-                    _searchController.text == ''
+                    searchText == ''
                         ? Padding(
                             padding: EdgeInsets.all(20),
                             child: Text(
@@ -134,66 +152,76 @@ class _SearchPageState extends State<SearchPage> {
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.start,
-                                'Kết quả tìm kiếm cho \'${_searchController.text}\''),
+                                'Kết quả tìm kiếm cho \'$searchText\''),
                           ),
                     Consumer<FilterVMS>(
                       builder: (context, myType, child) {
                         return FutureBuilder(
-                          future: widget.isSearch!
-                              ? _loadProData(_searchController.text,
-                                  myType.brand, myType.price, myType.size)
+                          future: isSearch(_searchController.text, myType.brand,
+                                  myType.size, myType.price)
+                              ? _loadProData(searchText, myType.brand,
+                                  myType.price, myType.size)
                               : _loadAllProData(),
                           builder: (BuildContext context, snapshot) {
-                            return SingleChildScrollView(
-                              child: Container(
-                                // height: MediaQuery.of(context).size.height,
-                                color: Colors.white,
-                                padding: EdgeInsets.symmetric(horizontal: 8),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(top: 5),
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.7,
-                                      child:
-                                          Container(child: Consumer<ProductVMS>(
-                                        builder: (context, myType, child) {
-                                          return GridView.builder(
-                                            gridDelegate:
-                                                SliverGridDelegateWithFixedCrossAxisCount(
-                                              childAspectRatio: 0.8,
-                                              crossAxisCount: 2,
-                                              mainAxisSpacing: 10,
-                                              crossAxisSpacing: 1,
-                                            ),
-                                            itemCount: proList.length,
-                                            itemBuilder: (context, index) {
-                                              return Center(
-                                                child: Container(
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.pushNamed(
-                                                          context,
-                                                          "/productDetail",
-                                                          arguments:
-                                                              proList[index]);
-                                                    },
-                                                    child: GridItem(
-                                                        product:
-                                                            proList[index]),
+                            return isLoading
+                                ? Container(
+                                    alignment: Alignment.center,
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : SingleChildScrollView(
+                                    child: Container(
+                                      color: Colors.white,
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(top: 5),
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.7,
+                                            child: Container(
+                                                child: Consumer<ProductVMS>(
+                                              builder:
+                                                  (context, myType, child) {
+                                                return GridView.builder(
+                                                  gridDelegate:
+                                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                                    childAspectRatio: 0.8,
+                                                    crossAxisCount: 2,
+                                                    mainAxisSpacing: 10,
+                                                    crossAxisSpacing: 1,
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                      )),
+                                                  itemCount: proList.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Center(
+                                                      child: Container(
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            Navigator.pushNamed(
+                                                                context,
+                                                                "/productDetail",
+                                                                arguments:
+                                                                    proList[
+                                                                        index]);
+                                                          },
+                                                          child: GridItem(
+                                                              product: proList[
+                                                                  index]),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            )),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            );
+                                  );
                           },
                         );
                       },

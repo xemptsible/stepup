@@ -60,7 +60,10 @@ class _BrandGridState extends State<BrandGrid> {
                             logoImg:
                                 imgLogoUrl + brandList[index].img.toString(),
                             brandName: brandList[index].name.toString(),
-                            isSelected: _selectedIndex == index ? true : false,
+                            isSelected:
+                                brandList[index].name.toString() == value.brand
+                                    ? true
+                                    : false,
                           )),
                     );
                   },

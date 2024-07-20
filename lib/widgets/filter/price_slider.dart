@@ -18,6 +18,7 @@ class _PriceSliderState extends State<PriceSlider> {
   Widget build(BuildContext context) {
     return Consumer<FilterVMS>(
       builder: (context, myType, child) {
+        values = myType.price ?? values;
         return RangeSlider(
           values: values,
           divisions: 20,
