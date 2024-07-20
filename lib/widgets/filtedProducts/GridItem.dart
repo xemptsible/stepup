@@ -6,7 +6,7 @@ import '../../data/models/product_model.dart';
 import '../../data/providers/favorite_vm.dart';
 import '../../utilities/const.dart';
 
-class GridItem extends StatelessWidget {
+class GridItem extends StatefulWidget {
   final Product product;
 
   GridItem({
@@ -15,10 +15,15 @@ class GridItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<GridItem> createState() => _GridItemState();
+}
+
+class _GridItemState extends State<GridItem> {
+  @override
   Widget build(BuildContext context) {
     return Consumer<FavoriteVm>(
       builder: (context, favoriteVm, child) {
-        final isFavorited = favoriteVm.isProductFavorited(product);
+        bool isFavorited = favoriteVm.isProductFavorited(widget.product);
 
         return Align(
           child: Stack(children: [
@@ -43,7 +48,7 @@ class GridItem extends StatelessWidget {
                         height: 110,
                         color: Colors.grey[200],
                         child: Image.asset(
-                          urlimg + product.img!,
+                          urlimg + widget.product.img!,
                           fit: BoxFit.cover,
                           width: 100,
                         ),
@@ -57,21 +62,21 @@ class GridItem extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   overflow: TextOverflow.ellipsis,
-                                  product.name!,
+                                  widget.product.name!,
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w500),
                                 ),
                               ),
                               Text(
-                                product.brand!,
+                                widget.product.brand!,
                                 style:
                                     TextStyle(fontSize: 14, color: Colors.grey),
                               ),
                               Row(
                                 children: [
                                   Text(
-                                    '${NumberFormat('###,###.###').format(product.price!)}đ',
+                                    '${NumberFormat('###,###.###').format(widget.product.price!)}đ',
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
@@ -99,7 +104,11 @@ class GridItem extends StatelessWidget {
                       color: isFavorited ? Colors.pink : null,
                     ),
                     onTap: () {
-                      favoriteVm.addFavorite(product);
+                      setState(() {
+                        favoriteVm.addFavorite(widget.product);
+                        isFavorited =
+                            favoriteVm.isProductFavorited(widget.product);
+                      });
                     },
                   ),
                 )),

@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stepup/data/models/product_model.dart';
+import 'package:stepup/data/providers/favorite_vm.dart';
 import 'package:stepup/data/providers/provider.dart';
 import 'package:stepup/widgets/filtedProducts/GridItem.dart';
 
@@ -71,51 +73,56 @@ class _FavoritePageState extends State<FavoritePage> {
             ],
           ),
         ),
-        FutureBuilder(
-            future: _loadProData(),
-            builder: (BuildContext context, snapshot) {
-              return SingleChildScrollView(
-                child: Container(
-                  // height: MediaQuery.of(context).size.height,
-                  color: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 5),
-                        height: MediaQuery.of(context).size.height * 0.78,
-                        child: Container(
-                          child: GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              childAspectRatio: 0.8,
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 1,
-                            ),
-                            itemCount: proList.length,
-                            itemBuilder: (context, index) {
-                              return Center(
-                                child: Container(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, "/productDetail",
-                                          arguments: proList[index]);
-                                    },
-                                    child: GridItem(product: proList[index]),
-                                  ),
+        Consumer<FavoriteVm>(
+          builder: (context, myType, child) {
+            return FutureBuilder(
+                future: _loadProData(),
+                builder: (BuildContext context, snapshot) {
+                  return SingleChildScrollView(
+                    child: Container(
+                      // height: MediaQuery.of(context).size.height,
+                      color: Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 5),
+                            height: MediaQuery.of(context).size.height * 0.78,
+                            child: Container(
+                              child: GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  childAspectRatio: 0.8,
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 1,
                                 ),
-                              );
-                            },
+                                itemCount: proList.length,
+                                itemBuilder: (context, index) {
+                                  return Center(
+                                    child: Container(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, "/productDetail",
+                                              arguments: proList[index]);
+                                        },
+                                        child:
+                                            GridItem(product: proList[index]),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              );
-            }),
+                    ),
+                  );
+                });
+          },
+        ),
       ],
     );
   }
