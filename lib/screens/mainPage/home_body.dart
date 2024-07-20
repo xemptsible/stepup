@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:stepup/data/api/product_api.dart';
+import 'package:stepup/data/api/api.dart';
 import 'package:stepup/screens/mainPage/search_page.dart';
 import '../../data/providers/brand_vm.dart';
 import '../../data/providers/product_vm.dart';

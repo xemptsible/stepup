@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:stepup/data/models/brand_model.dart';
 import '../models/product_model.dart';
 
 class ApiService {
@@ -85,6 +86,26 @@ class ApiService {
       }).toList();
 
       return searchList;
+    } catch (e) {
+      print('Error: $e');
+      throw e;
+    }
+  }
+
+  Future<List<Brand>> fetchBrands() async {
+    try {
+      Dio api = Dio();
+      Response response = await api.get(baseUrl + "/brand");
+
+      // Kiểm tra nếu response.data là danh sách
+      if (response.data is List) {
+        List<dynamic> data = response.data as List;
+        return data.map((json) {
+          return Brand.fromJson(json);
+        }).toList();
+      } else {
+        throw Exception("Response data is not a list");
+      }
     } catch (e) {
       print('Error: $e');
       throw e;

@@ -1,18 +1,16 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:stepup/data/api/product_api.dart';
+import 'package:stepup/data/api/api.dart';
 import 'package:stepup/data/shared_preferences/sharedPre.dart';
 import '../models/brand_model.dart';
 import '../models/product_model.dart';
 
 class ReadData {
   Future<List<Brand>> loadBrandData() async {
-    var data = await rootBundle.loadString("assets/files/brandList.json");
-    var dataJson = jsonDecode(data);
-    List<Brand> cateList =
-        (dataJson['brand'] as List).map((e) => Brand.fromJson(e)).toList();
-    return cateList;
+    ApiService apiService = ApiService();
+    List<Brand> brandList = await apiService.fetchBrands();
+    return brandList;
   }
 
   Future<Brand?> getBrandById(int id) async {
