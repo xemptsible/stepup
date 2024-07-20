@@ -21,11 +21,17 @@ class _ProductListState extends State<ProductList> {
   List<Product> proFavoritedLst = [];
   Future<String> _loadProData() async {
     proList = await ReadData().loadProductData();
+    if (proList.length > 6) {
+      proList = proList.sublist(0, 6);
+    }
     return '';
   }
 
   Future<String> _loadProDataUseBrand(String name) async {
     proList = await ReadData().loadProductUseBrand(name);
+    if (proList.length > 6) {
+      proList = proList.sublist(0, 6);
+    }
     return '';
   }
 
@@ -84,11 +90,12 @@ class _ProductListState extends State<ProductList> {
                         final isFavorited =
                             proFavoritedLst.any((e) => e.id == product.id);
 
-                        return GestureDetector(
+                        return InkWell(
                           onTap: () {
                             Navigator.pushNamed(context, "/productDetail",
                                 arguments: product);
                           },
+                          onLongPress: () => print('a'),
                           child: Center(
                               child: GridItem(
                             product: product,

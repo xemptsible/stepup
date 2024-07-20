@@ -32,7 +32,7 @@ class _BrandSelectProState extends State<BrandSelectPro> {
                 onPressed: () {
                   Navigator.pushNamed(context, "/productsPage");
                 },
-                child: Text("see all")),
+                child: Text("")),
           ],
         ),
         Container(
