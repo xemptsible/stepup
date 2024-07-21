@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:stepup/data/api/api.dart';
 import 'package:stepup/screens/mainPage/search_page.dart';
 import '../../data/providers/brand_vm.dart';
 import '../../data/providers/product_vm.dart';
@@ -64,11 +65,17 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  child: Icon(
-                                    Icons.notifications,
-                                    size: MediaQuery.of(context).size.height *
-                                        0.033,
+                                GestureDetector(
+                                  onTap: () async {
+                                    ApiService api = ApiService();
+                                    await api.fetchProducts();
+                                  },
+                                  child: Container(
+                                    child: Icon(
+                                      Icons.notifications,
+                                      size: MediaQuery.of(context).size.height *
+                                          0.033,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -101,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                                       )),
                             );
                           },
-                          child: Text("see all")),
+                          child: Text("Xem tất cả")),
                     ],
                   ),
                   Container(
@@ -112,7 +119,6 @@ class _HomePageState extends State<HomePage> {
                     height: 15,
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.38,
                     child: ProductList(),
                   )
                 ],

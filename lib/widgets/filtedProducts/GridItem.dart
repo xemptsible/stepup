@@ -1,27 +1,19 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
-import 'package:stepup/data/models/brand_model.dart';
-import 'package:stepup/data/models/product_model.dart';
-import 'package:stepup/utilities/const.dart';
+import 'package:provider/provider.dart';
+import 'package:stepup/data/providers/product_vm.dart';
 
-import '../../data/providers/provider.dart';
+import '../../data/models/cart_item.dart';
+import '../../data/models/product_model.dart';
+import '../../data/providers/favorite_vm.dart';
+import '../../utilities/const.dart';
 
 class GridItem extends StatefulWidget {
-  final String brand;
-  final String name;
-  final int price;
-  final String img;
-  bool isFavorited;
+  final Product product;
+
   GridItem({
     Key? key,
-    required this.brand,
-    required this.name,
-    required this.price,
-    required this.isFavorited,
-    required this.img,
+    required this.product,
   }) : super(key: key);
 
   @override
@@ -29,112 +21,184 @@ class GridItem extends StatefulWidget {
 }
 
 class _GridItemState extends State<GridItem> {
-  Brand? brand;
-  // Future<String> _loadBrandUseId() async {
-  //   brand = await ReadData().getBrandById(int.parse(widget.brand));
-  //   return '';
-  // }
-  List<Product> proList = [];
-  Future<String> _loadProData() async {
-    proList = await ReadData().loadProductData();
-    return '';
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _loadProData(),
-        builder: (context, snapshot) {
-          return Align(
-            child: Stack(children: [
-              Positioned(
-                child: Container(
-                  height: 240,
-                  width: 180,
-                  child: Card.outlined(
-                    shadowColor: Colors.black,
-                    elevation: 5,
-                    surfaceTintColor: Colors.white,
-                    clipBehavior: Clip.antiAlias,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          height: 22,
-                          color: Colors.grey[200],
+    return Consumer<FavoriteVm>(
+      builder: (context, favoriteVm, child) {
+        bool isFavorited = favoriteVm.isProductFavorited(widget.product);
+
+        return Align(
+          child: Stack(children: [
+            Positioned(
+              child: Container(
+                height: 240,
+                width: 180,
+                child: Card.outlined(
+                  shadowColor: Colors.black,
+                  elevation: 5,
+                  surfaceTintColor: Colors.white,
+                  clipBehavior: Clip.antiAlias,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        height: 22,
+                        color: Colors.grey[200],
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 110,
+                        color: Colors.grey[200],
+                        child: Image.asset(
+                          urlimg + widget.product.img!,
+                          fit: BoxFit.cover,
+                          width: 100,
                         ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 110,
-                          color: Colors.grey[200],
-                          child: Image.asset(
-                            urlimg + widget.img,
-                            fit: BoxFit.cover,
-                            width: 100,
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Text(
-                                    overflow: TextOverflow.ellipsis,
-                                    widget.name,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                Text(
-                                  // brand != null ? brand!.name.toString() : '',
-                                  widget.brand,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Expanded(
+                                child: Text(
+                                  overflow: TextOverflow.ellipsis,
+                                  widget.product.name!,
                                   style: TextStyle(
-                                      fontSize: 14, color: Colors.grey),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500),
                                 ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      '${NumberFormat('###,###.###').format(widget.price)}đ',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
+                              ),
+                              Text(
+                                widget.product.brand!,
+                                style:
+                                    TextStyle(fontSize: 14, color: Colors.grey),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    '${NumberFormat('###,###.###').format(widget.product.price!)}đ',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              Positioned(
-                  top: 10,
-                  right: 10,
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      child: widget.isFavorited
-                          ? Icon(
-                              size: 25,
-                              Icons.favorite,
-                              color: Colors.pink,
-                            )
-                          : Icon(size: 25, Icons.favorite_border),
-                      onTap: () {
-                        setState(() {
-                          widget.isFavorited = !widget.isFavorited;
-                        });
-                      },
+            ),
+            Positioned(
+                top: 10,
+                right: 10,
+                child: Container(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    child: Icon(
+                      size: 25,
+                      isFavorited ? Icons.favorite : Icons.favorite_border,
+                      color: isFavorited ? Colors.pink : null,
                     ),
-                  )),
-            ]),
-          );
-        });
+                    onTap: () {
+                      setState(() {
+                        favoriteVm.addFavorite(widget.product);
+                        isFavorited =
+                            favoriteVm.isProductFavorited(widget.product);
+                      });
+                    },
+                  ),
+                )),
+            Positioned(
+                bottom: 6,
+                right: 6,
+                child: Consumer<ProductVMS>(
+                  builder: (context, value, child) {
+                    return GestureDetector(
+                      onTap: () {
+                        CartItem cartItem =
+                            CartItem(product: widget.product, quantity: 1);
+                        print(widget.product.price! * 1);
+                        value.add(cartItem);
+
+                        DiaglogCustom(context);
+                      },
+                      child: Container(
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(offset: Offset(1, 3), blurRadius: 4)
+                            ],
+                            color: Color.fromARGB(255, 32, 74, 150),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(10),
+                            )),
+                      ),
+                    );
+                  },
+                )),
+          ]),
+        );
+      },
+    );
   }
+}
+
+void DiaglogCustom(BuildContext context) {
+  Dialog errorDialog = Dialog(
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0)), //this right here
+    child: Container(
+      height: 300.0,
+      width: 300.0,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            width: MediaQuery.sizeOf(context).width * 0.7,
+            child: Text(
+              "Thêm Giỏ Hàng Thành Công",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 16),
+            child: Image.network(
+                width: 150,
+                height: 150,
+                "https://cdn4.iconfinder.com/data/icons/e-commerce-and-shopping-3/500/cart-checked-512.png"),
+          ),
+          InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                alignment: Alignment.center,
+                width: MediaQuery.sizeOf(context).width * 0.7,
+                height: MediaQuery.sizeOf(context).height * 0.05,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Color.fromARGB(255, 32, 74, 150)),
+                child: Text(
+                  'Trở về',
+                  style: TextStyle(color: Colors.white, fontSize: 18.0),
+                ),
+              ))
+        ],
+      ),
+    ),
+  );
+  showDialog(context: context, builder: (BuildContext context) => errorDialog);
 }

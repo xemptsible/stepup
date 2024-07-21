@@ -68,102 +68,145 @@ class _CartListState extends State<CartList> {
 }
 
 Widget itemListView(BuildContext context, CartItem shoe, int index) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-    child: SizedBox(
-      height: 160,
-      child: Card.outlined(
-        elevation: 3,
-        shadowColor: Colors.black,
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: () {},
-          child: Row(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                color: Color.fromARGB(255, 234, 233, 233),
-                height: 160,
-                width: 120,
-                child: Image.asset(
-                  width: 100,
-                  urlimg + shoe.product.img.toString(),
-                  fit: BoxFit.contain,
+  return Consumer<ProductVMS>(
+    builder: (context, value, child) {
+      return Dismissible(
+        key: Key(shoe.product.name.toString()),
+        direction: DismissDirection.endToStart,
+        onDismissed: (direction) {
+          value.del(index);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                duration: Duration(milliseconds: 200),
+                content: Text(
+                    'Sản phẩm ${shoe.product.name} đã được bỏ ra khỏi giỏ hàng!')),
+          );
+        },
+        background: Container(
+            padding: EdgeInsets.only(right: 50),
+            alignment: Alignment.centerRight,
+            color: Colors.red,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'Remove from cart',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
-                // child: thumbnail,
-              ),
-              Expanded(
-                child: Container(
-                  // color: Colors.amber,
-                  child: Column(
-                    children: [
-                      Container(
-                        // color: Colors.amber,
-                        width: MediaQuery.sizeOf(context).width,
-                        height: MediaQuery.sizeOf(context).height * 0.135,
-                        // color: Colors.red,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8, left: 10),
-                          child: Shoe(
-                            name: shoe.product.name!,
-                            brand: shoe.product.brand.toString(),
-                            // discount: shoe.discount,
-                            price: double.parse(shoe.product.price.toString()),
-                          ),
-                        ),
+                SizedBox(
+                  width: 50,
+                ),
+                Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
+              ],
+            )),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: SizedBox(
+            height: 160,
+            child: Card.outlined(
+              elevation: 3,
+              shadowColor: Colors.black,
+              clipBehavior: Clip.antiAlias,
+              child: InkWell(
+                onTap: () {},
+                child: Row(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      color: Color.fromARGB(255, 234, 233, 233),
+                      height: 160,
+                      width: 120,
+                      child: Image.asset(
+                        width: 100,
+                        urlimg + shoe.product.img.toString(),
+                        fit: BoxFit.contain,
                       ),
-                      Container(
-                        height: 40,
-                        // color: Colors.amberAccent,
-                        child: Stack(
+                      // child: thumbnail,
+                    ),
+                    Expanded(
+                      child: Container(
+                        // color: Colors.amber,
+                        child: Column(
                           children: [
-                            Positioned(
-                                left: 10,
-                                child: Container(
-                                  width: MediaQuery.sizeOf(context).width * 0.3,
-                                  height:
-                                      MediaQuery.sizeOf(context).height * 0.05,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  // color: Color.fromARGB(255, 57, 82, 196),
-                                  child: QuantityWidget(
-                                    shoe: shoe.product,
-                                    quantity: shoe.quantity!,
-                                    index: index,
-                                  ),
-                                ))
+                            Container(
+                              // color: Colors.amber,
+                              width: MediaQuery.sizeOf(context).width,
+                              height: MediaQuery.sizeOf(context).height * 0.135,
+                              // color: Colors.red,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 8, left: 10),
+                                child: Shoe(
+                                  name: shoe.product.name!,
+                                  brand: shoe.product.brand.toString(),
+                                  // discount: shoe.discount,
+                                  price: double.parse(
+                                      shoe.product.price.toString()),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 40,
+                              // color: Colors.amberAccent,
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                      left: 10,
+                                      child: Container(
+                                        width:
+                                            MediaQuery.sizeOf(context).width *
+                                                0.3,
+                                        height:
+                                            MediaQuery.sizeOf(context).height *
+                                                0.05,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        // color: Color.fromARGB(255, 57, 82, 196),
+                                        child: QuantityWidget(
+                                          shoe: shoe.product,
+                                          quantity: shoe.quantity!,
+                                          index: index,
+                                        ),
+                                      ))
+                                ],
+                              ),
+                            )
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Consumer<ProductVMS>(
-                builder:
-                    (BuildContext context, ProductVMS value, Widget? child) {
-                  return InkWell(
-                    onTap: () {
-                      value.del(index);
-                    },
-                    child: Container(
-                      height: MediaQuery.sizeOf(context).height * 0.1,
-                      padding: EdgeInsets.only(top: 20),
-                      alignment: Alignment.topCenter,
-                      width: 50,
-                      child: Icon(
-                        Icons.more_vert_outlined,
-                        size: 30,
                       ),
                     ),
-                  );
-                },
-              )
-            ],
+                    // Consumer<ProductVMS>(
+                    //   builder:
+                    //       (BuildContext context, ProductVMS value, Widget? child) {
+                    //     return InkWell(
+                    //       onTap: () {
+                    //         value.del(index);
+                    //       },
+                    //       child: Container(
+                    //         height: MediaQuery.sizeOf(context).height * 0.1,
+                    //         padding: EdgeInsets.only(top: 20),
+                    //         alignment: Alignment.topCenter,
+                    //         width: 50,
+                    //         child: Icon(
+                    //           Icons.more_vert_outlined,
+                    //           size: 30,
+                    //         ),
+                    //       ),
+                    //     );
+                    //   },
+                    // )
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
-      ),
-    ),
+      );
+    },
   );
 }

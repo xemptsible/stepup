@@ -18,9 +18,9 @@ class _ExpanableTextState extends State<ExpandableText> {
   @override
   void initState() {
     super.initState();
-    if (widget.text.length > 500) {
-      firstHalf = widget.text.substring(0, 500);
-      secondHalf = widget.text.substring(500 + 1, widget.text.length);
+    if (widget.text.length > 150) {
+      firstHalf = widget.text.substring(0, 150);
+      secondHalf = widget.text.substring(150 + 1, widget.text.length);
     } else {
       firstHalf = widget.text;
       secondHalf = "";
