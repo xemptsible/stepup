@@ -23,7 +23,12 @@ class _CartListState extends State<CartList> {
   Future<List<CartItem>> _loadProData() async {
     SharePreHelper sharePreHelper = SharePreHelper();
     List<CartItem> lstPro = await sharePreHelper.getCartItemList() ?? [];
-    Provider.of<ProductVMS>(context, listen: false).ListFromShared_pre(lstPro);
+    for (var element in lstPro) {
+      print(element.product.name);
+    }
+    print(lstPro.length);
+    await Provider.of<ProductVMS>(context, listen: false)
+        .ListFromShared_pre(lstPro);
     return lstPro;
   }
 

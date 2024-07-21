@@ -20,7 +20,7 @@ class Order {
   Map<String, dynamic> toJson() {
     return {
       'NameUser': nameUser,
-      'Items': items.map((i) => i.toJson()).toList(),
+      'Items': items.map((i) => i.toJsonApi()).toList(),
     };
   }
 }

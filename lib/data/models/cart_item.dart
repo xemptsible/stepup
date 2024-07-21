@@ -37,9 +37,17 @@ class CartItem {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJsonApi() {
     return {
       "Shoe": product.toJsonApi(),
+      "Quantity": quantity,
+      "Size": size,
+    };
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "Shoe": product.toJson(),
       "Quantity": quantity,
       "Size": size,
     };
