@@ -35,6 +35,7 @@ class Product {
     size = json['Sizes'];
     brand = json['Brand'];
   }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

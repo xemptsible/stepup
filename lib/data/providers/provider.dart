@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stepup/data/api/api.dart';
+import 'package:stepup/data/models/account_model.dart';
+import 'package:stepup/data/models/order_model.dart';
 import 'package:stepup/data/shared_preferences/sharedPre.dart';
 import '../models/brand_model.dart';
 import '../models/product_model.dart';
@@ -60,5 +62,20 @@ class ReadData {
   Future<List<Product>> loadFavoritedProduct() async {
     List<Product> data = await SharePreHelper().getFavoriteItemList();
     return data;
+  }
+
+  Future<List<Order>> loadOrderData() async {
+    ApiService apiService = ApiService();
+    List<Order> orderList = await apiService.fetchOrder();
+    // for (var element in orderList) {
+    //   print(element.items[0].product.name);
+    // }
+    return orderList;
+  }
+
+  Future<List<Account>> loadAccountData() async {
+    ApiService apiService = ApiService();
+    List<Account> accountList = await apiService.fetchAccount();
+    return accountList;
   }
 }

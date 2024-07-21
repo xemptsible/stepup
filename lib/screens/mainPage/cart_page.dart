@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -5,8 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:stepup/data/api/api.dart';
+import 'package:stepup/data/models/account_model.dart';
 import 'package:stepup/data/models/cart_item.dart';
+import 'package:stepup/data/models/order_model.dart';
 import 'package:stepup/data/providers/product_vm.dart';
+import 'package:stepup/data/providers/provider.dart';
 import 'package:stepup/data/shared_preferences/sharedPre.dart';
 import 'package:stepup/screens/mainPage/checkout.dart';
 import 'package:stepup/widgets/cartList/cart_list.dart';
@@ -20,6 +25,7 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   List<CartItem> proList = [];
+  List<Order> orderList = [];
 
   Future<List<CartItem>> _loadProData() async {
     SharePreHelper sharePreHelper = SharePreHelper();
@@ -27,6 +33,13 @@ class _CartPageState extends State<CartPage> {
     Provider.of<ProductVMS>(context, listen: false).ListFromShared_pre(proList);
     Provider.of<ProductVMS>(context, listen: false).totalPrice();
     return proList;
+  }
+
+  Future<String> _loadOrderData() async {
+    ApiService apiService = ApiService();
+    orderList = await ReadData().loadOrderData();
+
+    return '';
   }
 
   @override

@@ -1,6 +1,10 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:stepup/app.dart';
+import 'package:stepup/data/models/account_model.dart';
+import 'package:stepup/data/providers/account_vm.dart';
 import 'package:stepup/screens/signIn_Up/register.dart';
 import 'package:stepup/utilities/const.dart';
 import 'package:stepup/global/functions.dart';
@@ -88,6 +92,8 @@ class _LoginState extends State<LoginScreen> {
                             if (_formKey.currentState!.validate()) {
                               xuLyDangNhap(
                                   _emailController, _passwordController);
+                              Provider.of<AccountVMS>(context, listen: false)
+                                  .setCurrentAcc(_emailController.text);
                             }
                           },
                           child: const Text("Đăng nhập"),
@@ -144,6 +150,12 @@ class _LoginState extends State<LoginScreen> {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email.text, password: password.text);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const App(),
+        ),
+      );
     } on FirebaseAuthException catch (e) {
       logger.e('Failed with error code: ${e.code}');
       logger.e(e.message);

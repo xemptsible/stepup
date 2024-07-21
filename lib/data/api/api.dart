@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:stepup/data/models/account_model.dart';
 import 'package:stepup/data/models/brand_model.dart';
+import 'package:stepup/data/models/order_model.dart';
 import '../models/product_model.dart';
 
 class ApiService {
   final String baseUrl = "https://api-giay-lemon.vercel.app";
+  final String baseUrlTest = "https://api-giay-order.vercel.app";
   Future<List<Product>> fetchProducts() async {
     try {
       Dio api = Dio();
@@ -121,6 +126,108 @@ class ApiService {
     } catch (e) {
       print('Error: $e');
       throw e;
+    }
+  }
+
+  Future<List<Order>> fetchOrder() async {
+    try {
+      Dio api = Dio();
+      Response response = await api.get(baseUrlTest + "/order");
+
+      List<dynamic> data = await response.data as List;
+
+      return data.map((json) {
+        return Order.fromJson(json);
+      }).toList();
+    } catch (e) {
+      print('Error: $e');
+      return [];
+    }
+  }
+
+  Future<void> postOrder(Order order) async {
+    try {
+      Dio api = Dio();
+      Response response = await api.post(
+        baseUrlTest + "/order",
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        data: order.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        print('Order posted successfully');
+      } else {
+        print('Failed to post order. Status code: ${response.statusCode}');
+        print('Response body: ${response.data}');
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+    }
+  }
+
+  Future<List<Account>> fetchAccount() async {
+    try {
+      Dio api = Dio();
+      Response response = await api.get(baseUrlTest + "/account");
+
+      List<dynamic> data = await response.data as List;
+
+      return data.map((json) {
+        print(json);
+        return Account.fromJsonApi(json);
+      }).toList();
+    } catch (e) {
+      print('Error: $e');
+      return [];
+    }
+  }
+
+  Future<Account> getAccount(String email) async {
+    try {
+      Dio api = Dio();
+      Response response = await api.get(baseUrlTest + "/account/" + email);
+      return Account.fromJsonApi(response.data);
+    } catch (e) {
+      print('Error: $e');
+      return Account();
+    }
+  }
+
+  Future<void> postAccount(Account account) async {
+    try {
+      Dio api = Dio();
+
+      Response response = await api.post(
+        baseUrlTest + "/account",
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        data: account.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        print('Order posted successfully');
+      } else {
+        print('Failed to post order. Status code: ${response.statusCode}');
+        print('Response body: ${response.data}');
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+    }
+  }
+
+  Future updateAccount(Account account) async {
+    try {
+      Dio api = Dio();
+      final response = await api.put(
+        baseUrlTest + '/account/${account.Email}',
+        data: account.toJson(),
+      );
+      print("Update thành công");
+    } catch (e) {
+      throw Exception('Failed to update account');
     }
   }
 }

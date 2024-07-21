@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/app.dart';
+import 'package:stepup/data/api/api.dart';
+import 'package:stepup/data/models/cart_item.dart';
+import 'package:stepup/data/models/order_model.dart';
 import 'package:stepup/data/models/product_model.dart';
 import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/data/providers/provider.dart';
@@ -139,6 +142,14 @@ class _CheckoutState extends State<Checkout> {
               // color: Colors.amber,
               child: InkWell(
                 onTap: () {
+                  List<CartItem> orderItem =
+                      Provider.of<ProductVMS>(context, listen: false).lst;
+                  Order order = Order(nameUser: "khoi", items: orderItem);
+                  print(order.toJson());
+
+                  ApiService apiService = ApiService();
+                  apiService.postOrder(order);
+
                   Provider.of<ProductVMS>(context, listen: false).clear();
                   DiaglogCustom(context);
                 },

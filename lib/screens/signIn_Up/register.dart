@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:stepup/data/api/api.dart';
+import 'package:stepup/data/models/account_model.dart';
+import 'package:stepup/screens/mainPage/account.dart';
+import 'package:stepup/screens/signIn_Up/login.dart';
 import 'package:stepup/utilities/const.dart';
 import 'package:stepup/global/functions.dart';
 
@@ -151,6 +155,19 @@ class _RegisterState extends State<RegisterScreen> {
         email: tecEmail.text,
         password: tecPassword.text,
       );
+      //post account lên api
+      Account newAcc = Account(
+          Email: _emailController.text,
+          Password: _passwordController.text,
+          UserName: _usernameController.text);
+      ApiService apiService = ApiService();
+      await apiService.postAccount(newAcc);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ),
+      );
     } on FirebaseAuthException catch (e) {
       logger.e('Failed with error code: ${e.code}');
       logger.e(e.message);
@@ -159,7 +176,8 @@ class _RegisterState extends State<RegisterScreen> {
       } else if (e.code == 'email-already-in-use') {
         errorDialogDangKy('Tài khoản đã tồn tại');
       } else if (e.code == 'network-request-failed') {
-        errorDialogDangKy('Bị mất hoặc không có kết nối mạng khi đang tạo tài khoản');
+        errorDialogDangKy(
+            'Bị mất hoặc không có kết nối mạng khi đang tạo tài khoản');
       } else {
         errorDialogDangKy(e.message);
       }

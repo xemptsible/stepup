@@ -1,6 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/app.dart';
+import 'package:stepup/data/providers/account_vm.dart';
 import 'package:stepup/data/providers/favorite_vm.dart';
 import 'package:stepup/data/providers/filter_vm.dart';
 import 'package:stepup/data/providers/product_vm.dart';
@@ -13,12 +15,13 @@ import 'package:stepup/screens/signIn_Up/login.dart';
 import 'package:stepup/screens/mainPage/product_detail_page.dart';
 import 'package:stepup/screens/signIn_Up/register.dart';
 import 'package:stepup/screens/orderTracking.dart';
-import 'package:stepup/testPage.dart';
 import 'package:stepup/utilities/const.dart';
 // import 'utilities/font.dart';
 import 'global/theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -44,6 +47,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(create: (context) => FilterVMS()),
         ChangeNotifierProvider(create: (context) => FavoriteVm()),
+        ChangeNotifierProvider(create: (context) => AccountVMS()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -57,7 +61,7 @@ class MyApp extends StatelessWidget {
                 ),
           },
           theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-          home: const App()),
+          home: const LoginScreen()),
     );
   }
 }

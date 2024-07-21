@@ -23,17 +23,25 @@ class CartItem {
 
   factory CartItem.fromJson(Map<String, dynamic> json) {
     return CartItem(
-      product: Product.fromJson(json["product"]),
-      quantity: json['quantity'],
-      size: json['size'] ?? 40,
+      product: Product.fromJson(json["Shoe"]),
+      quantity: json['Quantity'],
+      size: json['Size'] ?? 40,
+    );
+  }
+
+  factory CartItem.fromJsonApi(Map<String, dynamic> json) {
+    return CartItem(
+      product: Product.fromJsonApi(json["Shoe"]),
+      quantity: json['Quantity'],
+      size: json['Size'] ?? 40,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "product": product.toJson(),
-      "quantity": quantity,
-      "size": size,
+      "Shoe": product.toJson(),
+      "Quantity": quantity,
+      "Size": size,
     };
   }
 }
