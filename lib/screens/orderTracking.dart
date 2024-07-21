@@ -15,7 +15,12 @@ class OrderTracking extends StatefulWidget {
 }
 
 class _OrderTrackingState extends State<OrderTracking> {
-  Shoe newShoe = Shoe(name: "Giay", price: 10000, brand: "brand");
+  Shoe newShoe = Shoe(
+    name: "Giay",
+    price: 10000,
+    brand: "brand",
+    size: 30,
+  );
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

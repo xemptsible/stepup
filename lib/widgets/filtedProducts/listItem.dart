@@ -44,7 +44,7 @@ class ProductListItem extends StatelessWidget {
                             name: shoe.name,
                             brand: shoe.brand,
                             // discount: shoe.discount,
-                            price: shoe.price,
+                            price: shoe.price, size: shoe.size,
                           ),
                         ),
                       ),

@@ -7,7 +7,7 @@ generateShoe(int amount) {
       name: 'Shoe ${index++}',
       price: index * 1000,
       // discount: 0,
-      brand: 'Nike',
+      brand: 'Nike', size: 10,
     ),
   );
   return shoes;

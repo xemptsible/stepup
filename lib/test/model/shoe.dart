@@ -6,13 +6,15 @@ class Shoe extends StatelessWidget {
   final double price;
   // final double discount;
   final String brand;
+  final int size;
 
   const Shoe(
       {super.key,
       required this.name,
       required this.price,
       // required this.discount,
-      required this.brand});
+      required this.brand,
+      required this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +27,13 @@ class Shoe extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
         ),
+        Expanded(
+          child: Text(
+            brand,
+          ),
+        ),
         Text(
-          brand,
+          "Size: " + size.toString(),
         ),
         Text(
           '${NumberFormat('###,###.###').format(price)}đ',

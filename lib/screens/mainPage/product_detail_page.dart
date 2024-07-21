@@ -26,6 +26,7 @@ class _ProductDetailState extends State<ProductDetail> {
   bool isSelected = false;
   int selectedIndex = 1;
   int quantity = 1;
+  int size = 40;
 
   increasePro() {
     quantity++;
@@ -210,6 +211,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                   onTap: () {
                                     setState(() {
                                       selectedIndex = index;
+                                      size = product.size![index];
+                                      print("Size " + size.toString());
                                     });
                                   },
                                   child: Container(
@@ -273,7 +276,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                     Color.fromARGB(255, 26, 28, 127)),
                             onPressed: () {
                               CartItem cartItem = CartItem(
-                                  product: product, quantity: quantity);
+                                  product: product,
+                                  quantity: quantity,
+                                  size: size);
                               print(product.price! * quantity);
                               value.add(cartItem);
 

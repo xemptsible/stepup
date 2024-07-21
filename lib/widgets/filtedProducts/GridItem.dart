@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/data/providers/product_vm.dart';
+import 'package:stepup/data/shared_preferences/sharedPre.dart';
 
 import '../../data/models/cart_item.dart';
 import '../../data/models/product_model.dart';
@@ -20,7 +21,24 @@ class GridItem extends StatefulWidget {
   State<GridItem> createState() => _GridItemState();
 }
 
+List<CartItem> proList = [];
+
 class _GridItemState extends State<GridItem> {
+  Future<List<CartItem>> _loadProData() async {
+    SharePreHelper sharePreHelper = SharePreHelper();
+    proList = await sharePreHelper.getCartItemList() as List<CartItem>;
+    Provider.of<ProductVMS>(context, listen: false).ListFromShared_pre(proList);
+    Provider.of<ProductVMS>(context, listen: false).totalPrice();
+    return proList;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadProData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<FavoriteVm>(
@@ -123,7 +141,9 @@ class _GridItemState extends State<GridItem> {
                       onTap: () {
                         CartItem cartItem =
                             CartItem(product: widget.product, quantity: 1);
-                        print(widget.product.price! * 1);
+                        print(widget.product.name! +
+                            " / " +
+                            widget.product.price.toString());
                         value.add(cartItem);
 
                         DiaglogCustom(context);

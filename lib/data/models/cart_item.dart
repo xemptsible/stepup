@@ -3,8 +3,9 @@ import 'package:stepup/data/models/product_model.dart';
 class CartItem {
   final Product product;
   int? quantity;
+  int? size;
 
-  CartItem({required this.product, this.quantity});
+  CartItem({required this.product, this.quantity, this.size});
 
   setIncreaseQuantity(int i) {
     this.quantity = quantity! + i;
@@ -24,6 +25,7 @@ class CartItem {
     return CartItem(
       product: Product.fromJson(json["product"]),
       quantity: json['quantity'],
+      size: json['size'] ?? 40,
     );
   }
 
@@ -31,6 +33,7 @@ class CartItem {
     return {
       "product": product.toJson(),
       "quantity": quantity,
+      "size": size,
     };
   }
 }

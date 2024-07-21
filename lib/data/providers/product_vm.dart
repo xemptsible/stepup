@@ -31,6 +31,7 @@ class ProductVMS with ChangeNotifier {
   add(CartItem pro) async {
     lst.add(pro);
     int tongGiaSoLuong = pro.product.price! * pro.quantity!;
+    print("proSize: " + pro.size.toString());
     //Thêm vào share_pre
 
     await sharePreHelper.saveCartList(lst);
@@ -72,7 +73,6 @@ class ProductVMS with ChangeNotifier {
     await sharePreHelper.getCartItemList() as List<CartItem>;
 
     for (var element in lst) {
-      print(element.product.price);
       total = total + (element.product.price! * element.quantity!);
     }
   }
@@ -84,13 +84,15 @@ class ProductVMS with ChangeNotifier {
       total = 0;
     }
     await sharePreHelper.saveCartList(lst);
-    print(index);
+    print("Đã xóa");
     notifyListeners();
   }
 
-  clear() {
+  clear() async {
     total = 0;
     lst.clear();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.remove('cart');
     notifyListeners();
   }
 

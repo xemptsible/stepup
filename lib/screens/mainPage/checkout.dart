@@ -36,37 +36,39 @@ class _CheckoutState extends State<Checkout> {
 
   Widget _inputField(
       String label, TextEditingController _textController, TextInputType type) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //label
-          Container(
-            margin: EdgeInsets.only(left: 24, bottom: 8),
-            child: Text(
-              label,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ),
-
-          //textfield
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
-            padding: EdgeInsets.only(left: 16),
-            decoration: BoxDecoration(
-              border: Border.all(
-                  width: 1, color: Color.fromARGB(255, 110, 108, 108)),
-              borderRadius: BorderRadius.all(
-                Radius.circular(5),
+    return SingleChildScrollView(
+      child: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //label
+            Container(
+              margin: EdgeInsets.only(left: 24, bottom: 8),
+              child: Text(
+                label,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
-            child: TextField(
-              controller: _textController,
-              keyboardType: type,
-              decoration: InputDecoration(border: InputBorder.none),
+
+            //textfield
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.only(left: 16),
+              decoration: BoxDecoration(
+                border: Border.all(
+                    width: 1, color: Color.fromARGB(255, 110, 108, 108)),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5),
+                ),
+              ),
+              child: TextField(
+                controller: _textController,
+                keyboardType: type,
+                decoration: InputDecoration(border: InputBorder.none),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -137,7 +139,7 @@ class _CheckoutState extends State<Checkout> {
               // color: Colors.amber,
               child: InkWell(
                 onTap: () {
-                  // value.clear();
+                  Provider.of<ProductVMS>(context, listen: false).clear();
                   DiaglogCustom(context);
                 },
                 child: Container(
@@ -190,13 +192,12 @@ Widget itemList(BuildContext context, Product shoe, int index) {
             children: [
               Container(
                 alignment: Alignment.center,
-                color: Color.fromARGB(255, 234, 233, 233),
-                height: 160,
+                // color: Color.fromARGB(255, 234, 233, 233),
                 width: 120,
                 child: Image.asset(
                   width: 100,
                   urlimg + shoe.img.toString(),
-                  fit: BoxFit.contain,
+                  fit: BoxFit.cover,
                 ),
                 // child: thumbnail,
               ),

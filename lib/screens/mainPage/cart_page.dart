@@ -41,6 +41,7 @@ class _CartPageState extends State<CartPage> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             actions: [
               Expanded(
                 flex: 5,
