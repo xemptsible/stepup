@@ -22,7 +22,6 @@ class CartList extends StatefulWidget {
 class _CartListState extends State<CartList> {
   Future<List<CartItem>> _loadProData() async {
     SharePreHelper sharePreHelper = SharePreHelper();
-    print("Cart list");
     List<CartItem> lstPro = await sharePreHelper.getCartItemList() ?? [];
     Provider.of<ProductVMS>(context, listen: false).ListFromShared_pre(lstPro);
     return lstPro;
