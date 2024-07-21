@@ -38,9 +38,23 @@ class _FilterWidgetState extends State<FilterWidget> {
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                  "Lọc theo hãng",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                Container(
+                  padding: EdgeInsets.only(right: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Lọc theo hãng",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        "",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 5,
@@ -49,9 +63,30 @@ class _FilterWidgetState extends State<FilterWidget> {
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                  "Lọc theo size",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                Container(
+                  padding: EdgeInsets.only(right: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Lọc theo size",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          filterVMS.removeSizeFilter();
+                        },
+                        child: Text(
+                          "Bỏ lọc",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color.fromARGB(255, 40, 40, 134)),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 5,
@@ -97,9 +132,30 @@ class _FilterWidgetState extends State<FilterWidget> {
                 SizedBox(
                   height: 15,
                 ),
-                Text(
-                  "Giá",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                Container(
+                  padding: EdgeInsets.only(right: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Giá",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          filterVMS.removePriceFilter();
+                        },
+                        child: Text(
+                          "Bỏ lọc",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color.fromARGB(255, 40, 40, 134)),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 10,

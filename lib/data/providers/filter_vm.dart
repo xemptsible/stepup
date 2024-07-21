@@ -33,6 +33,16 @@ class FilterVMS with ChangeNotifier {
     notifyListeners();
   }
 
+  removeSizeFilter() {
+    size = 0;
+    notifyListeners();
+  }
+
+  removePriceFilter() {
+    price = RangeValues(0, 0);
+    notifyListeners();
+  }
+
   select(String brand, int index) {
     this.brandSelectedIndex = index;
     this.brand = brand;

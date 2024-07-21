@@ -25,7 +25,7 @@ class _PriceSliderState extends State<PriceSlider> {
           labels: RangeLabels(
               "${NumberFormat("###,###.###").format(values.start.round())}đ",
               "${NumberFormat("###,###.###").format(values.end.round())}đ"),
-          min: 10000,
+          min: 0,
           max: 10000000,
           onChanged: (values) => setState(() {
             this.values = values;

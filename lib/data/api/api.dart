@@ -60,14 +60,26 @@ class ApiService {
       // Lấy danh sách sản phẩm từ API
       List<Product> proList = await fetchProducts();
 
-      if (text != "" &&
-          brand == "" &&
-          size == 0 &&
-          price == RangeValues(0.0, 10.0)) {
+      if (text != "") {
         return proList
             .where(
                 (test) => test.name!.toLowerCase().contains(text.toLowerCase()))
             .toList();
+      } else if (brand == "Tất cả") {
+        return proList.where((product) {
+          bool matchesBrand =
+              brand == null || brand == "Tất cả" || product.brand == brand;
+          bool matchesPrice = price == null ||
+              price == RangeValues(0, 0) ||
+              (product.price != null &&
+                  product.price! >= price.start &&
+                  product.price! <= price.end);
+          bool matchesSize = size == null ||
+              size == 0 ||
+              (product.size != null && product.size!.contains(size));
+
+          return matchesBrand && matchesPrice && matchesSize;
+        }).toList();
       }
       // Lọc danh sách sản phẩm dựa trên từ khóa tìm kiếm và các tiêu chí khác
       List<Product> searchList = proList.where((product) {
