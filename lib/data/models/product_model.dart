@@ -47,4 +47,16 @@ class Product {
       'brand': brand,
     };
   }
+
+  Map<String, dynamic> toJsonApi() {
+    return {
+      '_id': id,
+      'NameShoe': name,
+      'Price': price,
+      'Description': des,
+      'Image': img,
+      'Sizes': size,
+      'Brand': brand,
+    };
+  }
 }

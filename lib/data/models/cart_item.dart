@@ -39,7 +39,7 @@ class CartItem {
 
   Map<String, dynamic> toJson() {
     return {
-      "Shoe": product.toJson(),
+      "Shoe": product.toJsonApi(),
       "Quantity": quantity,
       "Size": size,
     };
