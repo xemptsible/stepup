@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:stepup/data/providers/product_vm.dart';
 
+import '../../data/models/cart_item.dart';
 import '../../data/models/product_model.dart';
 import '../../data/providers/favorite_vm.dart';
 import '../../utilities/const.dart';
@@ -112,9 +114,91 @@ class _GridItemState extends State<GridItem> {
                     },
                   ),
                 )),
+            Positioned(
+                bottom: 6,
+                right: 6,
+                child: Consumer<ProductVMS>(
+                  builder: (context, value, child) {
+                    return GestureDetector(
+                      onTap: () {
+                        CartItem cartItem =
+                            CartItem(product: widget.product, quantity: 1);
+                        print(widget.product.price! * 1);
+                        value.add(cartItem);
+
+                        DiaglogCustom(context);
+                      },
+                      child: Container(
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(offset: Offset(1, 3), blurRadius: 4)
+                            ],
+                            color: Color.fromARGB(255, 32, 74, 150),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(10),
+                            )),
+                      ),
+                    );
+                  },
+                )),
           ]),
         );
       },
     );
   }
+}
+
+void DiaglogCustom(BuildContext context) {
+  Dialog errorDialog = Dialog(
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0)), //this right here
+    child: Container(
+      height: 300.0,
+      width: 300.0,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            width: MediaQuery.sizeOf(context).width * 0.7,
+            child: Text(
+              "Thêm Giỏ Hàng Thành Công",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 16),
+            child: Image.network(
+                width: 150,
+                height: 150,
+                "https://cdn4.iconfinder.com/data/icons/e-commerce-and-shopping-3/500/cart-checked-512.png"),
+          ),
+          InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                alignment: Alignment.center,
+                width: MediaQuery.sizeOf(context).width * 0.7,
+                height: MediaQuery.sizeOf(context).height * 0.05,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Color.fromARGB(255, 32, 74, 150)),
+                child: Text(
+                  'Trở về',
+                  style: TextStyle(color: Colors.white, fontSize: 18.0),
+                ),
+              ))
+        ],
+      ),
+    ),
+  );
+  showDialog(context: context, builder: (BuildContext context) => errorDialog);
 }
