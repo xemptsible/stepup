@@ -100,7 +100,7 @@ class _ProductListState extends State<ProductList> {
                               final isFavorited = proFavoritedLst
                                   .any((e) => e.id == product.id);
 
-                              return InkWell(
+                              return GestureDetector(
                                 onTap: () {
                                   Navigator.pushNamed(context, "/productDetail",
                                       arguments: product);

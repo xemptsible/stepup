@@ -56,7 +56,38 @@ class _CartListState extends State<CartList> {
             child: ListView.builder(
               itemCount: value.lst.length,
               itemBuilder: (context, index) {
-                return itemListView(context, value.lst[index], index);
+                return Dismissible(
+                    direction: DismissDirection.endToStart,
+                    background: Container(
+                        padding: EdgeInsets.only(right: 50),
+                        alignment: Alignment.centerRight,
+                        color: Colors.red,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              'Remove from cart',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            SizedBox(
+                              width: 50,
+                            ),
+                            Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                            ),
+                          ],
+                        )),
+                    onDismissed: (direction) {
+                      setState(() {
+                        value.del(index);
+                      });
+                    },
+                    key: Key(
+                      value.lst[index].product.name.toString(),
+                    ),
+                    child: itemListView(context, value.lst[index], index));
               },
             ),
           );
@@ -138,26 +169,6 @@ Widget itemListView(BuildContext context, CartItem shoe, int index) {
                   ),
                 ),
               ),
-              Consumer<ProductVMS>(
-                builder:
-                    (BuildContext context, ProductVMS value, Widget? child) {
-                  return InkWell(
-                    onTap: () {
-                      value.del(index);
-                    },
-                    child: Container(
-                      height: MediaQuery.sizeOf(context).height * 0.1,
-                      padding: EdgeInsets.only(top: 20),
-                      alignment: Alignment.topCenter,
-                      width: 50,
-                      child: Icon(
-                        Icons.more_vert_outlined,
-                        size: 30,
-                      ),
-                    ),
-                  );
-                },
-              )
             ],
           ),
         ),
