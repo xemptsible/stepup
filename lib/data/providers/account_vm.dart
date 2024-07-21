@@ -5,7 +5,7 @@ import 'package:stepup/data/models/account_model.dart';
 class AccountVMS with ChangeNotifier {
   Account? currentAcc;
 
-  setCurrentAcc(String email) async {
+  Future setCurrentAcc(String email) async {
     ApiService apiService = ApiService();
     currentAcc = await apiService.getAccount(email);
     notifyListeners();

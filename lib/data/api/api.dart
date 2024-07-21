@@ -188,7 +188,10 @@ class ApiService {
     try {
       Dio api = Dio();
       Response response = await api.get(baseUrlTest + "/account/" + email);
-      return Account.fromJsonApi(response.data);
+
+      Account curAcc = Account.fromJsonApi(response.data);
+      print("Current User: " + curAcc.Email!);
+      return curAcc;
     } catch (e) {
       print('Error: $e');
       return Account();

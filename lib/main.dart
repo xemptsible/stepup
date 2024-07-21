@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
                 ),
           },
           theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-          home: const App()),
+          home: const LoginScreen()),
     );
   }
 }

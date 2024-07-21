@@ -34,7 +34,7 @@ class _InfoPageState extends State<InfoPage> {
         _diaChiController.text = account.Address ?? '';
         _ngaySinhController.text =
             account.BirthDay != null ? account.BirthDay.toString() : '';
-        _soDienThoaiController.text = account.PhoneNumber ?? '';
+        _soDienThoaiController.text = account.PhoneNumber.toString() ?? '';
       }
     });
   }
@@ -154,8 +154,8 @@ class _InfoPageState extends State<InfoPage> {
                             value.currentAcc
                                 ?.setUserName(_hoTenController.text);
                             value.currentAcc?.setAdress(_diaChiController.text);
-                            value.currentAcc
-                                ?.setPhoneNumber(_soDienThoaiController.text);
+                            value.currentAcc?.setPhoneNumber(
+                                int.parse((_soDienThoaiController.text)));
 
                             value.updateCurrentAcc();
                             DiaglogCustom(context);

@@ -8,6 +8,7 @@ import 'package:stepup/data/api/api.dart';
 import 'package:stepup/data/models/cart_item.dart';
 import 'package:stepup/data/models/order_model.dart';
 import 'package:stepup/data/models/product_model.dart';
+import 'package:stepup/data/providers/account_vm.dart';
 import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/data/providers/provider.dart';
 import 'package:stepup/test/model/shoe.dart';
@@ -23,6 +24,9 @@ class Checkout extends StatefulWidget {
 }
 
 class _CheckoutState extends State<Checkout> {
+  TextEditingController _hoTenController = TextEditingController();
+  TextEditingController _diaChiController = TextEditingController();
+  TextEditingController _soDienThoaiController = TextEditingController();
   List<Product> proList = [];
   Future<String> _loadProData() async {
     proList = await ReadData().loadProductData();
@@ -35,6 +39,15 @@ class _CheckoutState extends State<Checkout> {
     // TODO: implement initState
     super.initState();
     _loadProData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final accountVMS = Provider.of<AccountVMS>(context, listen: false);
+      final account = accountVMS.currentAcc;
+      if (account != null) {
+        _hoTenController.text = account.UserName ?? '';
+        _diaChiController.text = account.Address ?? '';
+        _soDienThoaiController.text = account.PhoneNumber.toString() ?? '';
+      }
+    });
   }
 
   Widget _inputField(
@@ -78,12 +91,6 @@ class _CheckoutState extends State<Checkout> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _tenKhachHangController =
-        TextEditingController(text: "Nguyễn Thị Hà");
-    TextEditingController _diaChiCtroller =
-        TextEditingController(text: "172 Ngọc Cữu Vân");
-    TextEditingController _sdtController =
-        TextEditingController(text: "0878659234");
     return Scaffold(
       appBar: AppBar(
         title: Text("Thanh Toán"),
@@ -91,10 +98,10 @@ class _CheckoutState extends State<Checkout> {
       body: Container(
         child: Column(
           children: [
+            _inputField("Tên Khách Hàng", _hoTenController, TextInputType.text),
+            _inputField("Địa chỉ", _diaChiController, TextInputType.text),
             _inputField(
-                "Tên Khách Hàng", _tenKhachHangController, TextInputType.text),
-            _inputField("Địa chỉ", _diaChiCtroller, TextInputType.text),
-            _inputField("Số điện thoại", _sdtController, TextInputType.number),
+                "Số điện thoại", _soDienThoaiController, TextInputType.number),
             Consumer<ProductVMS>(builder: (context, value, child) {
               return Container(
                   margin: EdgeInsets.only(left: 16, top: 16),
@@ -137,50 +144,57 @@ class _CheckoutState extends State<Checkout> {
                 );
               },
             ),
-            Container(
-              margin: EdgeInsets.only(bottom: 30),
-              // color: Colors.amber,
-              child: InkWell(
-                onTap: () {
-                  List<CartItem> orderItem =
-                      Provider.of<ProductVMS>(context, listen: false).lst;
-                  Order order = Order(nameUser: "khoi", items: orderItem);
-                  print(order.toJson());
+            Consumer<AccountVMS>(
+              builder: (BuildContext context, AccountVMS value, Widget? child) {
+                return Container(
+                  margin: EdgeInsets.only(bottom: 30),
+                  // color: Colors.amber,
+                  child: InkWell(
+                    onTap: () {
+                      List<CartItem> orderItem =
+                          Provider.of<ProductVMS>(context, listen: false).lst;
+                      Order order = Order(
+                          nameUser: value.currentAcc!.UserName!,
+                          items: orderItem,
+                          email: value.currentAcc!.Email!);
+                      print(order.toJson());
 
-                  ApiService apiService = ApiService();
-                  apiService.postOrder(order);
+                      ApiService apiService = ApiService();
+                      apiService.postOrder(order);
 
-                  Provider.of<ProductVMS>(context, listen: false).clear();
-                  DiaglogCustom(context);
-                },
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Color.fromARGB(255, 26, 28, 127)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.credit_card_outlined,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Thanh toán",
-                        style: TextStyle(
+                      Provider.of<ProductVMS>(context, listen: false).clear();
+                      DiaglogCustom(context);
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Color.fromARGB(255, 26, 28, 127)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.credit_card_outlined,
                             color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                      )
-                    ],
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Thanh toán",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
+                );
+              },
+            )
           ],
         ),
       ),

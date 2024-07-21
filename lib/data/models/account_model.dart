@@ -4,7 +4,7 @@ class Account {
   String? Password;
   String? UserName;
   String? Address;
-  String? PhoneNumber;
+  int? PhoneNumber;
   DateTime? BirthDay;
   String? Image;
 
@@ -25,7 +25,7 @@ class Account {
     this.Address = address;
   }
 
-  setPhoneNumber(String phone) {
+  setPhoneNumber(int phone) {
     this.PhoneNumber = phone;
   }
 
