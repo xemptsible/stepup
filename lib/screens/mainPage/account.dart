@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:stepup/data/providers/account_vm.dart';
 import 'package:stepup/main.dart';
 import 'package:stepup/screens/mainPage/Info.dart';
+import 'package:stepup/screens/mainPage/order_history.dart';
 import 'package:stepup/screens/orderTracking.dart';
 
 class AccountPage extends StatefulWidget {
@@ -93,7 +94,7 @@ class _AccountPageState extends State<AccountPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const OrderTracking(),
+                            builder: (context) => const OrderHistory(),
                           ),
                         );
                       },

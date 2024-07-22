@@ -20,25 +20,6 @@ class CartList extends StatefulWidget {
 }
 
 class _CartListState extends State<CartList> {
-  Future<List<CartItem>> _loadProData() async {
-    SharePreHelper sharePreHelper = SharePreHelper();
-    List<CartItem> lstPro = await sharePreHelper.getCartItemList() ?? [];
-    for (var element in lstPro) {
-      print(element.product.name);
-    }
-    print(lstPro.length);
-    await Provider.of<ProductVMS>(context, listen: false)
-        .ListFromShared_pre(lstPro);
-    return lstPro;
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _loadProData();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<ProductVMS>(

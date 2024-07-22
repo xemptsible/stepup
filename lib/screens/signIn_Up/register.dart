@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:stepup/data/api/api.dart';
 import 'package:stepup/data/models/account_model.dart';
-import 'package:stepup/screens/mainPage/account.dart';
+
 import 'package:stepup/screens/signIn_Up/login.dart';
 import 'package:stepup/utilities/const.dart';
 import 'package:stepup/global/functions.dart';

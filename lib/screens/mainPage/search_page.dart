@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/data/providers/filter_vm.dart';
 import 'package:stepup/data/providers/product_vm.dart';
-import 'package:stepup/widgets/filtedProducts/product_list.dart';
+
 import 'package:stepup/widgets/filter/filter_widget.dart';
 
 import '../../data/models/product_model.dart';
@@ -74,8 +73,8 @@ class _SearchPageState extends State<SearchPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 10),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -128,8 +127,7 @@ class _SearchPageState extends State<SearchPage> {
                           });
                         },
                         child: Container(
-                            margin:
-                                const EdgeInsets.symmetric(horizontal: 10),
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
                             child: const Icon(Icons.filter_alt_outlined)),
                       ),
                     ],
@@ -157,8 +155,8 @@ class _SearchPageState extends State<SearchPage> {
                     return FutureBuilder(
                       future: isSearch(_searchController.text, myType.brand,
                               myType.size, myType.price)
-                          ? _loadProData(searchText, myType.brand,
-                              myType.price, myType.size)
+                          ? _loadProData(searchText, myType.brand, myType.price,
+                              myType.size)
                           : _loadAllProData(),
                       builder: (BuildContext context, snapshot) {
                         return isLoading
@@ -169,16 +167,15 @@ class _SearchPageState extends State<SearchPage> {
                             : SingleChildScrollView(
                                 child: Container(
                                   color: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
                                   child: Column(
                                     children: [
                                       Container(
                                         margin: const EdgeInsets.only(top: 5),
-                                        height: MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.7,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.7,
                                         child: Container(
                                             child: Consumer<ProductVMS>(
                                           builder: (context, myType, child) {
@@ -200,8 +197,7 @@ class _SearchPageState extends State<SearchPage> {
                                                             context,
                                                             "/productDetail",
                                                             arguments:
-                                                                proList[
-                                                                    index]);
+                                                                proList[index]);
                                                       },
                                                       child: GridItem(
                                                           product:

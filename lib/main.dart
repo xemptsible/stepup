@@ -9,6 +9,7 @@ import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/global/functions.dart';
 import 'package:stepup/screens/mainPage/account.dart';
 import 'package:stepup/screens/mainPage/Info.dart';
+import 'package:stepup/screens/mainPage/order_history.dart';
 import 'package:stepup/screens/mainPage/search_page.dart';
 import 'package:stepup/screens/payment.dart';
 import 'package:stepup/screens/signIn_Up/login.dart';

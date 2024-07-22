@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/data/api/api.dart';
 import 'package:stepup/data/models/account_model.dart';
@@ -22,6 +23,21 @@ class _InfoPageState extends State<InfoPage> {
   TextEditingController _diaChiController = TextEditingController();
   TextEditingController _ngaySinhController = TextEditingController();
   TextEditingController _soDienThoaiController = TextEditingController();
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (pickedDate != null) {
+      setState(() {
+        _ngaySinhController.text = DateFormat('dd-MM-yyyy').format(pickedDate);
+      });
+    }
+  }
+
   late Account? currentAcc;
   @override
   void initState() {
@@ -71,6 +87,12 @@ class _InfoPageState extends State<InfoPage> {
                   controller: _textController,
                   keyboardType: type,
                   decoration: InputDecoration(border: InputBorder.none),
+                  readOnly: type == TextInputType.datetime,
+                  onTap: type == TextInputType.datetime
+                      ? () {
+                          _selectDate(context);
+                        }
+                      : null,
                 ),
               ),
             ],
