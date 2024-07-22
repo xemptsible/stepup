@@ -148,13 +148,21 @@ class _LoginState extends State<LoginScreen> {
   Future<void> xuLyDangNhap(
       TextEditingController email, TextEditingController password) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email.text, password: password.text);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const App(),
-        ),
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: email.text, password: password.text)
+          .then(
+        (value) {
+          if (value.user != null) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const App(),
+              ),
+              ModalRoute.withName('/homePage'),
+            );
+          }
+        },
       );
     } on FirebaseAuthException catch (e) {
       logger.e('Failed with error code: ${e.code}');

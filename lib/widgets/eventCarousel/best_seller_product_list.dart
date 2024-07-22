@@ -15,7 +15,7 @@ class _BestSellerProductListState extends State<BestSellerProductList> {
   var items = [
     {
       'index': 1,
-      'color': Color.fromARGB(255, 201, 18, 5),
+      'color': const Color.fromARGB(255, 201, 18, 5),
       'title': 'Chỉ trong hôm nay',
       'detail': 'Giảm giá 25% !',
       'textColor': Colors.white,
@@ -69,9 +69,9 @@ class _BestSellerProductListState extends State<BestSellerProductList> {
               height: MediaQuery.of(context).size.height * 0.2,
               viewportFraction: 0.8,
               autoPlay: true,
-              autoPlayAnimationDuration: Duration(milliseconds: 1500)),
+              autoPlayAnimationDuration: const Duration(milliseconds: 1500)),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         DotsIndicator(

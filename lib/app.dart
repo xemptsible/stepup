@@ -40,114 +40,63 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final screens = [
-      HomePage(),
-      FavoritePage(),
-      CartPage(),
-      AccountPage(),
+      const HomePage(),
+      const FavoritePage(),
+      const CartPage(),
+      const AccountPage(),
     ];
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
       },
-      child: SafeArea(
-        child: Scaffold(
-            body: PageView(
-              controller: _pageController,
-              onPageChanged: (index) {
-                setState(() {
-                  if (index == selectedIndex) {
-                    selected = false;
-                  }
-                  if (!selected) selectedIndex = index;
-                });
-              },
-              children: screens,
+      child: Scaffold(
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() {
+              if (index == selectedIndex) {
+                selected = false;
+              }
+              if (!selected) selectedIndex = index;
+            });
+          },
+          children: screens,
+        ),
+        bottomNavigationBar: NavigationBar(
+          onDestinationSelected: (value) {
+            setState(() {
+              selected = true;
+              selectedIndex = value;
+              _pageController.animateToPage(value,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut);
+            });
+          },
+          selectedIndex: selectedIndex,
+          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+          destinations: const <NavigationDestination>[
+            NavigationDestination(
+              selectedIcon: Icon(Icons.home),
+              icon: Icon(Icons.home_outlined),
+              label: 'Trang chủ',
             ),
-            bottomNavigationBar: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              onTap: (value) {
-                setState(() {
-                  selected = true;
-                  selectedIndex = value;
-                  _pageController.animateToPage(value,
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.easeIn);
-                });
-              },
-              showSelectedLabels: true,
-              currentIndex: selectedIndex,
-              items: [
-                BottomNavigationBarItem(
-                  activeIcon: Container(
-                    width: 60,
-                    height: 30,
-                    child: Icon(
-                      Icons.home,
-                      color: Colors.white,
-                    ),
-                    decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 26, 28, 127),
-                        borderRadius: BorderRadius.circular(20)),
-                  ),
-                  icon: Icon(
-                    Icons.home_outlined,
-                    color: Colors.black,
-                  ),
-                  label: "Trang chủ",
-                ),
-                BottomNavigationBarItem(
-                    activeIcon: Container(
-                      width: 60,
-                      height: 30,
-                      child: Icon(
-                        Icons.favorite,
-                        color: Colors.white,
-                      ),
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 26, 28, 127),
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
-                    icon: Icon(
-                      Icons.favorite_border_outlined,
-                      color: Colors.black,
-                    ),
-                    label: "Yêu thích"),
-                BottomNavigationBarItem(
-                    activeIcon: Container(
-                      width: 60,
-                      height: 30,
-                      child: Icon(
-                        Icons.shopping_cart,
-                        color: Colors.white,
-                      ),
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 26, 28, 127),
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
-                    icon: Icon(
-                      Icons.shopping_cart_outlined,
-                      color: Colors.black,
-                    ),
-                    label: "Giỏ hàng"),
-                BottomNavigationBarItem(
-                    activeIcon: Container(
-                      width: 60,
-                      height: 30,
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                      ),
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 26, 28, 127),
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
-                    icon: Icon(
-                      Icons.person_outline,
-                      color: Colors.black,
-                    ),
-                    label: "Tài khoản"),
-              ],
-            )),
+            NavigationDestination(
+              selectedIcon: Icon(Icons.favorite),
+              icon: Icon(Icons.favorite_border),
+              label: 'Yêu thích',
+            ),
+            NavigationDestination(
+              selectedIcon: Icon(Icons.shopping_cart),
+              icon: Icon(Icons.shopping_cart_outlined),
+              label: 'Giỏ hàng',
+            ),
+            NavigationDestination(
+              selectedIcon: Icon(Icons.person),
+              icon: Icon(Icons.person_outline),
+              label: 'Tài khoản',
+            ),
+          ],
+        ),
       ),
     );
   }

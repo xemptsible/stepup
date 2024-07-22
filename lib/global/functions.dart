@@ -88,7 +88,7 @@ Future<void> kiemTraTaiKhoan() async {
       } else if (user.isAnonymous) {
         logger.d("Signed in with temporary account.");
       } else {
-        logger.d('User is signed in!');
+        logger.d('Signed in');
       }
     },
   );

@@ -35,7 +35,7 @@ class _BrandBarState extends State<BrandBar> {
     return FutureBuilder(
         future: loadBrandList(),
         builder: (context, snapshot) {
-          return Container(
+          return SizedBox(
             height: 35,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,

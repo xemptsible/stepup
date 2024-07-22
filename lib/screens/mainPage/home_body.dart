@@ -23,108 +23,63 @@ class _HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<BrandsVM>(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'StepUP',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, "/search");
+            },
+            icon: const Icon(Icons.search),
+          ),
+        ],
+      ),
+      body: ChangeNotifierProvider<BrandsVM>(
         create: (context) => BrandsVM(),
         child: ChangeNotifierProvider<ProductVMS>(
           create: (context) => ProductVMS(),
           child: SingleChildScrollView(
             child: Container(
-              color: Colors.white,
               alignment: Alignment.topCenter,
               child: Column(
                 children: [
-                  Container(
-                    height: 70,
+                  const BrandSelectPro(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 8),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          flex: 5,
-                          child: Container(
-                            margin: EdgeInsets.only(left: 20),
-                            child: Text(
-                              "StepUP",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 24),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                            flex: 2,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamed(context, "/search");
-                                  },
-                                  child: Container(
-                                    child: Icon(
-                                      Icons.search,
-                                      size: MediaQuery.of(context).size.height *
-                                          0.033,
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () async {
-                                    ApiService api = ApiService();
-                                    await api.fetchProducts();
-                                  },
-                                  child: Container(
-                                    child: Icon(
-                                      Icons.notifications,
-                                      size: MediaQuery.of(context).size.height *
-                                          0.033,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )),
-                      ],
-                    ),
-                  ),
-                  BrandSelectPro(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 10),
-                        child: Text(
+                        const Text(
                           "Phổ biến",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                      ),
-                      SizedBox(
-                        width: 100,
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SearchPage(
-                                        isSearch: false,
-                                      )),
-                            );
-                          },
-                          child: Text("Xem tất cả")),
-                    ],
+                        TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SearchPage(
+                                          isSearch: false,
+                                        )),
+                              );
+                            },
+                            child: const Text("Xem tất cả")),
+                      ],
+                    ),
                   ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: BrandBar(),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    child: ProductList(),
-                  )
+                  const BrandBar(),
+                  const ProductList()
                 ],
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

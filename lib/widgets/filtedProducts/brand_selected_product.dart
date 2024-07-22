@@ -15,29 +15,19 @@ class _BrandSelectProState extends State<BrandSelectPro> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 10),
-              child: Text(
-                "Tin mới",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-              ),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16, 8, 0, 8),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Tin mới",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(
-              width: 100,
-            ),
-            TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, "/productsPage");
-                },
-                child: Text("")),
-          ],
+          ),
         ),
-        Container(
+        SizedBox(
           height: MediaQuery.of(context).size.height * 0.24,
-          child: BestSellerProductList(),
+          child: const BestSellerProductList(),
         ),
       ],
     );

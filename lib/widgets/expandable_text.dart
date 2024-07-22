@@ -36,8 +36,8 @@ class _ExpanableTextState extends State<ExpandableText> {
               children: [
                 Text(
                   maxLines: hiddenText ? 3 : null,
-                  hiddenText ? (firstHalf + "...") : (firstHalf + secondHalf),
-                  style: TextStyle(color: Colors.grey),
+                  hiddenText ? ("$firstHalf...") : (firstHalf + secondHalf),
+                  style: const TextStyle(color: Colors.grey),
                 ),
                 InkWell(
                   onTap: () {
@@ -49,25 +49,25 @@ class _ExpanableTextState extends State<ExpandableText> {
                   child: Row(
                     children: hiddenText
                         ? [
-                            Text(
-                              'Show more',
+                            const Text(
+                              'Thêm',
                               style: TextStyle(
                                 color: Colors.blue,
                               ),
                             ),
-                            Icon(
+                            const Icon(
                               Icons.arrow_drop_down,
                               color: Colors.blue,
                             ),
                           ]
                         : [
-                            Text(
-                              'Hide',
+                            const Text(
+                              'Giấu',
                               style: TextStyle(
                                 color: Colors.blue,
                               ),
                             ),
-                            Icon(
+                            const Icon(
                               Icons.arrow_drop_up_outlined,
                               color: Colors.blue,
                             ),

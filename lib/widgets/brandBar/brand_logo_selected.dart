@@ -8,11 +8,11 @@ class BrandLogoSelected extends StatefulWidget {
   final bool isSelected;
 
   const BrandLogoSelected({
-    Key? key,
+    super.key,
     required this.logoImg,
     required this.brandName,
     this.isSelected = false,
-  }) : super(key: key);
+  });
 
   @override
   _BrandLogoSelectedState createState() => _BrandLogoSelectedState();
@@ -23,7 +23,6 @@ class _BrandLogoSelectedState extends State<BrandLogoSelected> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _textVisible = true;
   }
@@ -32,25 +31,25 @@ class _BrandLogoSelectedState extends State<BrandLogoSelected> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.bottomCenter,
-      margin: EdgeInsets.only(right: 5, left: 3),
-      padding: EdgeInsets.only(left: 5, right: 10),
+      margin: const EdgeInsets.only(right: 5, left: 3),
+      padding: const EdgeInsets.only(left: 5, right: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: widget.isSelected ? null : Border.all(),
         color:
-            widget.isSelected ? Color.fromARGB(255, 26, 28, 127) : Colors.white,
+            widget.isSelected ? const Color.fromARGB(255, 26, 28, 127) : Colors.white,
       ),
       child: Row(
         children: [
           widget.brandName == "Tất cả"
               ? Container()
               : Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
                     color: widget.isSelected
-                        ? Color.fromARGB(255, 26, 28, 127)
+                        ? const Color.fromARGB(255, 26, 28, 127)
                         : Colors.white,
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -63,7 +62,7 @@ class _BrandLogoSelectedState extends State<BrandLogoSelected> {
                   ),
                 ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             alignment: Alignment.center,
             child: Text(
               textAlign: TextAlign.center,

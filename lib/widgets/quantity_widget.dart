@@ -9,7 +9,7 @@ class QuantityWidget extends StatefulWidget {
   final Product shoe;
   final int index;
   final int quantity;
-  QuantityWidget(
+  const QuantityWidget(
       {super.key,
       required this.shoe,
       required this.index,
@@ -22,7 +22,6 @@ class QuantityWidget extends StatefulWidget {
 class _QuantityWidgetState extends State<QuantityWidget> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -39,18 +38,18 @@ class _QuantityWidgetState extends State<QuantityWidget> {
                 });
               },
               child: Container(
-                  padding: EdgeInsets.all(3),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(3),
+                  decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Color.fromARGB(255, 26, 28, 127)),
-                  margin: EdgeInsets.symmetric(horizontal: 5),
-                  child: Icon(
+
+                  child: const Icon(
                     Icons.remove,
                     color: Colors.white,
                   )),
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 10),
               // child: Text(value.lst[widget.index].quantity.toString()),
               child: Text(widget.quantity.toString()),
             ),
@@ -61,12 +60,12 @@ class _QuantityWidgetState extends State<QuantityWidget> {
                 });
               },
               child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Color.fromARGB(255, 26, 28, 127)),
-                  margin: EdgeInsets.symmetric(horizontal: 5),
-                  padding: EdgeInsets.all(3),
-                  child: Icon(
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  padding: const EdgeInsets.all(3),
+                  child: const Icon(
                     Icons.add,
                     color: Colors.white,
                   )),

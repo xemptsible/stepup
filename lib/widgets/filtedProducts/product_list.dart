@@ -54,7 +54,7 @@ class _ProductListState extends State<ProductList> {
 
   bool isFavorited(Product pro) {
     var checkFavList = proFavoritedLst.where((e) => e.id == pro.id);
-    if (checkFavList.length > 0) {
+    if (checkFavList.isNotEmpty) {
       return true;
     }
     return false;
@@ -62,7 +62,7 @@ class _ProductListState extends State<ProductList> {
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     _loadProDataUseBrand("Nike");
   }
@@ -77,18 +77,17 @@ class _ProductListState extends State<ProductList> {
               : _loadProDataUseBrand(brandVM.selectedBrand),
           builder: (BuildContext context, snapshot) {
             return isLoading
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : SingleChildScrollView(
                     child: Container(
                       color: Colors.white,
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      margin: EdgeInsets.only(top: 5),
-                      height: MediaQuery.of(context).size.height * 0.36,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      height: MediaQuery.of(context).size.height * 0.4,
                       child: Consumer<FavoriteVm>(
                         builder: (context, productVM, child) {
                           return GridView.builder(
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                                const SliverGridDelegateWithFixedCrossAxisCount(
                               childAspectRatio: 0.8,
                               crossAxisCount: 2,
                               mainAxisSpacing: 10,
@@ -105,7 +104,6 @@ class _ProductListState extends State<ProductList> {
                                   Navigator.pushNamed(context, "/productDetail",
                                       arguments: product);
                                 },
-                                onLongPress: () => print('a'),
                                 child: Center(
                                     child: GridItem(
                                   product: product,
