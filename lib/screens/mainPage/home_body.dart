@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
           'StepUP',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        forceMaterialTransparency: true,
         actions: [
           IconButton(
             onPressed: () {

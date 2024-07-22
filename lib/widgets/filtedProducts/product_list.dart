@@ -78,39 +78,42 @@ class _ProductListState extends State<ProductList> {
           builder: (BuildContext context, snapshot) {
             return isLoading
                 ? const Center(child: CircularProgressIndicator())
-                : Consumer<FavoriteVm>(
-                  builder: (context, productVM, child) {
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      physics: const ScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 0.8,
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 1,
-                      ),
-                      itemCount: proList.length,
-                      itemBuilder: (context, index) {
-                        final product = proList[index];
-                        final isFavorited =
-                            proFavoritedLst.any((e) => e.id == product.id);
-                
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, "/productDetail",
-                                arguments: product);
-                          },
-                          child: Center(
-                            child: GridItem(
-                              product: product,
-                            ),
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Consumer<FavoriteVm>(
+                      builder: (context, productVM, child) {
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const ScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 0.8,
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 1,
                           ),
+                          itemCount: proList.length,
+                          itemBuilder: (context, index) {
+                            final product = proList[index];
+                            final isFavorited =
+                                proFavoritedLst.any((e) => e.id == product.id);
+
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, "/productDetail",
+                                    arguments: product);
+                              },
+                              child: Center(
+                                child: GridItem(
+                                  product: product,
+                                ),
+                              ),
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                );
+                    ),
+                  );
           },
         );
       },
