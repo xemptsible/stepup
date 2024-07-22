@@ -51,45 +51,50 @@ class _CartListState extends State<CartList> {
             ),
           );
         } else {
-          return Container(
-            height: MediaQuery.of(context).size.height * 0.6,
-            child: ListView.builder(
-              itemCount: value.lst.length,
-              itemBuilder: (context, index) {
-                return Dismissible(
-                    direction: DismissDirection.endToStart,
-                    background: Container(
-                        padding: EdgeInsets.only(right: 50),
-                        alignment: Alignment.centerRight,
-                        color: Colors.red,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              'Remove from cart',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                            SizedBox(
-                              width: 50,
-                            ),
-                            Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                            ),
-                          ],
-                        )),
-                    onDismissed: (direction) {
-                      setState(() {
-                        value.del(index);
-                      });
-                    },
-                    key: Key(
-                      value.lst[index].product.name.toString(),
-                    ),
-                    child: itemListView(context, value.lst[index], index));
-              },
-            ),
+          return FutureBuilder(
+            future: _loadProData(),
+            builder: (context, snapshot) {
+              return Container(
+                height: MediaQuery.of(context).size.height * 0.6,
+                child: ListView.builder(
+                  itemCount: value.lst.length,
+                  itemBuilder: (context, index) {
+                    return Dismissible(
+                        direction: DismissDirection.endToStart,
+                        background: Container(
+                            padding: EdgeInsets.only(right: 50),
+                            alignment: Alignment.centerRight,
+                            color: Colors.red,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'Remove from cart',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                                SizedBox(
+                                  width: 50,
+                                ),
+                                Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            )),
+                        onDismissed: (direction) {
+                          setState(() {
+                            value.del(index);
+                          });
+                        },
+                        key: Key(
+                          value.lst[index].product.name.toString(),
+                        ),
+                        child: itemListView(context, value.lst[index], index));
+                  },
+                ),
+              );
+            },
           );
         }
       },

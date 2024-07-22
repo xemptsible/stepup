@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/app.dart';
-import 'package:stepup/data/models/account_model.dart';
+
 import 'package:stepup/data/providers/account_vm.dart';
 import 'package:stepup/screens/signIn_Up/register.dart';
 import 'package:stepup/utilities/const.dart';

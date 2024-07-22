@@ -3,11 +3,15 @@ import 'package:stepup/data/models/cart_item.dart';
 class Order {
   final String email;
   final String nameUser;
+  final int price;
+  final DateTime dateOrder;
   final List<CartItem> items;
 
   Order({
     required this.email,
     required this.nameUser,
+    required this.price,
+    required this.dateOrder,
     required this.items,
   });
 
@@ -15,8 +19,11 @@ class Order {
     return Order(
       email: json['Email'],
       nameUser: json['NameUser'],
-      items:
-          (json['Items'] as List).map((i) => CartItem.fromJsonApi(i)).toList(),
+      price: json['Price'],
+      dateOrder: DateTime.parse(json['DateOrder'] as String),
+      items: (json['Items'] as List<dynamic>)
+          .map((item) => CartItem.fromJsonApi(item))
+          .toList(),
     );
   }
 
@@ -24,6 +31,8 @@ class Order {
     return {
       'Email': email,
       'NameUser': nameUser,
+      'Price': price,
+      'DateOrder': dateOrder.toIso8601String(),
       'Items': items.map((i) => i.toJsonApi()).toList(),
     };
   }

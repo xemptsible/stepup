@@ -145,6 +145,23 @@ class ApiService {
     }
   }
 
+  Future<List<Order>> getOrderByEmail(String email) async {
+    try {
+      Dio api = Dio();
+      Response response = await api.get(baseUrlTest + "/order/" + email);
+
+      List<dynamic> data = await response.data;
+
+      return data.map((json) {
+        print(json);
+        return Order.fromJson(json);
+      }).toList();
+    } catch (e) {
+      print('Error: $e');
+      return [];
+    }
+  }
+
   Future<void> postOrder(Order order) async {
     try {
       Dio api = Dio();

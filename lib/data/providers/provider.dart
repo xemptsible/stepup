@@ -73,6 +73,17 @@ class ReadData {
     return orderList;
   }
 
+  Future<List<Order>> loadOrderDataUser(String email) async {
+    ApiService apiService = ApiService();
+
+    List<Order> orderList = await apiService.getOrderByEmail(email);
+
+    // for (var element in orderList) {
+    //   print(element.items[0].product.name);
+    // }
+    return orderList;
+  }
+
   Future<List<Account>> loadAccountData() async {
     ApiService apiService = ApiService();
     List<Account> accountList = await apiService.fetchAccount();
