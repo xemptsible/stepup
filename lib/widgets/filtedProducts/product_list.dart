@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:stepup/data/api/api.dart';
 import 'package:stepup/data/providers/brand_vm.dart';
 import 'package:stepup/data/providers/favorite_vm.dart';
@@ -62,7 +63,6 @@ class _ProductListState extends State<ProductList> {
 
   @override
   void initState() {
-
     super.initState();
     _loadProDataUseBrand("Nike");
   }
@@ -77,44 +77,40 @@ class _ProductListState extends State<ProductList> {
               : _loadProDataUseBrand(brandVM.selectedBrand),
           builder: (BuildContext context, snapshot) {
             return isLoading
-                ? const CircularProgressIndicator()
-                : SingleChildScrollView(
-                    child: Container(
-                      color: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      child: Consumer<FavoriteVm>(
-                        builder: (context, productVM, child) {
-                          return GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              childAspectRatio: 0.8,
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 1,
-                            ),
-                            itemCount: proList.length,
-                            itemBuilder: (context, index) {
-                              final product = proList[index];
-                              final isFavorited = proFavoritedLst
-                                  .any((e) => e.id == product.id);
-
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(context, "/productDetail",
-                                      arguments: product);
-                                },
-                                child: Center(
-                                    child: GridItem(
-                                  product: product,
-                                )),
-                              );
-                            },
-                          );
-                        },
+                ? const Center(child: CircularProgressIndicator())
+                : Consumer<FavoriteVm>(
+                  builder: (context, productVM, child) {
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const ScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 0.8,
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 1,
                       ),
-                    ),
-                  );
+                      itemCount: proList.length,
+                      itemBuilder: (context, index) {
+                        final product = proList[index];
+                        final isFavorited =
+                            proFavoritedLst.any((e) => e.id == product.id);
+                
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, "/productDetail",
+                                arguments: product);
+                          },
+                          child: Center(
+                            child: GridItem(
+                              product: product,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                );
           },
         );
       },

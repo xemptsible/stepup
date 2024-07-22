@@ -13,9 +13,9 @@ class BrandSelectPro extends StatefulWidget {
 class _BrandSelectProState extends State<BrandSelectPro> {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.fromLTRB(16, 8, 0, 8),
           child: Align(
             alignment: Alignment.centerLeft,
@@ -25,10 +25,7 @@ class _BrandSelectProState extends State<BrandSelectPro> {
             ),
           ),
         ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.24,
-          child: const BestSellerProductList(),
-        ),
+        BestSellerProductList(),
       ],
     );
   }

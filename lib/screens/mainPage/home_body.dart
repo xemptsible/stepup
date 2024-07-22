@@ -38,45 +38,45 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: ChangeNotifierProvider<BrandsVM>(
-        create: (context) => BrandsVM(),
-        child: ChangeNotifierProvider<ProductVMS>(
-          create: (context) => ProductVMS(),
-          child: SingleChildScrollView(
-            child: Container(
-              alignment: Alignment.topCenter,
-              child: Column(
-                children: [
-                  const BrandSelectPro(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Phổ biến",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SearchPage(
-                                          isSearch: false,
-                                        )),
-                              );
-                            },
-                            child: const Text("Xem tất cả")),
-                      ],
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<BrandsVM>(create: (context) => BrandsVM()),
+          ChangeNotifierProvider<ProductVMS>(create: (context) => ProductVMS()),
+        ],
+        child: Container(
+          alignment: Alignment.topCenter,
+          child: Column(
+            children: [
+              const BrandSelectPro(),
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Phổ biến",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  const BrandBar(),
-                  const ProductList()
-                ],
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SearchPage(
+                                      isSearch: false,
+                                    )),
+                          );
+                        },
+                        child: const Text("Xem tất cả")),
+                  ],
+                ),
               ),
-            ),
+              const BrandBar(),
+              const Expanded(
+                child: ProductList(),
+              ),
+            ],
           ),
         ),
       ),

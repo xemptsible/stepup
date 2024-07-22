@@ -12,7 +12,7 @@ class BestSellerProductList extends StatefulWidget {
 
 class _BestSellerProductListState extends State<BestSellerProductList> {
   int selectedIndex = 0;
-  var items = [
+  final items = [
     {
       'index': 1,
       'color': const Color.fromARGB(255, 201, 18, 5),
@@ -65,24 +65,24 @@ class _BestSellerProductListState extends State<BestSellerProductList> {
                 });
               },
               enableInfiniteScroll: false,
-              enlargeCenterPage: false,
+              enlargeCenterPage: true,
               height: MediaQuery.of(context).size.height * 0.2,
               viewportFraction: 0.8,
               autoPlay: true,
               autoPlayAnimationDuration: const Duration(milliseconds: 1500)),
         ),
-        const SizedBox(
-          height: 10,
-        ),
-        DotsIndicator(
-          dotsCount: items.length,
-          position: selectedIndex,
-          decorator: DotsDecorator(
-            size: const Size.square(9.0),
-            activeSize: const Size(25.0, 9.0),
-            activeColor: Colors.black,
-            activeShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0)),
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: DotsIndicator(
+            dotsCount: items.length,
+            position: selectedIndex,
+            decorator: DotsDecorator(
+              size: const Size.square(9.0),
+              activeSize: const Size(25.0, 9.0),
+              activeColor: Colors.black,
+              activeShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0)),
+            ),
           ),
         )
       ],
