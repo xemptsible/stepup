@@ -26,13 +26,11 @@ class _CartListState extends State<CartList> {
       builder: (context, value, child) {
         if (value.lst.isEmpty) {
           return Center(
-            child: Container(
-              child: Image.network(
-                  "https://newnet.vn/themes/newnet/assets/img/empty-cart.png"),
-            ),
+            child: Image.network(
+                "https://newnet.vn/themes/newnet/assets/img/empty-cart.png"),
           );
         } else {
-          return Container(
+          return SizedBox(
             height: MediaQuery.of(context).size.height * 0.6,
             child: ListView.builder(
               itemCount: value.lst.length,
@@ -40,26 +38,26 @@ class _CartListState extends State<CartList> {
                 return Dismissible(
                     direction: DismissDirection.endToStart,
                     background: Container(
-                        padding: EdgeInsets.only(right: 50),
-                        alignment: Alignment.centerRight,
-                        color: Colors.red,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              'Remove from cart',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                            SizedBox(
-                              width: 50,
-                            ),
-                            Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                            ),
-                          ],
-                        )),
+                      padding: const EdgeInsets.only(right: 50),
+                      alignment: Alignment.centerRight,
+                      color: Colors.red,
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Remove from cart',
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          SizedBox(
+                            width: 50,
+                          ),
+                          Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
                     onDismissed: (direction) {
                       setState(() {
                         value.del(index);
@@ -106,7 +104,7 @@ Widget itemListView(BuildContext context, CartItem shoe, int index) {
                   // color: Colors.amber,
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                         // color: Colors.amber,
                         width: MediaQuery.sizeOf(context).width,
                         height: MediaQuery.sizeOf(context).height * 0.135,
@@ -122,7 +120,7 @@ Widget itemListView(BuildContext context, CartItem shoe, int index) {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: 40,
                         // color: Colors.amberAccent,
                         child: Stack(
