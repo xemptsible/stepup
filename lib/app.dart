@@ -16,13 +16,35 @@ class App extends StatefulWidget {
 class _AppState extends State<App> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   int selectedIndex = 0;
-  bool selected = false;
+  late bool selected;
+
+  final screens = [
+    const HomePage(),
+    const FavoritePage(),
+    const CartPage(),
+    const AccountPage(),
+  ];
+
+  _loadTitle(int index) {
+    switch (index) {
+      case 0:
+        return 'StepUP';
+      case 1:
+        return 'Yêu thích';
+      case 2:
+        return 'Giỏ hàng';
+      case 3:
+        return '';
+      default:
+        return 'Error!';
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
-    bool selected = false;
+    selected = false;
   }
 
   TextEditingController searchController = TextEditingController();
@@ -37,17 +59,28 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final screens = [
-      const HomePage(),
-      const FavoritePage(),
-      const CartPage(),
-      const AccountPage(),
-    ];
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        appBar: selectedIndex != 3
+            ? AppBar(
+                title: Text(
+                  _loadTitle(selectedIndex),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                forceMaterialTransparency: true,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/search");
+                    },
+                    icon: const Icon(Icons.search),
+                  ),
+                ],
+              )
+            : null,
         body: PageView(
           controller: _pageController,
           onPageChanged: (index) {

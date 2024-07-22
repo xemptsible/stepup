@@ -23,62 +23,44 @@ class _HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'StepUP',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        forceMaterialTransparency: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, "/search");
-            },
-            icon: const Icon(Icons.search),
-          ),
-        ],
-      ),
-      body: MultiProvider(
-        providers: [
-          ChangeNotifierProvider<BrandsVM>(create: (context) => BrandsVM()),
-          ChangeNotifierProvider<ProductVMS>(create: (context) => ProductVMS()),
-        ],
-        child: Container(
-          alignment: Alignment.topCenter,
-          child: Column(
-            children: [
-              const BrandSelectPro(),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Phổ biến",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SearchPage(
-                                      isSearch: false,
-                                    )),
-                          );
-                        },
-                        child: const Text("Xem tất cả")),
-                  ],
-                ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<BrandsVM>(create: (context) => BrandsVM()),
+        ChangeNotifierProvider<ProductVMS>(create: (context) => ProductVMS()),
+      ],
+      child: Container(
+        alignment: Alignment.topCenter,
+        child: Column(
+          children: [
+            const BrandSelectPro(),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Phổ biến",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SearchPage(
+                                    isSearch: false,
+                                  )),
+                        );
+                      },
+                      child: const Text("Xem tất cả")),
+                ],
               ),
-              const BrandBar(),
-              const Expanded(
-                child: ProductList(),
-              ),
-            ],
-          ),
+            ),
+            const BrandBar(),
+            const Expanded(
+              child: ProductList(),
+            ),
+          ],
         ),
       ),
     );
