@@ -104,6 +104,7 @@ class _ProductDetailState extends State<ProductDetail> {
             Center(
               child: Container(
                 decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.grey),
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20)),
                 margin: EdgeInsets.symmetric(horizontal: 15),

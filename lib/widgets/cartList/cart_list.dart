@@ -9,7 +9,6 @@ import 'package:stepup/data/providers/quantity_vm.dart';
 import 'package:stepup/data/shared_preferences/sharedPre.dart';
 import 'package:stepup/test/model/shoe.dart';
 import 'package:stepup/utilities/const.dart';
-import 'package:stepup/widgets/cartList/cart_item_detail.dart';
 import 'package:stepup/widgets/quantity_widget.dart';
 
 class CartList extends StatefulWidget {
@@ -20,57 +19,80 @@ class CartList extends StatefulWidget {
 }
 
 class _CartListState extends State<CartList> {
+  Future<List<CartItem>> _loadCartData() async {
+    SharePreHelper sharePreHelper = SharePreHelper();
+    List<CartItem> lstPro = await sharePreHelper.getCartItemList().then(
+          (cart) {
+            return Provider.of<ProductVMS>(context, listen: false)
+                .ListFromShared_pre(cart);
+          },
+        ) ??
+        [];
+    for (var element in lstPro) {
+      print(element.product.name);
+    }
+    print(lstPro.length);
+
+    return lstPro;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProductVMS>(
-      builder: (context, value, child) {
-        if (value.lst.isEmpty) {
-          return Center(
-            child: Image.network(
-                "https://newnet.vn/themes/newnet/assets/img/empty-cart.png"),
-          );
-        } else {
-          return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.6,
-            child: ListView.builder(
-              itemCount: value.lst.length,
-              itemBuilder: (context, index) {
-                return Dismissible(
-                    direction: DismissDirection.endToStart,
-                    background: Container(
-                      padding: const EdgeInsets.only(right: 50),
-                      alignment: Alignment.centerRight,
-                      color: Colors.red,
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            'Remove from cart',
-                            style: TextStyle(color: Colors.white, fontSize: 20),
+    return FutureBuilder(
+      future: _loadCartData(),
+      builder: (BuildContext context, snapshot) {
+        return Consumer<ProductVMS>(
+          builder: (context, value, child) {
+            if (value.lst.isEmpty) {
+              return Center(
+                child: Image.network(
+                    "https://newnet.vn/themes/newnet/assets/img/empty-cart.png"),
+              );
+            } else {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.6,
+                child: ListView.builder(
+                  itemCount: value.lst.length,
+                  itemBuilder: (context, index) {
+                    return Dismissible(
+                        direction: DismissDirection.endToStart,
+                        background: Container(
+                          padding: const EdgeInsets.only(right: 50),
+                          alignment: Alignment.centerRight,
+                          color: Colors.red,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                'Remove from cart',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                              SizedBox(
+                                width: 50,
+                              ),
+                              Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            width: 50,
-                          ),
-                          Icon(
-                            Icons.delete,
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
-                    ),
-                    onDismissed: (direction) {
-                      setState(() {
-                        value.del(index);
-                      });
-                    },
-                    key: Key(
-                      value.lst[index].product.name.toString(),
-                    ),
-                    child: itemListView(context, value.lst[index], index));
-              },
-            ),
-          );
-        }
+                        ),
+                        onDismissed: (direction) {
+                          setState(() {
+                            value.del(index);
+                          });
+                        },
+                        key: Key(
+                          value.lst[index].product.name.toString(),
+                        ),
+                        child: itemListView(context, value.lst[index], index));
+                  },
+                ),
+              );
+            }
+          },
+        );
       },
     );
   }

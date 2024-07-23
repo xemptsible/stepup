@@ -7,6 +7,7 @@ import 'package:stepup/data/providers/account_vm.dart';
 import 'package:stepup/main.dart';
 import 'package:stepup/screens/mainPage/Info.dart';
 import 'package:stepup/screens/mainPage/order_history.dart';
+import 'package:stepup/screens/mainPage/guide_page.dart';
 import 'package:stepup/screens/orderTracking.dart';
 import 'package:stepup/utilities/const.dart';
 
@@ -122,7 +123,12 @@ class _AccountPageState extends State<AccountPage> {
                     ),
 
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GuidePage()));
+                      },
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 16),
                         child: Row(
@@ -130,12 +136,12 @@ class _AccountPageState extends State<AccountPage> {
                             Container(
                               margin: EdgeInsets.symmetric(horizontal: 16),
                               child: Icon(
-                                Icons.settings_outlined,
+                                Icons.bookmark_border,
                                 size: 32,
                               ),
                             ),
                             Text(
-                              "Cài Đặt",
+                              "Hướng dẫn",
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
                             )

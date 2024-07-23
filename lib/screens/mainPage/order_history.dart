@@ -30,19 +30,18 @@ class OrderHistoryState extends State<OrderHistory> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _loadOrderData();
+    orders = _loadOrderData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Lịch Sử Đơn Hàng"),
+        title: const Text("Lịch sử đơn hàng"),
       ),
       body: FutureBuilder(
-        future: _loadOrderData(),
+        future: orders,
         builder: (context, snapshot) {
           return isLoading
               ? const Center(child: CircularProgressIndicator())
@@ -109,36 +108,34 @@ Widget ListItem(int index, Order order, BuildContext context) {
       );
     },
     child: Card(
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(width: 1),
           borderRadius: BorderRadius.circular(10),
         ),
         height: 90,
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              order.nameUser!,
+              order.nameUser,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
             ),
             Text(
-              "Ngày Mua: " + orderDate,
-              style: TextStyle(
+              "Ngày Mua: $orderDate",
+              style: const TextStyle(
                 fontSize: 16,
               ),
             ),
-            Container(
-              child: Text(
-                'Tổng Giá Đơn Hàng: ${NumberFormat('###,###.###').format(order.price)}đ',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+            Text(
+              'Tổng Giá Đơn Hàng: ${NumberFormat('###,###.###').format(order.price)}đ',
+              style: const TextStyle(
+                fontSize: 16,
               ),
             ),
           ],
