@@ -25,10 +25,10 @@ class InfoPage extends StatefulWidget {
 
 class _InfoPageState extends State<InfoPage> {
   DateTime? birthDay;
-  TextEditingController _hoTenController = TextEditingController();
-  TextEditingController _diaChiController = TextEditingController();
-  TextEditingController _ngaySinhController = TextEditingController();
-  TextEditingController _soDienThoaiController = TextEditingController();
+  final TextEditingController _hoTenController = TextEditingController();
+  final TextEditingController _diaChiController = TextEditingController();
+  final TextEditingController _ngaySinhController = TextEditingController();
+  final TextEditingController _soDienThoaiController = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -77,48 +77,71 @@ class _InfoPageState extends State<InfoPage> {
     });
   }
 
+  Widget _inputField2(
+      String label, TextEditingController textController, TextInputType type) {
+    return Consumer<AccountVMS>(
+      builder: (BuildContext context, AccountVMS value, child) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: TextField(
+            controller: textController,
+            keyboardType: type,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              filled: true,
+              fillColor: Colors.white,
+              label: Text(label),
+            ),
+            readOnly: type == TextInputType.datetime,
+            onTap: type == TextInputType.datetime
+                ? () => _selectDate(context)
+                : null,
+          ),
+        );
+      },
+    );
+  }
+
   Widget _inputField(
-      String label, TextEditingController _textController, TextInputType type) {
+      String label, TextEditingController textController, TextInputType type) {
     return Consumer<AccountVMS>(
       builder: (BuildContext context, AccountVMS value, Widget? child) {
-        return Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //label
-              Container(
-                margin: EdgeInsets.only(left: 24, bottom: 8),
-                child: Text(
-                  label,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //label
+            Container(
+              margin: EdgeInsets.only(left: 24, bottom: 8),
+              child: Text(
+                label,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
+            ),
 
-              //textfield
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 16),
-                padding: EdgeInsets.only(left: 16),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      width: 1, color: Color.fromARGB(255, 110, 108, 108)),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                child: TextField(
-                  controller: _textController,
-                  keyboardType: type,
-                  decoration: InputDecoration(border: InputBorder.none),
-                  readOnly: type == TextInputType.datetime,
-                  onTap: type == TextInputType.datetime
-                      ? () {
-                          _selectDate(context);
-                        }
-                      : null,
+            //textfield
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.only(left: 16),
+              decoration: BoxDecoration(
+                border: Border.all(
+                    width: 1, color: Color.fromARGB(255, 110, 108, 108)),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5),
                 ),
               ),
-            ],
-          ),
+              child: TextField(
+                controller: textController,
+                keyboardType: type,
+                decoration: InputDecoration(border: InputBorder.none),
+                readOnly: type == TextInputType.datetime,
+                onTap: type == TextInputType.datetime
+                    ? () {
+                        _selectDate(context);
+                      }
+                    : null,
+              ),
+            ),
+          ],
         );
       },
     );
@@ -162,8 +185,8 @@ class _InfoPageState extends State<InfoPage> {
         Provider.of<AccountVMS>(context, listen: false)
             .currentAcc!
             .setImage(imageUrl!);
-        print("Link img: " +
-            Provider.of<AccountVMS>(context, listen: false).currentAcc!.Image!);
+        print(
+            "Link img: ${Provider.of<AccountVMS>(context, listen: false).currentAcc!.Image!}");
       });
     } catch (error) {
       print(error);
@@ -176,129 +199,135 @@ class _InfoPageState extends State<InfoPage> {
       appBar: AppBar(
         title: Text(
           "Thông tin cá nhân",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
         ),
       ),
-      body: SafeArea(
-          child: SingleChildScrollView(
-        // physics: NeverScrollableScrollPhysics(),
+      body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              child: Column(
-                children: [
-                  //Image
-                  Stack(
-                    children: [
-                      Consumer<AccountVMS>(
-                        builder: (context, value, child) {
-                          return Container(
-                            clipBehavior: Clip.antiAlias,
-                            margin: EdgeInsets.only(top: 16),
-                            width: 150,
-                            decoration: BoxDecoration(
+            Column(
+              children: [
+                //Image
+                Stack(
+                  children: [
+                    Consumer<AccountVMS>(
+                      builder: (context, value, child) {
+                        return Container(
+                          clipBehavior: Clip.antiAlias,
+                          margin: EdgeInsets.only(top: 16),
+                          width: 150,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            // color: Colors.amber,
+                          ),
+                          child: Image.network(
+                            // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD3OmwXK7xXXVWJZiocRJOasPkHLK27kGGOQ&s",
+                            value.currentAcc!.Image!,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset("${urlimg}account.png");
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            pickImage();
+                          });
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              // color: Colors.amber,
-                            ),
-                            child: Image.network(
-                              // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD3OmwXK7xXXVWJZiocRJOasPkHLK27kGGOQ&s",
-                              value.currentAcc!.Image!,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(urlimg + "account.png");
-                              },
-                            ),
+                              color: Color.fromARGB(255, 14, 6, 133)),
+                          child: Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      //Input
+                      _inputField2(
+                        'Họ tên',
+                        _hoTenController,
+                        TextInputType.text,
+                      ),
+                      _inputField2(
+                        'Địa chỉ',
+                        _diaChiController,
+                        TextInputType.text,
+                      ),
+                      _inputField2(
+                        'Ngày sinh',
+                        _ngaySinhController,
+                        TextInputType.text,
+                      ),
+                      _inputField2(
+                        'Số điện thoại',
+                        _soDienThoaiController,
+                        TextInputType.text,
+                      ),
+
+                      //TextButton
+                      Consumer<AccountVMS>(
+                        builder: (BuildContext context, value, Widget? child) {
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: FilledButton.icon(
+                                  onPressed: () {
+                                    //set current account provider
+                                    value.currentAcc
+                                        ?.setUserName(_hoTenController.text);
+                                    value.currentAcc
+                                        ?.setAdress(_diaChiController.text);
+                                    value.currentAcc?.setPhoneNumber(
+                                        int.parse(_soDienThoaiController.text));
+
+                                    //add date
+                                    value.currentAcc?.setBirthDay(birthDay!);
+
+                                    //update account
+                                    value.updateCurrentAcc();
+
+                                    dialogCustom(context);
+                                  },
+                                  label: const Text('Lưu thay đổi'),
+                                  icon: const Icon(Icons.save),
+                                ),
+                              ),
+                            ],
                           );
                         },
                       ),
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              pickImage();
-                            });
-                          },
-                          child: Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color.fromARGB(255, 14, 6, 133)),
-                            child: Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      )
                     ],
                   ),
-
-                  //Input
-                  SizedBox(height: 16),
-                  _inputField("Họ tên:", _hoTenController, TextInputType.text),
-                  SizedBox(height: 16),
-                  _inputField(
-                      "Địa chỉ:", _diaChiController, TextInputType.text),
-                  SizedBox(height: 16),
-                  _inputField("Ngày sinh:", _ngaySinhController,
-                      TextInputType.datetime),
-                  SizedBox(height: 16),
-                  _inputField("Số điện thoại:", _soDienThoaiController,
-                      TextInputType.phone),
-                  SizedBox(height: 24),
-
-                  //TextButton
-                  Consumer<AccountVMS>(
-                    builder: (BuildContext context, value, Widget? child) {
-                      return Container(
-                        height: 50,
-                        width: MediaQuery.sizeOf(context).width * 0.9,
-                        child: TextButton(
-                          onPressed: () {
-                            //set current account provider
-                            value.currentAcc
-                                ?.setUserName(_hoTenController.text);
-                            value.currentAcc?.setAdress(_diaChiController.text);
-                            value.currentAcc?.setPhoneNumber(
-                                int.parse((_soDienThoaiController.text)));
-
-                            //add date
-                            value.currentAcc?.setBirthDay(birthDay!);
-
-                            //update account
-                            value.updateCurrentAcc();
-
-                            DiaglogCustom(context);
-                          },
-                          child: Text(
-                            "Lưu thay đổi",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 14, 6, 133),
-                          ),
-                        ),
-                      );
-                    },
-                  )
-                  //
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),
-      )),
+      ),
     );
   }
 }
 
-void DiaglogCustom(BuildContext context) {
+void dialogCustom(BuildContext context) {
   Dialog errorDialog = Dialog(
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0)), //this right here
-    child: Container(
+    child: SizedBox(
       height: 300.0,
       width: 300.0,
       child: Column(
@@ -308,18 +337,17 @@ void DiaglogCustom(BuildContext context) {
             alignment: Alignment.center,
             width: MediaQuery.sizeOf(context).width * 0.7,
             child: Text(
-              "Sửa Thông Tin Thành Công",
+              "Sửa thông tin thành công",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 16),
             child: Image.asset(
-                width: 150, height: 150, urlimg + "update_account.png"),
+                width: 150, height: 150, "${urlimg}update_account.png"),
           ),
           InkWell(
               onTap: () {
-                Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
               child: Container(

@@ -108,20 +108,21 @@ class _CartPageState extends State<CartPage> {
                           return Row(
                             children: [
                               Expanded(
-                                  child: FilledButton.icon(
-                                onPressed: () {
-                                  value.getQuantity();
-                                  // value.clear();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Checkout(),
-                                    ),
-                                  );
-                                },
-                                label: const Text('Thanh toán'),
-                                icon: const Icon(Icons.payment),
-                              )),
+                                child: FilledButton.icon(
+                                  onPressed: () {
+                                    value.getQuantity();
+                                    // value.clear();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const Checkout(),
+                                      ),
+                                    );
+                                  },
+                                  label: const Text('Thanh toán'),
+                                  icon: const Icon(Icons.payment),
+                                ),
+                              ),
                             ],
                           );
                         },

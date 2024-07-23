@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           routes: {
-            "/homePage": (context) => App(),
+            "/homePage": (context) => const App(),
             "/productDetail": (context) => const ProductDetail(),
             "/account": (context) => const AccountPage(),
             "/search": (context) => SearchPage(
