@@ -151,29 +151,6 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                     ),
 
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 16),
-                        child: Row(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(horizontal: 16),
-                              child: Icon(
-                                Icons.privacy_tip_outlined,
-                                size: 32,
-                              ),
-                            ),
-                            Text(
-                              "Chính sách quyền riêng",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-
                     Consumer<ProductVMS>(
                       builder: (BuildContext context, ProductVMS value,
                           Widget? child) {

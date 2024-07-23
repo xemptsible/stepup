@@ -97,9 +97,9 @@ class _FavoritePageState extends State<FavoritePage> {
                                 height: 20,
                               ),
                               Text(
-                                "NO FAVORITE ITEM",
+                                "Không có sản phẩm yêu thích",
                                 style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                     color: Color.fromARGB(255, 54, 57, 99)),
                               ),

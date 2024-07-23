@@ -85,6 +85,7 @@ class _StartScreenState extends State<StartScreen> {
       body: CustomScrollView(
         slivers: [
           const SliverAppBar.large(
+            automaticallyImplyLeading: false,
             title: Text('Chào mừng đến StepUP'),
           ),
           SliverFillRemaining(
