@@ -13,7 +13,7 @@ class ApiService {
   Future<List<Product>> fetchProducts() async {
     try {
       Dio api = Dio();
-      Response response = await api.get(baseUrl + "/shoe");
+      Response response = await api.get("$baseUrl/shoe");
 
       // Kiểm tra nếu response.data là danh sách
       if (response.data is List) {
@@ -26,14 +26,14 @@ class ApiService {
       }
     } catch (e) {
       print('Error: $e');
-      throw e;
+      rethrow;
     }
   }
 
   Future<List<Product>> fetchProductsByBrand(String brand) async {
     try {
       Dio api = Dio();
-      Response response = await api.get(baseUrl + "/shoe");
+      Response response = await api.get("$baseUrl/shoe");
 
       // Kiểm tra nếu response.data là danh sách
       if (response.data is List) {
@@ -50,7 +50,7 @@ class ApiService {
       }
     } catch (e) {
       print('Error: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -75,7 +75,7 @@ class ApiService {
           bool matchesBrand =
               brand == null || brand == "Tất cả" || product.brand == brand;
           bool matchesPrice = price == null ||
-              price == RangeValues(0, 0) ||
+              price == const RangeValues(0, 0) ||
               (product.price != null &&
                   product.price! >= price.start &&
                   product.price! <= price.end);
@@ -105,14 +105,14 @@ class ApiService {
       return searchList;
     } catch (e) {
       print('Error: $e');
-      throw e;
+      rethrow;
     }
   }
 
   Future<List<Brand>> fetchBrands() async {
     try {
       Dio api = Dio();
-      Response response = await api.get(baseUrl + "/brand");
+      Response response = await api.get("$baseUrl/brand");
 
       // Kiểm tra nếu response.data là danh sách
       if (response.data is List) {
@@ -125,14 +125,14 @@ class ApiService {
       }
     } catch (e) {
       print('Error: $e');
-      throw e;
+      rethrow;
     }
   }
 
   Future<List<Order>> fetchOrder() async {
     try {
       Dio api = Dio();
-      Response response = await api.get(baseUrlTest + "/order");
+      Response response = await api.get("$baseUrlTest/order");
 
       List<dynamic> data = await response.data as List;
 
@@ -148,7 +148,7 @@ class ApiService {
   Future<List<Order>> getOrderByEmail(String email) async {
     try {
       Dio api = Dio();
-      Response response = await api.get(baseUrlTest + "/order/" + email);
+      Response response = await api.get("$baseUrlTest/order/$email");
 
       List<dynamic> data = await response.data;
 
@@ -166,7 +166,7 @@ class ApiService {
     try {
       Dio api = Dio();
       Response response = await api.post(
-        baseUrlTest + "/order",
+        "$baseUrlTest/order",
         options: Options(headers: {
           HttpHeaders.contentTypeHeader: "application/json",
         }),
@@ -187,7 +187,7 @@ class ApiService {
   Future<List<Account>> fetchAccount() async {
     try {
       Dio api = Dio();
-      Response response = await api.get(baseUrlTest + "/account");
+      Response response = await api.get("$baseUrlTest/account");
 
       List<dynamic> data = await response.data as List;
 
@@ -204,13 +204,13 @@ class ApiService {
   Future<Account> getAccount(String email) async {
     try {
       Dio api = Dio();
-      Response response = await api.get(baseUrlTest + "/account/" + email);
+      Response response = await api.get("$baseUrlTest/account/$email");
       print(response.data);
       Account curAcc = Account.fromJsonApi(response.data);
-      print("Current User: " + curAcc.Email!);
+      print("Current User: ${curAcc.Email!}");
       return curAcc;
     } catch (e) {
-      print('Error: $e' + "lỗi api");
+      print('Error: $e' "lỗi api");
       return Account();
     }
   }
@@ -220,7 +220,7 @@ class ApiService {
       Dio api = Dio();
 
       Response response = await api.post(
-        baseUrlTest + "/account",
+        "$baseUrlTest/account",
         options: Options(headers: {
           HttpHeaders.contentTypeHeader: "application/json",
         }),
@@ -234,7 +234,7 @@ class ApiService {
         print('Response body: ${response.data}');
       }
     } catch (e) {
-      print('Error occurred: $e' + "lỗi đăng ký tài khoản api");
+      print('Error occurred: $e' "lỗi đăng ký tài khoản api");
     }
   }
 
@@ -242,7 +242,7 @@ class ApiService {
     try {
       Dio api = Dio();
       final response = await api.put(
-        baseUrlTest + '/account/${account.Email}',
+        '$baseUrlTest/account/${account.Email}',
         data: account.toJson(),
       );
       print("Update thành công");
