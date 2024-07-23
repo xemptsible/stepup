@@ -8,14 +8,13 @@ import 'package:stepup/data/providers/filter_vm.dart';
 import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/global/functions.dart';
 import 'package:stepup/screens/mainPage/account.dart';
-import 'package:stepup/screens/mainPage/Info.dart';
-import 'package:stepup/screens/mainPage/order_history.dart';
+
 import 'package:stepup/screens/mainPage/search_page.dart';
-import 'package:stepup/screens/payment.dart';
+
 import 'package:stepup/screens/signIn_Up/login.dart';
 import 'package:stepup/screens/mainPage/product_detail_page.dart';
 import 'package:stepup/screens/signIn_Up/register.dart';
-import 'package:stepup/screens/orderTracking.dart';
+
 import 'package:stepup/utilities/const.dart';
 // import 'utilities/font.dart';
 import 'global/theme.dart';

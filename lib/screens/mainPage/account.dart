@@ -8,6 +8,7 @@ import 'package:stepup/main.dart';
 import 'package:stepup/screens/mainPage/Info.dart';
 import 'package:stepup/screens/mainPage/order_history.dart';
 import 'package:stepup/screens/orderTracking.dart';
+import 'package:stepup/utilities/const.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -32,6 +33,7 @@ class _AccountPageState extends State<AccountPage> {
                 child: Column(
                   children: [
                     Container(
+                      clipBehavior: Clip.antiAlias,
                       margin: EdgeInsets.only(top: 40),
                       height: 150,
                       width: 150,
@@ -40,10 +42,10 @@ class _AccountPageState extends State<AccountPage> {
                         // color: Colors.amber,
                       ),
                       child: Image.network(
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD3OmwXK7xXXVWJZiocRJOasPkHLK27kGGOQ&s",
+                        fit: BoxFit.cover,
+                        value.currentAcc!.Image!,
                         errorBuilder: (context, error, stackTrace) {
-                          return Image.network(
-                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD3OmwXK7xXXVWJZiocRJOasPkHLK27kGGOQ&s");
+                          return Image.asset(urlimg + "account.png");
                         },
                       ),
                     ),

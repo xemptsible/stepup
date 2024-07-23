@@ -57,45 +57,6 @@ class _CheckoutState extends State<Checkout> {
     });
   }
 
-  Widget _inputField(
-      String label, TextEditingController _textController, TextInputType type) {
-    return SingleChildScrollView(
-      child: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //label
-            Container(
-              margin: EdgeInsets.only(left: 24, bottom: 8),
-              child: Text(
-                label,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-
-            //textfield
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 16),
-              padding: EdgeInsets.only(left: 16),
-              decoration: BoxDecoration(
-                border: Border.all(
-                    width: 1, color: Color.fromARGB(255, 110, 108, 108)),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              child: TextField(
-                controller: _textController,
-                keyboardType: type,
-                decoration: InputDecoration(border: InputBorder.none),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -351,4 +312,49 @@ void DiaglogCustom(BuildContext context) {
     ),
   );
   showDialog(context: context, builder: (BuildContext context) => errorDialog);
+}
+
+Widget _inputField(
+    String label, TextEditingController _textController, TextInputType type) {
+  return SingleChildScrollView(
+    child: Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          //label
+          Container(
+            margin: EdgeInsets.only(left: 24, bottom: 8),
+            child: Text(
+              label,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+
+          //textfield
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.only(left: 16),
+            decoration: BoxDecoration(
+              border: Border.all(
+                  width: 1, color: Color.fromARGB(255, 110, 108, 108)),
+              borderRadius: BorderRadius.all(
+                Radius.circular(5),
+              ),
+            ),
+            child: TextFormField(
+              controller: _textController,
+              keyboardType: type,
+              decoration: InputDecoration(border: InputBorder.none),
+              validator: (value) {
+                if (value == null || value.isEmpty || value == "null") {
+                  return 'Vui lòng nhập';
+                }
+                return null;
+              },
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

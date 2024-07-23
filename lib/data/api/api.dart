@@ -205,12 +205,12 @@ class ApiService {
     try {
       Dio api = Dio();
       Response response = await api.get(baseUrlTest + "/account/" + email);
-
+      print(response.data);
       Account curAcc = Account.fromJsonApi(response.data);
       print("Current User: " + curAcc.Email!);
       return curAcc;
     } catch (e) {
-      print('Error: $e');
+      print('Error: $e' + "lỗi api");
       return Account();
     }
   }
@@ -224,7 +224,7 @@ class ApiService {
         options: Options(headers: {
           HttpHeaders.contentTypeHeader: "application/json",
         }),
-        data: account.toJson(),
+        data: account.toJsonPost(),
       );
 
       if (response.statusCode == 200) {
@@ -234,7 +234,7 @@ class ApiService {
         print('Response body: ${response.data}');
       }
     } catch (e) {
-      print('Error occurred: $e');
+      print('Error occurred: $e' + "lỗi đăng ký tài khoản api");
     }
   }
 

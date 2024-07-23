@@ -1,15 +1,20 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/data/api/api.dart';
 import 'package:stepup/data/models/account_model.dart';
 import 'package:stepup/data/providers/account_vm.dart';
 import 'package:stepup/data/providers/provider.dart';
+import 'package:stepup/utilities/const.dart';
 
 class InfoPage extends StatefulWidget {
   const InfoPage({super.key});
@@ -19,6 +24,7 @@ class InfoPage extends StatefulWidget {
 }
 
 class _InfoPageState extends State<InfoPage> {
+  DateTime? birthDay;
   TextEditingController _hoTenController = TextEditingController();
   TextEditingController _diaChiController = TextEditingController();
   TextEditingController _ngaySinhController = TextEditingController();
@@ -34,6 +40,7 @@ class _InfoPageState extends State<InfoPage> {
     if (pickedDate != null) {
       setState(() {
         _ngaySinhController.text = DateFormat('dd-MM-yyyy').format(pickedDate);
+        birthDay = pickedDate;
       });
     }
   }
@@ -48,9 +55,24 @@ class _InfoPageState extends State<InfoPage> {
       if (account != null) {
         _hoTenController.text = account.UserName ?? '';
         _diaChiController.text = account.Address ?? '';
-        _ngaySinhController.text =
-            account.BirthDay != null ? account.BirthDay.toString() : '';
-        _soDienThoaiController.text = account.PhoneNumber.toString() ?? '';
+        // print(account.BirthDay! ?? "Không có birthday");
+
+        //check BirthDay
+        if (account.BirthDay != null) {
+          String date = DateFormat('dd-MM-yyyy')
+              .format(account.BirthDay ?? DateTime.now());
+          _ngaySinhController.text = date;
+        } else {
+          _ngaySinhController.text = '';
+        }
+
+        //check phoneNumber
+        print(account.PhoneNumber.toString());
+        if (account.PhoneNumber == null) {
+          _soDienThoaiController.text = "";
+        } else {
+          _soDienThoaiController.text = account.PhoneNumber.toString();
+        }
       }
     });
   }
@@ -102,6 +124,52 @@ class _InfoPageState extends State<InfoPage> {
     );
   }
 
+  //Variable
+  String? filePath = "";
+  String? imageUrl = "imgURL";
+
+  //Pick image
+  pickImage() async {
+    final picker = ImagePicker();
+    XFile? file = await picker.pickImage(source: ImageSource.gallery);
+    print("${file?.path}");
+    setState(() {
+      filePath = file?.path;
+    });
+
+    uploadImage();
+  }
+
+  String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+
+  //Upload
+  uploadImage() async {
+    // Get a reference to storage root (đường dẫn trong firebase firestorage)
+    print("Uploading Image");
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference referenceDirImages = referenceRoot.child("images");
+
+    //Create a reference for the image to be store (tạo thư mục dẫn mới)
+    Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
+
+    try {
+      //Store the file
+      await referenceImageToUpload.putFile(File(filePath!));
+      print("LUU THANH CONG");
+      setState(() async {
+        imageUrl = await referenceImageToUpload.getDownloadURL();
+        print(imageUrl);
+        Provider.of<AccountVMS>(context, listen: false)
+            .currentAcc!
+            .setImage(imageUrl!);
+        print("Link img: " +
+            Provider.of<AccountVMS>(context, listen: false).currentAcc!.Image!);
+      });
+    } catch (error) {
+      print(error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,29 +190,45 @@ class _InfoPageState extends State<InfoPage> {
                   //Image
                   Stack(
                     children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 16),
-                        height: 150,
-                        width: 150,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          // color: Colors.amber,
-                        ),
-                        child: Image.network(
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD3OmwXK7xXXVWJZiocRJOasPkHLK27kGGOQ&s"),
+                      Consumer<AccountVMS>(
+                        builder: (context, value, child) {
+                          return Container(
+                            clipBehavior: Clip.antiAlias,
+                            margin: EdgeInsets.only(top: 16),
+                            width: 150,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              // color: Colors.amber,
+                            ),
+                            child: Image.network(
+                              // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD3OmwXK7xXXVWJZiocRJOasPkHLK27kGGOQ&s",
+                              value.currentAcc!.Image!,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(urlimg + "account.png");
+                              },
+                            ),
+                          );
+                        },
                       ),
                       Positioned(
                         right: 0,
                         bottom: 0,
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color.fromARGB(255, 14, 6, 133)),
-                          child: Icon(
-                            Icons.edit,
-                            color: Colors.white,
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              pickImage();
+                            });
+                          },
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color.fromARGB(255, 14, 6, 133)),
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       )
@@ -173,13 +257,19 @@ class _InfoPageState extends State<InfoPage> {
                         width: MediaQuery.sizeOf(context).width * 0.9,
                         child: TextButton(
                           onPressed: () {
+                            //set current account provider
                             value.currentAcc
                                 ?.setUserName(_hoTenController.text);
                             value.currentAcc?.setAdress(_diaChiController.text);
                             value.currentAcc?.setPhoneNumber(
                                 int.parse((_soDienThoaiController.text)));
 
+                            //add date
+                            value.currentAcc?.setBirthDay(birthDay!);
+
+                            //update account
                             value.updateCurrentAcc();
+
                             DiaglogCustom(context);
                           },
                           child: Text(
@@ -224,10 +314,8 @@ void DiaglogCustom(BuildContext context) {
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 16),
-            child: Image.network(
-                width: 150,
-                height: 150,
-                "https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/clipboard_check_edit.png"),
+            child: Image.asset(
+                width: 150, height: 150, urlimg + "update_account.png"),
           ),
           InkWell(
               onTap: () {

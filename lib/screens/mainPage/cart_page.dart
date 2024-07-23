@@ -66,42 +66,18 @@ class _CartPageState extends State<CartPage> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            automaticallyImplyLeading: false,
+            title: const Text(
+              'Giỏ Hàng',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            forceMaterialTransparency: true,
             actions: [
-              Expanded(
-                flex: 5,
-                child: Container(
-                  margin: EdgeInsets.only(left: 20),
-                  child: Text(
-                    "Giỏ hàng",
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 24),
-                  ),
-                ),
+              IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, "/search");
+                },
+                icon: const Icon(Icons.search),
               ),
-              Expanded(
-                  flex: 2,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, "/search");
-                        },
-                        child: Container(
-                          child: Icon(
-                            Icons.search,
-                            size: MediaQuery.of(context).size.height * 0.033,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Icon(
-                          Icons.notifications,
-                          size: MediaQuery.of(context).size.height * 0.033,
-                        ),
-                      ),
-                    ],
-                  )),
             ],
           ),
           body: Container(child: () {

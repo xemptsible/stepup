@@ -5,6 +5,7 @@ import 'package:stepup/data/api/api.dart';
 import 'package:stepup/data/models/order_model.dart';
 import 'package:stepup/data/providers/account_vm.dart';
 import 'package:stepup/data/providers/provider.dart';
+import 'package:stepup/screens/mainPage/detail_history.dart';
 
 class OrderHistory extends StatefulWidget {
   const OrderHistory({super.key});
@@ -19,6 +20,7 @@ class OrderHistoryState extends State<OrderHistory> {
   Future<String> _loadOrderData() async {
     orderList = await ReadData().loadOrderDataUser(
         Provider.of<AccountVMS>(context, listen: false).currentAcc!.Email!);
+    // orderList = await ReadData().loadOrderData();
 
     isLoading = true;
 
@@ -45,7 +47,7 @@ class OrderHistoryState extends State<OrderHistory> {
               ? ListView.builder(
                   itemCount: orderList.length,
                   itemBuilder: (context, index) {
-                    return ListItem(index, orderList[index]);
+                    return ListItem(index, orderList[index], context);
                   },
                 )
               : const Center(child: CircularProgressIndicator());
@@ -55,42 +57,54 @@ class OrderHistoryState extends State<OrderHistory> {
   }
 }
 
-Widget ListItem(int index, Order order) {
+Widget ListItem(int index, Order order, BuildContext context) {
   String orderDate = DateFormat('dd/MM/yyyy').format(order.dateOrder!);
-  return Card(
-    margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-    child: Container(
-      decoration: BoxDecoration(
-        border: Border.all(width: 1),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      height: 90,
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            order.nameUser!,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
+  return InkWell(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DetailHistory(
+            order: order,
           ),
-          Text(
-            "Ngày Mua: " + orderDate,
-            style: TextStyle(
-              fontSize: 16,
+        ),
+      );
+    },
+    child: Card(
+      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(width: 1),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        height: 90,
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              order.nameUser!,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
-          ),
-          Container(
-            child: Text(
-              'Tổng Giá Đơn Hàng: ${NumberFormat('###,###.###').format(order.price)}đ',
+            Text(
+              "Ngày Mua: " + orderDate,
               style: TextStyle(
                 fontSize: 16,
               ),
             ),
-          ),
-        ],
+            Container(
+              child: Text(
+                'Tổng Giá Đơn Hàng: ${NumberFormat('###,###.###').format(order.price)}đ',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     ),
   );

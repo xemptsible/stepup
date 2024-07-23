@@ -94,6 +94,11 @@ class _LoginState extends State<LoginScreen> {
                                   _emailController, _passwordController);
                               Provider.of<AccountVMS>(context, listen: false)
                                   .setCurrentAcc(_emailController.text);
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (context) => const App(),
+                              //     ));
                             }
                           },
                           child: const Text("Đăng nhập"),
