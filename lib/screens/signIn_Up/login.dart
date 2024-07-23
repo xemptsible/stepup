@@ -159,12 +159,17 @@ class _LoginState extends State<LoginScreen> {
           .signInWithEmailAndPassword(
               email: email.text, password: password.text)
           .then(
-        (value) {
+        (value) async {
           if (value.user != null) {
             AsyncSnapshot.waiting;
-            Provider.of<AccountVMS>(context, listen: false)
+            await Provider.of<AccountVMS>(context, listen: false)
                 .setCurrentAcc(_emailController.text);
+            print(Provider.of<AccountVMS>(context, listen: false)
+                .currentAcc!
+                .UserName!);
+            await Future.delayed(Duration(milliseconds: 200));
             isLoading = false;
+            print("finish");
 
             Navigator.pushAndRemoveUntil(
               context,

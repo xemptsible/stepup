@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/data/providers/account_vm.dart';
+import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/main.dart';
 import 'package:stepup/screens/mainPage/Info.dart';
 import 'package:stepup/screens/mainPage/order_history.dart';
@@ -173,38 +174,44 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                     ),
 
-                    InkWell(
-                      onTap: () {
-                        _signOut();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const StartScreen(),
+                    Consumer<ProductVMS>(
+                      builder: (BuildContext context, ProductVMS value,
+                          Widget? child) {
+                        return InkWell(
+                          onTap: () {
+                            value.clear();
+                            _signOut();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const StartScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(vertical: 16),
+                            child: Row(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 16),
+                                  child: Icon(
+                                    Icons.logout_outlined,
+                                    size: 32,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                Text(
+                                  "Đăng xuất",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.red),
+                                )
+                              ],
+                            ),
                           ),
                         );
                       },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 16),
-                        child: Row(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(horizontal: 16),
-                              child: Icon(
-                                Icons.logout_outlined,
-                                size: 32,
-                                color: Colors.red,
-                              ),
-                            ),
-                            Text(
-                              "Đăng xuất",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.red),
-                            )
-                          ],
-                        ),
-                      ),
                     )
                   ],
                 ),

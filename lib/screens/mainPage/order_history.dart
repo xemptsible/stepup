@@ -31,7 +31,7 @@ class OrderHistoryState extends State<OrderHistory> {
   @override
   void initState() {
     super.initState();
-    orders = _loadOrderData();
+    _loadOrderData();
   }
 
   @override
@@ -41,7 +41,7 @@ class OrderHistoryState extends State<OrderHistory> {
         title: const Text("Lịch sử đơn hàng"),
       ),
       body: FutureBuilder(
-        future: orders,
+        future: _loadOrderData(),
         builder: (context, snapshot) {
           return isLoading
               ? const Center(child: CircularProgressIndicator())
