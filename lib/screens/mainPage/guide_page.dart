@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stepup/app.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class GuidePage extends StatefulWidget {
@@ -9,17 +10,43 @@ class GuidePage extends StatefulWidget {
 }
 
 class _GuidePageState extends State<GuidePage> {
-  YoutubePlayerController youtubeController = YoutubePlayerController(
+  late YoutubePlayerController _youtubeController;
+  int selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _youtubeController = YoutubePlayerController(
       initialVideoId: YoutubePlayer.convertUrlToId(
               "https://www.youtube.com/watch?v=FOLTnk8WUg4")
-          .toString());
-  int selectedIndex = 0;
+          .toString(),
+      flags: YoutubePlayerFlags(
+        autoPlay: false,
+        mute: false,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _youtubeController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Hướng đẫn"),
+          title: Text("Hướng dẫn"),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              _youtubeController.pause();
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => App()));
+            },
+          ),
         ),
         body: Container(
           width: MediaQuery.of(context).size.width,
@@ -28,7 +55,7 @@ class _GuidePageState extends State<GuidePage> {
             children: [
               Container(
                   width: MediaQuery.of(context).size.width * 0.9,
-                  child: YoutubePlayer(controller: youtubeController)),
+                  child: YoutubePlayer(controller: _youtubeController)),
               SizedBox(
                 height: 30,
               ),
@@ -44,13 +71,13 @@ class _GuidePageState extends State<GuidePage> {
                           text = "Chức năng 1: Đăng nhập & đăng ký";
                           break;
                         case 1:
-                          text = "Chức năng 2: Tìm kiểm sản phẩm";
+                          text = "Chức năng 2: Tìm kiếm sản phẩm";
                           break;
                         case 2:
                           text = "Chức năng 3: Thêm sản phẩm vào giỏ hàng";
                           break;
                         case 3:
-                          text = "Chức năng 4: Thanh Toán";
+                          text = "Chức năng 4: Thanh toán";
                           break;
                       }
                       return GestureDetector(
@@ -59,19 +86,19 @@ class _GuidePageState extends State<GuidePage> {
                               selectedIndex = index;
                               switch (index) {
                                 case 0:
-                                  youtubeController
+                                  _youtubeController
                                       .seekTo(Duration(seconds: 0));
                                   break;
                                 case 1:
-                                  youtubeController
+                                  _youtubeController
                                       .seekTo(Duration(seconds: 220));
                                   break;
                                 case 2:
-                                  youtubeController
+                                  _youtubeController
                                       .seekTo(Duration(seconds: 320));
                                   break;
                                 case 3:
-                                  youtubeController
+                                  _youtubeController
                                       .seekTo(Duration(seconds: 500));
                                   break;
                               }

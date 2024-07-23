@@ -64,6 +64,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       child: Scaffold(
         appBar: selectedIndex != 3
             ? AppBar(
+                automaticallyImplyLeading: false,
                 title: Text(
                   _loadTitle(selectedIndex),
                   style: const TextStyle(fontWeight: FontWeight.bold),
