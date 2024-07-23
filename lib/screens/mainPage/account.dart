@@ -54,126 +54,38 @@ class _AccountPageState extends State<AccountPage> {
                   margin: EdgeInsets.symmetric(vertical: 16),
                   child: Text(
                     value.currentAcc!.UserName!,
-                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const InfoPage(),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      listSettings(
+                        Icons.account_circle_outlined,
+                        'Thông tin cá nhân',
+                        InfoPage(),
+                        null,
                       ),
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 16),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16),
-                          child: Icon(
-                            Icons.account_circle_outlined,
-                            size: 32,
-                          ),
-                        ),
-                        Text(
-                          "Thông tin cá nhân",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const OrderHistory(),
+                      listSettings(
+                        Icons.history,
+                        'Lịch sử đơn hàng',
+                        OrderHistory(),
+                        null,
                       ),
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 16),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16),
-                          child: Icon(
-                            Icons.shopping_cart_outlined,
-                            size: 32,
-                          ),
-                        ),
-                        Text(
-                          "Lịch sử đơn hàng",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => GuidePage()));
-                  },
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 16),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16),
-                          child: Icon(
-                            Icons.bookmark_border,
-                            size: 32,
-                          ),
-                        ),
-                        Text(
-                          "Hướng dẫn",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Divider(),
-                InkWell(
-                  onTap: () {
-                    _signOut();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const StartScreen(),
+                      listSettings(
+                        Icons.help_outline,
+                        'Hướng dẫn sử dụng',
+                        GuidePage(),
+                        null,
                       ),
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 16),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16),
-                          child: Icon(
-                            Icons.logout_outlined,
-                            size: 32,
-                            color: Colors.red,
-                          ),
-                        ),
-                        Text(
-                          "Đăng xuất",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.red),
-                        )
-                      ],
-                    ),
+                      Divider(),
+                      listSettings(
+                        Icons.logout,
+                        'Đăng xuất',
+                        StartScreen(),
+                        Colors.red,
+                      )
+                    ],
                   ),
                 )
               ],
@@ -181,6 +93,42 @@ class _AccountPageState extends State<AccountPage> {
           );
         },
       ),
+    );
+  }
+
+  Widget listSettings(IconData icon, String label, Widget page, Color? color) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+      leading: Icon(
+        icon,
+        color: color,
+      ),
+      trailing: !label.contains('Đăng xuất') ? Icon(Icons.arrow_forward) : null,
+      title: Text(
+        label,
+        style: TextStyle(color: color),
+      ),
+      onTap: () {
+        if (label.contains('Đăng xuất')) {
+          _signOut();
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const StartScreen(),
+            ),
+            ModalRoute.withName('/start'),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return page;
+              },
+            ),
+          );
+        }
+      },
     );
   }
 }

@@ -52,6 +52,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           routes: {
+            "/start": (context) => const StartScreen(),
             "/homePage": (context) => const App(),
             "/productDetail": (context) => const ProductDetail(),
             "/account": (context) => const AccountPage(),
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
                 ),
           },
           theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-          home: const LoginScreen()),
+          home: const StartScreen()),
     );
   }
 }

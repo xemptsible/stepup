@@ -75,23 +75,23 @@ class _LoginState extends State<LoginScreen> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: TextButton(
-                          onPressed: () async {
-                            await FirebaseAuth.instance.signOut();
-                          },
-                          child: const Text(
-                            "Quên mật khẩu?",
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(top: 16),
+                      //   child: TextButton(
+                      //     onPressed: () async {
+                      //       await FirebaseAuth.instance.signOut();
+                      //     },
+                      //     child: const Text(
+                      //       "Quên mật khẩu?",
+                      //     ),
+                      //   ),
+                      // ),
                       SizedBox(
                         width: double.infinity,
                         child: FilledButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              DiaglogCustom(context, isLoading);
+                              dialogCustom(context, isLoading);
                               xuLyDangNhap(isLoading, _emailController,
                                   _passwordController);
 
@@ -167,7 +167,7 @@ class _LoginState extends State<LoginScreen> {
             print(Provider.of<AccountVMS>(context, listen: false)
                 .currentAcc!
                 .UserName!);
-            await Future.delayed(Duration(milliseconds: 200));
+            await Future.delayed(const Duration(milliseconds: 200));
             isLoading = false;
             print("finish");
 
@@ -189,11 +189,11 @@ class _LoginState extends State<LoginScreen> {
   }
 }
 
-void DiaglogCustom(BuildContext context, bool isLoading) {
+void dialogCustom(BuildContext context, bool isLoading) {
   Dialog errorDialog = Dialog(
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0)), //this right here
-    child: Container(
+    child: SizedBox(
       height: 150.0,
       width: 150.0,
       child: Column(
@@ -202,7 +202,7 @@ void DiaglogCustom(BuildContext context, bool isLoading) {
           Container(
             alignment: Alignment.center,
             width: MediaQuery.sizeOf(context).width * 0.7,
-            child: Text(
+            child: const Text(
               "Đang Đăng Nhập",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
