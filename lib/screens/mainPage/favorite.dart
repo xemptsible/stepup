@@ -17,7 +17,6 @@ class FavoritePage extends StatefulWidget {
 class _FavoritePageState extends State<FavoritePage> {
   List<Product> proList = [];
 
-  late Future product;
   Future<String> _loadProData() async {
     proList = await ReadData().loadFavoritedProduct();
     return '';
@@ -26,7 +25,6 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   void initState() {
     super.initState();
-    product = _loadProData();
   }
 
   @override
@@ -36,7 +34,7 @@ class _FavoritePageState extends State<FavoritePage> {
         Consumer<FavoriteVm>(
           builder: (context, myType, child) {
             return FutureBuilder(
-              future: product,
+              future: _loadProData(),
               builder: (BuildContext context, snapshot) {
                 return myType.favoriteLst.isNotEmpty
                     ? SingleChildScrollView(
@@ -97,9 +95,9 @@ class _FavoritePageState extends State<FavoritePage> {
                                 height: 20,
                               ),
                               Text(
-                                "NO FAVORITE ITEM",
+                                "Không có sản phẩm yêu thích",
                                 style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                     color: Color.fromARGB(255, 54, 57, 99)),
                               ),

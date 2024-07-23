@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/product_model.dart';
 import '../shared_preferences/sharedPre.dart';
@@ -27,5 +28,12 @@ class FavoriteVm extends ChangeNotifier {
       print(favoriteLst.length);
       notifyListeners();
     }
+  }
+
+  clear() async {
+    favoriteLst.clear();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.remove('favorite');
+    notifyListeners();
   }
 }

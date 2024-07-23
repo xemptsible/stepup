@@ -24,7 +24,7 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
   bool isSelected = false;
-  int selectedIndex = 1;
+  int selectedIndex = 0;
   int quantity = 1;
   int size = 40;
 

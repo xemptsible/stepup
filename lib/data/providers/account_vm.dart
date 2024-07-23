@@ -8,13 +8,17 @@ class AccountVMS with ChangeNotifier {
   Future setCurrentAcc(String email) async {
     ApiService apiService = ApiService();
     currentAcc = await apiService.getAccount(email);
-
     notifyListeners();
   }
 
   updateCurrentAcc() async {
     ApiService apiService = ApiService();
     await apiService.updateAccount(currentAcc!);
+    notifyListeners();
+  }
+
+  setImage(String img) {
+    currentAcc!.setImage(img);
     notifyListeners();
   }
 }

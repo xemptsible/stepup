@@ -6,6 +6,7 @@ import 'package:stepup/data/models/order_model.dart';
 import 'package:stepup/data/providers/account_vm.dart';
 import 'package:stepup/data/providers/provider.dart';
 import 'package:stepup/screens/mainPage/detail_history.dart';
+import 'package:stepup/utilities/const.dart';
 
 class OrderHistory extends StatefulWidget {
   const OrderHistory({super.key});
@@ -17,21 +18,20 @@ class OrderHistory extends StatefulWidget {
 class OrderHistoryState extends State<OrderHistory> {
   List<Order> orderList = [];
   bool isLoading = false;
-
-  late Future orders;
-
-  Future _loadOrderData() async {
+  Future<String> _loadOrderData() async {
     isLoading = true;
     orderList = await ReadData().loadOrderDataUser(
         Provider.of<AccountVMS>(context, listen: false).currentAcc!.Email!);
-    print(orderList);
-    return orderList;
+    // orderList = await ReadData().loadOrderData();
+    isLoading = false;
+
+    return '';
   }
 
   @override
   void initState() {
     super.initState();
-    orders = _loadOrderData();
+    _loadOrderData();
   }
 
   @override
@@ -41,17 +41,39 @@ class OrderHistoryState extends State<OrderHistory> {
         title: const Text("Lịch sử đơn hàng"),
       ),
       body: FutureBuilder(
-        future: orders,
+        future: _loadOrderData(),
         builder: (context, snapshot) {
           return isLoading
-              ? ListView.builder(
-                  itemCount: orderList.length,
-                  itemBuilder: (context, index) {
-                    return listItem(index, orderList[index], context);
-                  },
-                )
-              : const Center(
-                  child: CircularProgressIndicator(),
+              ? const Center(child: CircularProgressIndicator())
+              : Container(
+                  child: orderList.isEmpty
+                      ? Container(
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  urlimg + "empty_order.png",
+                                  width: 150,
+                                  height: 150,
+                                ),
+                                SizedBox(height: 16),
+                                Text(
+                                  "Tài khoản chưa có đơn hàng",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: orderList.length,
+                          itemBuilder: (context, index) {
+                            return ListItem(index, orderList[index], context);
+                          },
+                        ),
                 );
         },
       ),
@@ -59,8 +81,21 @@ class OrderHistoryState extends State<OrderHistory> {
   }
 }
 
-Widget listItem(int index, Order order, BuildContext context) {
-  String orderDate = DateFormat('dd/MM/yyyy').format(order.dateOrder);
+// if (orderList.isEmpty) {
+//             return Container(
+//               child: Text("không có data"),
+//             );
+//           } else {
+//             return ListView.builder(
+//               itemCount: orderList.length,
+//               itemBuilder: (context, index) {
+//                 return ListItem(index, orderList[index], context);
+//               },
+//             );
+//           }
+
+Widget ListItem(int index, Order order, BuildContext context) {
+  String orderDate = DateFormat('dd/MM/yyyy').format(order.dateOrder!);
   return InkWell(
     onTap: () {
       Navigator.push(

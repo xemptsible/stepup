@@ -24,6 +24,7 @@ class InfoPage extends StatefulWidget {
 }
 
 class _InfoPageState extends State<InfoPage> {
+  bool isloading = false;
   DateTime? birthDay;
   final TextEditingController _hoTenController = TextEditingController();
   final TextEditingController _diaChiController = TextEditingController();
@@ -59,9 +60,12 @@ class _InfoPageState extends State<InfoPage> {
 
         //check BirthDay
         if (account.BirthDay != null) {
-          String date = DateFormat('dd-MM-yyyy')
-              .format(account.BirthDay ?? DateTime.now());
-          _ngaySinhController.text = date;
+          // String date = DateFormat('dd-MM-yyyy')
+          //     .format(account.BirthDay ?? DateTime.now());
+          // _ngaySinhController.text = date;
+          birthDay = account.BirthDay;
+          _ngaySinhController.text =
+              DateFormat('dd-MM-yyyy').format(account.BirthDay!);
         } else {
           _ngaySinhController.text = '';
         }
@@ -159,7 +163,6 @@ class _InfoPageState extends State<InfoPage> {
     setState(() {
       filePath = file?.path;
     });
-
     uploadImage();
   }
 
@@ -177,8 +180,10 @@ class _InfoPageState extends State<InfoPage> {
 
     try {
       //Store the file
+
       await referenceImageToUpload.putFile(File(filePath!));
       print("LUU THANH CONG");
+
       setState(() async {
         imageUrl = await referenceImageToUpload.getDownloadURL();
         print(imageUrl);

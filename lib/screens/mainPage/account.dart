@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/data/providers/account_vm.dart';
+import 'package:stepup/data/providers/favorite_vm.dart';
+import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/main.dart';
 import 'package:stepup/screens/mainPage/Info.dart';
 import 'package:stepup/screens/mainPage/order_history.dart';

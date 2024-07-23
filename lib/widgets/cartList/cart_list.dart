@@ -45,9 +45,20 @@ class _CartListState extends State<CartList> {
           builder: (context, value, child) {
             if (value.lst.isEmpty) {
               return Center(
-                child: Image.network(
-                    "https://newnet.vn/themes/newnet/assets/img/empty-cart.png"),
-              );
+                  child: Column(
+                children: [
+                  Image.asset(urlimg + "empty_cart.png"),
+                  Container(
+                    width: MediaQuery.sizeOf(context).width * 0.5,
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      "Không có sản phẩm trong giỏ hàng",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
+              ));
             } else {
               return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.6,
@@ -64,7 +75,7 @@ class _CartListState extends State<CartList> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                'Remove from cart',
+                                'Xóa khỏi giỏ hàng',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20),
                               ),
