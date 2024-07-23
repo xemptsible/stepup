@@ -26,15 +26,20 @@ List<CartItem> proList = [];
 class _GridItemState extends State<GridItem> {
   Future<List<CartItem>> _loadProData() async {
     SharePreHelper sharePreHelper = SharePreHelper();
-    proList = await sharePreHelper.getCartItemList();
-    Provider.of<ProductVMS>(context, listen: false).ListFromShared_pre(proList);
-    Provider.of<ProductVMS>(context, listen: false).totalPrice();
+    proList = await sharePreHelper.getCartItemList().then(
+      (value) {
+        Provider.of<ProductVMS>(context, listen: false)
+            .listFromSharedPref(proList);
+        Provider.of<ProductVMS>(context, listen: false).totalPrice();
+        return proList;
+      },
+    );
+
     return proList;
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _loadProData();
   }
