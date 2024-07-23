@@ -207,8 +207,7 @@ void DiaglogCustom(BuildContext context, bool isLoading) {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ),
-          if (isLoading == true)
-            const Center(child: CircularProgressIndicator())
+          const Center(child: CircularProgressIndicator())
         ],
       ),
     ),

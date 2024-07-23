@@ -17,7 +17,6 @@ class FavoritePage extends StatefulWidget {
 class _FavoritePageState extends State<FavoritePage> {
   List<Product> proList = [];
 
-  late Future product;
   Future<String> _loadProData() async {
     proList = await ReadData().loadFavoritedProduct();
     return '';
@@ -26,7 +25,6 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   void initState() {
     super.initState();
-    product = _loadProData();
   }
 
   @override
@@ -36,7 +34,7 @@ class _FavoritePageState extends State<FavoritePage> {
         Consumer<FavoriteVm>(
           builder: (context, myType, child) {
             return FutureBuilder(
-              future: product,
+              future: _loadProData(),
               builder: (BuildContext context, snapshot) {
                 return myType.favoriteLst.isNotEmpty
                     ? SingleChildScrollView(
