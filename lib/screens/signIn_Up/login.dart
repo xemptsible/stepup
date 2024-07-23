@@ -17,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginState extends State<LoginScreen> {
+  bool isLoading = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -90,8 +91,8 @@ class _LoginState extends State<LoginScreen> {
                         child: FilledButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              xuLyDangNhap(
-                                  _emailController, _passwordController);
+                              xuLyDangNhap(isLoading, _emailController,
+                                  _passwordController);
                               Provider.of<AccountVMS>(context, listen: false)
                                   .setCurrentAcc(_emailController.text);
                               // Navigator.push(
@@ -150,9 +151,10 @@ class _LoginState extends State<LoginScreen> {
     }
   }
 
-  Future<void> xuLyDangNhap(
-      TextEditingController email, TextEditingController password) async {
+  Future<void> xuLyDangNhap(bool isLoading, TextEditingController email,
+      TextEditingController password) async {
     try {
+      isLoading = true;
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: email.text, password: password.text)
@@ -166,6 +168,7 @@ class _LoginState extends State<LoginScreen> {
               ),
               ModalRoute.withName('/homePage'),
             );
+            isLoading = false;
           }
         },
       );
@@ -175,4 +178,29 @@ class _LoginState extends State<LoginScreen> {
       errorDialogDangNhap(e.message);
     }
   }
+}
+
+void DiaglogCustom(BuildContext context, bool isLoading) {
+  Dialog errorDialog = Dialog(
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0)), //this right here
+    child: Container(
+      height: 300.0,
+      width: 300.0,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            width: MediaQuery.sizeOf(context).width * 0.7,
+            child: Text(
+              "Thanh Toán Thành Công",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+  showDialog(context: context, builder: (BuildContext context) => errorDialog);
 }
