@@ -24,7 +24,7 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
   bool isSelected = false;
-  int selectedIndex = 1;
+  int selectedIndex = 0;
   int quantity = 1;
   int size = 40;
 
@@ -104,7 +104,7 @@ class _ProductDetailState extends State<ProductDetail> {
             Center(
               child: Container(
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 214, 214, 214),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(20)),
                 margin: EdgeInsets.symmetric(horizontal: 15),
                 alignment: Alignment.center,

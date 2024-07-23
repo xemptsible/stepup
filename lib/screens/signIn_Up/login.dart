@@ -91,10 +91,10 @@ class _LoginState extends State<LoginScreen> {
                         child: FilledButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
+                              DiaglogCustom(context, isLoading);
                               xuLyDangNhap(isLoading, _emailController,
                                   _passwordController);
-                              Provider.of<AccountVMS>(context, listen: false)
-                                  .setCurrentAcc(_emailController.text);
+
                               // Navigator.push(
                               //     context,
                               //     MaterialPageRoute(
@@ -161,6 +161,11 @@ class _LoginState extends State<LoginScreen> {
           .then(
         (value) {
           if (value.user != null) {
+            AsyncSnapshot.waiting;
+            Provider.of<AccountVMS>(context, listen: false)
+                .setCurrentAcc(_emailController.text);
+            isLoading = false;
+
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
@@ -168,7 +173,6 @@ class _LoginState extends State<LoginScreen> {
               ),
               ModalRoute.withName('/homePage'),
             );
-            isLoading = false;
           }
         },
       );
@@ -185,8 +189,8 @@ void DiaglogCustom(BuildContext context, bool isLoading) {
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0)), //this right here
     child: Container(
-      height: 300.0,
-      width: 300.0,
+      height: 150.0,
+      width: 150.0,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -194,10 +198,12 @@ void DiaglogCustom(BuildContext context, bool isLoading) {
             alignment: Alignment.center,
             width: MediaQuery.sizeOf(context).width * 0.7,
             child: Text(
-              "Thanh Toán Thành Công",
+              "Đang Đăng Nhập",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ),
+          if (isLoading == true)
+            const Center(child: CircularProgressIndicator())
         ],
       ),
     ),

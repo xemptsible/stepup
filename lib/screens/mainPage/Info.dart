@@ -24,6 +24,7 @@ class InfoPage extends StatefulWidget {
 }
 
 class _InfoPageState extends State<InfoPage> {
+  bool isloading = false;
   DateTime? birthDay;
   TextEditingController _hoTenController = TextEditingController();
   TextEditingController _diaChiController = TextEditingController();
@@ -59,9 +60,12 @@ class _InfoPageState extends State<InfoPage> {
 
         //check BirthDay
         if (account.BirthDay != null) {
-          String date = DateFormat('dd-MM-yyyy')
-              .format(account.BirthDay ?? DateTime.now());
-          _ngaySinhController.text = date;
+          // String date = DateFormat('dd-MM-yyyy')
+          //     .format(account.BirthDay ?? DateTime.now());
+          // _ngaySinhController.text = date;
+          birthDay = account.BirthDay;
+          _ngaySinhController.text =
+              DateFormat('dd-MM-yyyy').format(account.BirthDay!);
         } else {
           _ngaySinhController.text = '';
         }
@@ -136,7 +140,6 @@ class _InfoPageState extends State<InfoPage> {
     setState(() {
       filePath = file?.path;
     });
-
     uploadImage();
   }
 
@@ -154,14 +157,13 @@ class _InfoPageState extends State<InfoPage> {
 
     try {
       //Store the file
+
       await referenceImageToUpload.putFile(File(filePath!));
       print("LUU THANH CONG");
+
       setState(() async {
         imageUrl = await referenceImageToUpload.getDownloadURL();
-        print(imageUrl);
-        Provider.of<AccountVMS>(context, listen: false)
-            .currentAcc!
-            .setImage(imageUrl!);
+        Provider.of<AccountVMS>(context, listen: false).setImage(imageUrl!);
         print("Link img: " +
             Provider.of<AccountVMS>(context, listen: false).currentAcc!.Image!);
       });
@@ -193,18 +195,26 @@ class _InfoPageState extends State<InfoPage> {
                       Consumer<AccountVMS>(
                         builder: (context, value, child) {
                           return Container(
+                            // clipBehavior: Clip.antiAlias,
                             clipBehavior: Clip.antiAlias,
                             margin: EdgeInsets.only(top: 16),
-                            width: 150,
+
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
+
                               // color: Colors.amber,
                             ),
                             child: Image.network(
-                              // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD3OmwXK7xXXVWJZiocRJOasPkHLK27kGGOQ&s",
+                              fit: BoxFit.cover,
+                              width: 150,
+                              height: 150,
                               value.currentAcc!.Image!,
                               errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(urlimg + "account.png");
+                                return Image.asset(
+                                  urlimg + "account.png",
+                                  width: 150,
+                                  height: 150,
+                                );
                               },
                             ),
                           );
@@ -266,6 +276,14 @@ class _InfoPageState extends State<InfoPage> {
 
                             //add date
                             value.currentAcc?.setBirthDay(birthDay!);
+
+                            //update image
+                            if (imageUrl!.contains("imgURL")) {
+                              // value.currentAcc!
+                              //     .setImage(value.currentAcc!.Image!);
+                            } else {
+                              value.currentAcc?.setImage(imageUrl!);
+                            }
 
                             //update account
                             value.updateCurrentAcc();

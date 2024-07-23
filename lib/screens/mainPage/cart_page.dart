@@ -1,13 +1,9 @@
-import 'dart:math';
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/data/api/api.dart';
-import 'package:stepup/data/models/account_model.dart';
+
 import 'package:stepup/data/models/cart_item.dart';
 import 'package:stepup/data/models/order_model.dart';
 import 'package:stepup/data/providers/product_vm.dart';
