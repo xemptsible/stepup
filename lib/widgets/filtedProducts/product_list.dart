@@ -103,10 +103,8 @@ class _ProductListState extends State<ProductList> {
                                 Navigator.pushNamed(context, "/productDetail",
                                     arguments: product);
                               },
-                              child: Center(
-                                child: GridItem(
-                                  product: product,
-                                ),
+                              child: GridItem(
+                                product: product,
                               ),
                             );
                           },

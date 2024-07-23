@@ -16,15 +16,17 @@ class FavoritePage extends StatefulWidget {
 
 class _FavoritePageState extends State<FavoritePage> {
   List<Product> proList = [];
+  late Future products;
 
-  Future<String> _loadProData() async {
+  Future<List<Product>> _loadProData() async {
     proList = await ReadData().loadFavoritedProduct();
-    return '';
+    return proList;
   }
 
   @override
   void initState() {
     super.initState();
+    products = _loadProData();
   }
 
   @override
@@ -34,7 +36,7 @@ class _FavoritePageState extends State<FavoritePage> {
         Consumer<FavoriteVm>(
           builder: (context, myType, child) {
             return FutureBuilder(
-              future: _loadProData(),
+              future: products,
               builder: (BuildContext context, snapshot) {
                 return myType.favoriteLst.isNotEmpty
                     ? SingleChildScrollView(

@@ -15,13 +15,17 @@ class ProductVMS with ChangeNotifier {
   int total = 0;
   int quatity = 0;
 
-  ListFromShared_pre(List<CartItem> cartList) async {
-    lst = await cartList;
+  bool isInCart(CartItem item) {
+    return lst.any((cart) => cart.product.id == item.product.id);
+  }
+
+  listFromSharedPref(List<CartItem> cartList) async {
+    lst = cartList;
   }
 
   getQuantity() async {
     quatity = 0;
-    await sharePreHelper.getCartItemList() as List<CartItem>;
+    await sharePreHelper.getCartItemList();
 
     for (var element in lst) {
       quatity = quatity + element.quantity!;
@@ -33,7 +37,7 @@ class ProductVMS with ChangeNotifier {
   add(CartItem pro) async {
     lst.add(pro);
     int tongGiaSoLuong = pro.product.price! * pro.quantity!;
-    print("proSize: " + pro.size.toString());
+    print("proSize: ${pro.size}");
     //Thêm vào share_pre
 
     await sharePreHelper.saveCartList(lst);
@@ -72,7 +76,7 @@ class ProductVMS with ChangeNotifier {
 
   totalPrice() async {
     total = 0;
-    await sharePreHelper.getCartItemList() as List<CartItem>;
+    await sharePreHelper.getCartItemList();
 
     for (var element in lst) {
       total = total + (element.product.price! * element.quantity!);

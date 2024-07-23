@@ -31,7 +31,7 @@ class _CartPageState extends State<CartPage> {
     proList = await sharePreHelper.getCartItemList().then(
       (list) {
         Provider.of<ProductVMS>(context, listen: false)
-            .ListFromShared_pre(proList);
+            .listFromSharedPref(proList);
         Provider.of<ProductVMS>(context, listen: false).totalPrice();
         return proList;
       },
@@ -52,7 +52,7 @@ class _CartPageState extends State<CartPage> {
     List<CartItem> lstPro = await sharePreHelper.getCartItemList().then(
       (cart) {
         return Provider.of<ProductVMS>(context, listen: false)
-            .ListFromShared_pre(cart);
+            .listFromSharedPref(cart);
       },
     );
 

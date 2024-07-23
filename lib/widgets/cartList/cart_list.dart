@@ -26,7 +26,7 @@ class _CartListState extends State<CartList> {
     List<CartItem> lstPro = await sharePreHelper.getCartItemList().then(
           (cart) {
             return Provider.of<ProductVMS>(context, listen: false)
-                .ListFromShared_pre(cart);
+                .listFromSharedPref(cart);
           },
         ) ??
         [];
