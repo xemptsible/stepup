@@ -81,7 +81,7 @@ class _InfoPageState extends State<InfoPage> {
     });
   }
 
-  Widget _inputField2(
+  Widget _inputField(
       String label, TextEditingController textController, TextInputType type) {
     return Consumer<AccountVMS>(
       builder: (BuildContext context, AccountVMS value, child) {
@@ -101,51 +101,6 @@ class _InfoPageState extends State<InfoPage> {
                 ? () => _selectDate(context)
                 : null,
           ),
-        );
-      },
-    );
-  }
-
-  Widget _inputField(
-      String label, TextEditingController textController, TextInputType type) {
-    return Consumer<AccountVMS>(
-      builder: (BuildContext context, AccountVMS value, Widget? child) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //label
-            Container(
-              margin: EdgeInsets.only(left: 24, bottom: 8),
-              child: Text(
-                label,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-
-            //textfield
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 16),
-              padding: EdgeInsets.only(left: 16),
-              decoration: BoxDecoration(
-                border: Border.all(
-                    width: 1, color: Color.fromARGB(255, 110, 108, 108)),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              child: TextField(
-                controller: textController,
-                keyboardType: type,
-                decoration: InputDecoration(border: InputBorder.none),
-                readOnly: type == TextInputType.datetime,
-                onTap: type == TextInputType.datetime
-                    ? () {
-                        _selectDate(context);
-                      }
-                    : null,
-              ),
-            ),
-          ],
         );
       },
     );
@@ -263,22 +218,22 @@ class _InfoPageState extends State<InfoPage> {
                   child: Column(
                     children: [
                       //Input
-                      _inputField2(
+                      _inputField(
                         'Họ tên',
                         _hoTenController,
                         TextInputType.text,
                       ),
-                      _inputField2(
+                      _inputField(
                         'Địa chỉ',
                         _diaChiController,
                         TextInputType.text,
                       ),
-                      _inputField2(
+                      _inputField(
                         'Ngày sinh',
                         _ngaySinhController,
                         TextInputType.text,
                       ),
-                      _inputField2(
+                      _inputField(
                         'Số điện thoại',
                         _soDienThoaiController,
                         TextInputType.text,
@@ -287,32 +242,35 @@ class _InfoPageState extends State<InfoPage> {
                       //TextButton
                       Consumer<AccountVMS>(
                         builder: (BuildContext context, value, Widget? child) {
-                          return Row(
-                            children: [
-                              Expanded(
-                                child: FilledButton.icon(
-                                  onPressed: () {
-                                    //set current account provider
-                                    value.currentAcc
-                                        ?.setUserName(_hoTenController.text);
-                                    value.currentAcc
-                                        ?.setAdress(_diaChiController.text);
-                                    value.currentAcc?.setPhoneNumber(
-                                        int.parse(_soDienThoaiController.text));
-
-                                    //add date
-                                    value.currentAcc?.setBirthDay(birthDay!);
-
-                                    //update account
-                                    value.updateCurrentAcc();
-
-                                    dialogCustom(context);
-                                  },
-                                  label: const Text('Lưu thay đổi'),
-                                  icon: const Icon(Icons.save),
+                          return Container(
+                            margin: EdgeInsets.only(top: 16),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: FilledButton.icon(
+                                    onPressed: () {
+                                      //set current account provider
+                                      value.currentAcc
+                                          ?.setUserName(_hoTenController.text);
+                                      value.currentAcc
+                                          ?.setAdress(_diaChiController.text);
+                                      value.currentAcc?.setPhoneNumber(
+                                          int.parse(_soDienThoaiController.text));
+                            
+                                      //add date
+                                      value.currentAcc?.setBirthDay(birthDay!);
+                            
+                                      //update account
+                                      value.updateCurrentAcc();
+                            
+                                      dialogCustom(context);
+                                    },
+                                    label: const Text('Lưu thay đổi'),
+                                    icon: const Icon(Icons.save),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           );
                         },
                       ),

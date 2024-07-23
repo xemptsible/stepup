@@ -62,24 +62,22 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: selectedIndex != 3
-            ? AppBar(
-                automaticallyImplyLeading: false,
-                title: Text(
-                  _loadTitle(selectedIndex),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                forceMaterialTransparency: true,
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/search");
-                    },
-                    icon: const Icon(Icons.search),
-                  ),
-                ],
-              )
-            : null,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text(
+            _loadTitle(selectedIndex),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          forceMaterialTransparency: true,
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/search");
+              },
+              icon: const Icon(Icons.search),
+            )
+          ],
+        ),
         body: PageView(
           controller: _pageController,
           onPageChanged: (index) {

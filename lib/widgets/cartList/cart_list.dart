@@ -19,6 +19,8 @@ class CartList extends StatefulWidget {
 }
 
 class _CartListState extends State<CartList> {
+  late Future cart;
+
   Future<List<CartItem>> _loadCartData() async {
     SharePreHelper sharePreHelper = SharePreHelper();
     List<CartItem> lstPro = await sharePreHelper.getCartItemList().then(
@@ -37,28 +39,33 @@ class _CartListState extends State<CartList> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    cart = _loadCartData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _loadCartData(),
+      future: cart,
       builder: (BuildContext context, snapshot) {
         return Consumer<ProductVMS>(
           builder: (context, value, child) {
             if (value.lst.isEmpty) {
-              return Center(
-                  child: Column(
+              return const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(urlimg + "empty_cart.png"),
-                  Container(
-                    width: MediaQuery.sizeOf(context).width * 0.5,
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      "Không có sản phẩm trong giỏ hàng",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
+                  Icon(
+                    Icons.shopping_cart_outlined,
+                    size: 100,
+                    color: Colors.black38,
+                  ),
+                  Text(
+                    "Giỏ hàng rỗng",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   )
                 ],
-              ));
+              );
             } else {
               return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.6,

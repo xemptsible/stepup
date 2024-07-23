@@ -10,14 +10,16 @@ class DanggiaoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Shoe> shoes = generateShoe(5);
     return Scaffold(
-        body: ListView.builder(
-      itemCount: shoes.length,
-      itemBuilder: (context, index) => ProductListItem(
+      body: ListView.builder(
+        itemCount: shoes.length,
+        itemBuilder: (context, index) => ProductListItem(
           page: 2,
           thumbnail: Container(
             color: Colors.red,
           ),
-          shoe: shoes[index]),
-    ));
+          shoe: shoes[index],
+        ),
+      ),
+    );
   }
 }

@@ -35,7 +35,7 @@ class _AccountPageState extends State<AccountPage> {
               children: [
                 Container(
                   clipBehavior: Clip.antiAlias,
-                  margin: EdgeInsets.only(top: 100),
+                  margin: EdgeInsets.only(top: 50),
                   height: 150,
                   width: 150,
                   decoration: BoxDecoration(

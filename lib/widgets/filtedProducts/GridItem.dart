@@ -12,10 +12,10 @@ import '../../utilities/const.dart';
 class GridItem extends StatefulWidget {
   final Product product;
 
-  GridItem({
-    Key? key,
+  const GridItem({
+    super.key,
     required this.product,
-  }) : super(key: key);
+  });
 
   @override
   State<GridItem> createState() => _GridItemState();
@@ -26,7 +26,7 @@ List<CartItem> proList = [];
 class _GridItemState extends State<GridItem> {
   Future<List<CartItem>> _loadProData() async {
     SharePreHelper sharePreHelper = SharePreHelper();
-    proList = await sharePreHelper.getCartItemList() as List<CartItem>;
+    proList = await sharePreHelper.getCartItemList();
     Provider.of<ProductVMS>(context, listen: false).ListFromShared_pre(proList);
     Provider.of<ProductVMS>(context, listen: false).totalPrice();
     return proList;
@@ -46,93 +46,94 @@ class _GridItemState extends State<GridItem> {
         bool isFavorited = favoriteVm.isProductFavorited(widget.product);
 
         return Align(
-          child: Stack(children: [
-            Positioned(
-              child: Container(
-                height: 240,
-                width: 180,
-                child: Card.outlined(
-                  shadowColor: Colors.black,
-                  elevation: 5,
-                  surfaceTintColor: Colors.white,
-                  clipBehavior: Clip.antiAlias,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        height: 22,
-                        color: Colors.grey[200],
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 110,
-                        color: Colors.grey[200],
-                        child: Image.asset(
-                          urlimg + widget.product.img!,
-                          fit: BoxFit.cover,
-                          width: 100,
+          child: Stack(
+            children: [
+              Positioned(
+                child: SizedBox(
+                  height: 240,
+                  width: 180,
+                  child: Card.outlined(
+                    shadowColor: Colors.black,
+                    elevation: 5,
+                    surfaceTintColor: Colors.white,
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          height: 22,
+                          color: Colors.grey[200],
                         ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                child: Text(
-                                  overflow: TextOverflow.ellipsis,
-                                  widget.product.name!,
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                              Text(
-                                widget.product.brand!,
-                                style:
-                                    TextStyle(fontSize: 14, color: Colors.grey),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    '${NumberFormat('###,###.###').format(widget.product.price!)}đ',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              )
-                            ],
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 110,
+                          color: Colors.grey[200],
+                          child: Image.asset(
+                            urlimg + widget.product.img!,
+                            fit: BoxFit.cover,
+                            width: 100,
                           ),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    widget.product.name!,
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                Text(
+                                  widget.product.brand!,
+                                  style: const TextStyle(
+                                      fontSize: 14, color: Colors.grey),
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      '${NumberFormat('###,###.###').format(widget.product.price!)}đ',
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-                top: 10,
-                right: 10,
-                child: Container(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    child: Icon(
-                      size: 25,
-                      isFavorited ? Icons.favorite : Icons.favorite_border,
-                      color: isFavorited ? Colors.pink : null,
+              Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      child: Icon(
+                        size: 25,
+                        isFavorited ? Icons.favorite : Icons.favorite_border,
+                        color: isFavorited ? Colors.pink : null,
+                      ),
+                      onTap: () {
+                        setState(() {
+                          favoriteVm.addFavorite(widget.product);
+                          isFavorited =
+                              favoriteVm.isProductFavorited(widget.product);
+                        });
+                      },
                     ),
-                    onTap: () {
-                      setState(() {
-                        favoriteVm.addFavorite(widget.product);
-                        isFavorited =
-                            favoriteVm.isProductFavorited(widget.product);
-                      });
-                    },
-                  ),
-                )),
-            Positioned(
+                  )),
+              Positioned(
                 bottom: 6,
                 right: 6,
                 child: Consumer<ProductVMS>(
@@ -141,21 +142,16 @@ class _GridItemState extends State<GridItem> {
                       onTap: () {
                         CartItem cartItem =
                             CartItem(product: widget.product, quantity: 1);
-                        print(widget.product.name! +
-                            " / " +
-                            widget.product.price.toString());
+                        print(
+                            "${widget.product.name!} / ${widget.product.price}");
                         value.add(cartItem);
 
-                        DiaglogCustom(context);
+                        dialogCustom(context);
                       },
                       child: Container(
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.white,
-                        ),
                         width: 50,
                         height: 50,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             boxShadow: [
                               BoxShadow(offset: Offset(1, 3), blurRadius: 4)
                             ],
@@ -164,22 +160,28 @@ class _GridItemState extends State<GridItem> {
                               topLeft: Radius.circular(20),
                               bottomRight: Radius.circular(10),
                             )),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
                       ),
                     );
                   },
-                )),
-          ]),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
   }
 }
 
-void DiaglogCustom(BuildContext context) {
+void dialogCustom(BuildContext context) {
   Dialog errorDialog = Dialog(
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0)), //this right here
-    child: Container(
+    child: SizedBox(
       height: 300.0,
       width: 300.0,
       child: Column(
@@ -188,13 +190,13 @@ void DiaglogCustom(BuildContext context) {
           Container(
             alignment: Alignment.center,
             width: MediaQuery.sizeOf(context).width * 0.7,
-            child: Text(
-              "Thêm Giỏ Hàng Thành Công",
+            child: const Text(
+              "Thêm giỏ hàng thành công",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: 16),
+            margin: const EdgeInsets.symmetric(vertical: 16),
             child: Image.network(
                 width: 150,
                 height: 150,
@@ -210,8 +212,8 @@ void DiaglogCustom(BuildContext context) {
                 height: MediaQuery.sizeOf(context).height * 0.05,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: Color.fromARGB(255, 32, 74, 150)),
-                child: Text(
+                    color: const Color.fromARGB(255, 32, 74, 150)),
+                child: const Text(
                   'Trở về',
                   style: TextStyle(color: Colors.white, fontSize: 18.0),
                 ),

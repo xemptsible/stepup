@@ -28,9 +28,15 @@ class _CartPageState extends State<CartPage> {
 
   Future<List<CartItem>> _loadProData() async {
     SharePreHelper sharePreHelper = SharePreHelper();
-    proList = await sharePreHelper.getCartItemList();
-    Provider.of<ProductVMS>(context, listen: false).ListFromShared_pre(proList);
-    Provider.of<ProductVMS>(context, listen: false).totalPrice();
+    proList = await sharePreHelper.getCartItemList().then(
+      (list) {
+        Provider.of<ProductVMS>(context, listen: false)
+            .ListFromShared_pre(proList);
+        Provider.of<ProductVMS>(context, listen: false).totalPrice();
+        return proList;
+      },
+    );
+
     return proList;
   }
 
@@ -44,12 +50,12 @@ class _CartPageState extends State<CartPage> {
   Future<List<CartItem>> _loadCartData() async {
     SharePreHelper sharePreHelper = SharePreHelper();
     List<CartItem> lstPro = await sharePreHelper.getCartItemList().then(
-          (cart) {
-            return Provider.of<ProductVMS>(context, listen: false)
-                .ListFromShared_pre(cart);
-          },
-        ) ??
-        [];
+      (cart) {
+        return Provider.of<ProductVMS>(context, listen: false)
+            .ListFromShared_pre(cart);
+      },
+    );
+
     for (var element in lstPro) {
       print(element.product.name);
     }
@@ -60,7 +66,6 @@ class _CartPageState extends State<CartPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     product = _loadProData();
     cart = _loadCartData();
@@ -76,6 +81,7 @@ class _CartPageState extends State<CartPage> {
             const Expanded(child: CartList()),
             Container(
               decoration: const BoxDecoration(
+                color: Color.fromRGBO(236, 236, 243, 0.612),
                 border: Border(
                   top: BorderSide(width: 1, color: Colors.black26),
                 ),

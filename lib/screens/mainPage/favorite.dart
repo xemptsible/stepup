@@ -80,29 +80,23 @@ class _FavoritePageState extends State<FavoritePage> {
                           ),
                         ),
                       )
-                    : Center(
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.7,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(
-                                Icons.favorite_border,
-                                size: 100,
-                                color: Colors.grey,
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Text(
-                                "Không có sản phẩm yêu thích",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 54, 57, 99)),
-                              ),
-                            ],
-                          ),
+                    : Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              Icons.favorite_border,
+                              size: 100,
+                              color: Colors.black38,
+                            ),
+                            Text(
+                              "Không có sản phẩm yêu thích",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 54, 57, 99)),
+                            ),
+                          ],
                         ),
                       );
               },

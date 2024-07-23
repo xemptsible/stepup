@@ -25,9 +25,9 @@ class Checkout extends StatefulWidget {
 
 class _CheckoutState extends State<Checkout> {
   DateTime nowDate = DateTime.now();
-  TextEditingController _hoTenController = TextEditingController();
-  TextEditingController _diaChiController = TextEditingController();
-  TextEditingController _soDienThoaiController = TextEditingController();
+  final TextEditingController _hoTenController = TextEditingController();
+  final TextEditingController _diaChiController = TextEditingController();
+  final TextEditingController _soDienThoaiController = TextEditingController();
   List<Product> proList = [];
   Future<String> _loadProData() async {
     proList = await ReadData().loadProductData();
@@ -37,24 +37,25 @@ class _CheckoutState extends State<Checkout> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _loadProData();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final accountVMS = Provider.of<AccountVMS>(context, listen: false);
-      final account = accountVMS.currentAcc;
-      if (account != null) {
-        _hoTenController.text = account.UserName ?? '';
-        _diaChiController.text = account.Address ?? '';
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        final accountVMS = Provider.of<AccountVMS>(context, listen: false);
+        final account = accountVMS.currentAcc;
+        if (account != null) {
+          _hoTenController.text = account.UserName ?? '';
+          _diaChiController.text = account.Address ?? '';
 
-        if (account.PhoneNumber.toString().contains("null")) {
-          _soDienThoaiController.text = "";
-        } else {
-          _soDienThoaiController.text = account.PhoneNumber.toString();
+          if (account.PhoneNumber.toString().contains("null")) {
+            _soDienThoaiController.text = "";
+          } else {
+            _soDienThoaiController.text = account.PhoneNumber.toString();
+          }
         }
-      }
-    });
+      },
+    );
   }
 
   @override
@@ -115,60 +116,44 @@ class _CheckoutState extends State<Checkout> {
             Consumer<AccountVMS>(
               builder: (BuildContext context, AccountVMS value, Widget? child) {
                 return Container(
-                    margin: EdgeInsets.only(bottom: 30),
-                    // color: Colors.amber,
-                    child: Consumer<ProductVMS>(
-                      builder: (BuildContext context, ProductVMS valueOder,
-                          Widget? child) {
-                        return InkWell(
-                          onTap: () {
-                            List<CartItem> orderItem =
+                  margin: EdgeInsets.only(bottom: 30),
+                  // color: Colors.amber,
+                  child: Consumer<ProductVMS>(
+                    builder: (BuildContext context, ProductVMS valueOder,
+                        Widget? child) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: FilledButton.icon(
+                              onPressed: () {
+                                List<CartItem> orderItem =
+                                    Provider.of<ProductVMS>(context,
+                                            listen: false)
+                                        .lst;
+                                Order order = Order(
+                                    nameUser: value.currentAcc!.UserName!,
+                                    items: orderItem,
+                                    email: value.currentAcc!.Email!,
+                                    dateOrder: nowDate,
+                                    price: valueOder.total);
+                                print(order.toJson());
+
+                                ApiService apiService = ApiService();
+                                apiService.postOrder(order);
+
                                 Provider.of<ProductVMS>(context, listen: false)
-                                    .lst;
-                            Order order = Order(
-                                nameUser: value.currentAcc!.UserName!,
-                                items: orderItem,
-                                email: value.currentAcc!.Email!,
-                                dateOrder: nowDate,
-                                price: valueOder.total);
-                            print(order.toJson());
-
-                            ApiService apiService = ApiService();
-                            apiService.postOrder(order);
-
-                            Provider.of<ProductVMS>(context, listen: false)
-                                .clear();
-                            DiaglogCustom(context);
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.8,
-                            height: 50,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: Color.fromARGB(255, 26, 28, 127)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.credit_card_outlined,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "Thanh toán",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                )
-                              ],
+                                    .clear();
+                                dialogCustom(context);
+                              },
+                              label: Text('Thanh toán'),
+                              icon: Icon(Icons.credit_card),
                             ),
                           ),
-                        );
-                      },
-                    ));
+                        ],
+                      );
+                    },
+                  ),
+                );
               },
             )
           ],
@@ -207,7 +192,7 @@ Widget itemList(BuildContext context, Product shoe, int index) {
                   // color: Colors.amber,
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                         // color: Colors.amber,
                         width: MediaQuery.sizeOf(context).width,
                         height: MediaQuery.sizeOf(context).height * 0.135,
@@ -235,7 +220,7 @@ Widget item(Product shoe, int index) {
     children: <Widget>[
       Expanded(
         child: Text(
-          "${shoe.name!}",
+          shoe.name!,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
       ),
@@ -256,11 +241,11 @@ Widget item(Product shoe, int index) {
   );
 }
 
-void DiaglogCustom(BuildContext context) {
+void dialogCustom(BuildContext context) {
   Dialog errorDialog = Dialog(
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0)), //this right here
-    child: Container(
+    child: SizedBox(
       height: 300.0,
       width: 300.0,
       child: Column(
@@ -315,7 +300,7 @@ void DiaglogCustom(BuildContext context) {
 }
 
 Widget _inputField(
-    String label, TextEditingController _textController, TextInputType type) {
+    String label, TextEditingController textController, TextInputType type) {
   return SingleChildScrollView(
     child: Container(
       child: Column(
@@ -342,7 +327,7 @@ Widget _inputField(
               ),
             ),
             child: TextFormField(
-              controller: _textController,
+              controller: textController,
               keyboardType: type,
               decoration: InputDecoration(border: InputBorder.none),
               validator: (value) {
