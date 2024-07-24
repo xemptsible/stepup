@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:stepup/data/api/api.dart';
 import 'package:stepup/data/providers/brand_vm.dart';
 import 'package:stepup/data/providers/favorite_vm.dart';
 import 'package:stepup/widgets/filtedProducts/GridItem.dart';
+import 'package:stepup/widgets/filtedProducts/grid_item.dart';
 
 import '../../data/models/product_model.dart';
 import '../../data/providers/product_vm.dart';
@@ -22,6 +21,12 @@ class _ProductListState extends State<ProductList> {
   List<Product> proList = [];
   List<Product> proFavoritedLst = [];
   bool isLoading = false;
+
+  late Future<List<Product>> Function() shoesByBrand;
+  late Future shoes;
+
+  late Function test;
+
   Future<String> _loadProData() async {
     ApiService apiService = ApiService();
     isLoading = true;
@@ -33,14 +38,14 @@ class _ProductListState extends State<ProductList> {
     return '';
   }
 
-  Future<String> _loadProDataUseBrand(String name) async {
+  Future<List<Product>> _loadProDataUseBrand(String name) async {
     isLoading = true;
     proList = await ReadData().loadProductUseBrand(name);
     isLoading = false;
     if (proList.length > 6) {
       proList = proList.sublist(0, 6);
     }
-    return '';
+    return proList;
   }
 
   Future<String> _loadUserFavoriteList() async {
@@ -64,7 +69,8 @@ class _ProductListState extends State<ProductList> {
   @override
   void initState() {
     super.initState();
-    _loadProDataUseBrand("Nike");
+    _loadProDataUseBrand('');
+    shoes = _loadProData();
   }
 
   @override
@@ -73,7 +79,7 @@ class _ProductListState extends State<ProductList> {
       builder: (context, brandVM, child) {
         return FutureBuilder(
           future: brandVM.selectedIndex == 0
-              ? _loadProData()
+              ? shoes
               : _loadProDataUseBrand(brandVM.selectedBrand),
           builder: (BuildContext context, snapshot) {
             return isLoading
@@ -87,10 +93,8 @@ class _ProductListState extends State<ProductList> {
                           physics: const ScrollPhysics(),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 0.8,
+                            childAspectRatio: 0.764,
                             crossAxisCount: 2,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 1,
                           ),
                           itemCount: proList.length,
                           itemBuilder: (context, index) {
@@ -98,14 +102,8 @@ class _ProductListState extends State<ProductList> {
                             final isFavorited =
                                 proFavoritedLst.any((e) => e.id == product.id);
 
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, "/productDetail",
-                                    arguments: product);
-                              },
-                              child: GridItem(
-                                product: product,
-                              ),
+                            return GridItem2(
+                              product: product,
                             );
                           },
                         );

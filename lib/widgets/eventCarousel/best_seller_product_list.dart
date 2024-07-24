@@ -65,7 +65,7 @@ class _BestSellerProductListState extends State<BestSellerProductList> {
                 });
               },
               enableInfiniteScroll: false,
-              enlargeCenterPage: true,
+              enlargeCenterPage: false,
               height: MediaQuery.of(context).size.height * 0.2,
               viewportFraction: 0.8,
               autoPlay: true,

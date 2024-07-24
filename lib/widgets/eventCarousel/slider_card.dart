@@ -20,7 +20,7 @@ class SliderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 5),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -32,7 +32,7 @@ class SliderCard extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 width: 130,
                 child: Text(
                   maxLines: 2,
@@ -44,7 +44,7 @@ class SliderCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: 120,
                 child: Text(
                   textAlign: TextAlign.center,
@@ -63,7 +63,7 @@ class SliderCard extends StatelessWidget {
             height: 80,
             fit: BoxFit.cover,
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           )
         ],
