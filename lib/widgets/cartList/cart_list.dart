@@ -101,9 +101,10 @@ class _CartListState extends State<CartList> {
                             value.del(index);
                           });
                         },
-                        key: Key(
-                          value.lst[index].product.name.toString(),
-                        ),
+                        key: UniqueKey(),
+                        // Key(
+                        //   value.lst[index].product.name.toString(),
+                        // ),
                         child: itemListView(context, value.lst[index], index));
                   },
                 ),
