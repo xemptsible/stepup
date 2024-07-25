@@ -79,6 +79,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
           ],
         ),
         body: PageView(
+          // physics: const NeverScrollableScrollPhysics(),
           controller: _pageController,
           onPageChanged: (index) {
             setState(() {

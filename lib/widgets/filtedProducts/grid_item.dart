@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +22,25 @@ class GridItem extends StatefulWidget {
 List<CartItem> proList = [];
 
 class _GridItemState extends State<GridItem> {
+  IconData cartIcon = Icons.add;
+  bool _pressed = false;
+  _addedToCartVisual() {
+    setState(() {
+      _pressed = !_pressed;
+      cartIcon = Icons.check;
+    });
+    Timer(
+      const Duration(milliseconds: 750),
+      () {
+        setState(
+          () {
+            cartIcon = Icons.add;
+          },
+        );
+      },
+    );
+  }
+
   Future<List<CartItem>> loadProData() async {
     SharePreHelper sharePreHelper = SharePreHelper();
     proList = await sharePreHelper.getCartItemList().then(
@@ -108,17 +129,18 @@ class _GridItemState extends State<GridItem> {
                     child: Consumer<ProductVMS>(
                       builder: (context, value, child) {
                         return MaterialButton(
-                          onPressed: () {
-                            CartItem cartItem =
-                                CartItem(product: widget.product, quantity: 1);
-                            cart.add(cartItem);
-                          },
                           color: Theme.of(context).primaryColor,
                           minWidth: 48,
                           height: 48,
                           padding: EdgeInsets.zero,
-                          child: const Icon(
-                            Icons.add,
+                          onPressed: () {
+                            CartItem cartItem =
+                                CartItem(product: widget.product, quantity: 1);
+                            cart.add(cartItem);
+                            _addedToCartVisual();
+                          },
+                          child: Icon(
+                            cartIcon,
                             color: Colors.white,
                           ),
                         );

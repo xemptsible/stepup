@@ -141,52 +141,49 @@ Widget itemListView(BuildContext context, CartItem shoe, int index) {
                 // child: thumbnail,
               ),
               Expanded(
-                child: Container(
-                  // color: Colors.amber,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        // color: Colors.amber,
-                        width: MediaQuery.sizeOf(context).width,
-                        height: MediaQuery.sizeOf(context).height * 0.135,
-                        // color: Colors.red,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8, left: 10),
-                          child: Shoe(
-                            name: shoe.product.name!,
-                            brand: shoe.product.brand.toString(),
-                            // discount: shoe.discount,
-                            price: double.parse(shoe.product.price.toString()),
-                            size: shoe.size!,
-                          ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      // color: Colors.amber,
+                      width: MediaQuery.sizeOf(context).width,
+                      height: MediaQuery.sizeOf(context).height * 0.135,
+                      // color: Colors.red,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8, left: 10),
+                        child: Shoe(
+                          name: shoe.product.name!,
+                          brand: shoe.product.brand.toString(),
+                          // discount: shoe.discount,
+                          price: double.parse(shoe.product.price.toString()),
+                          size: shoe.size!,
                         ),
                       ),
-                      SizedBox(
-                        height: 40,
-                        // color: Colors.amberAccent,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                                left: 10,
-                                child: Container(
-                                  width: MediaQuery.sizeOf(context).width * 0.3,
-                                  height:
-                                      MediaQuery.sizeOf(context).height * 0.05,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  // color: Color.fromARGB(255, 57, 82, 196),
-                                  child: QuantityWidget(
-                                    shoe: shoe.product,
-                                    quantity: shoe.quantity!,
-                                    index: index,
-                                  ),
-                                ))
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 40,
+                      // color: Colors.amberAccent,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            left: 10,
+                            child: Container(
+                              width: MediaQuery.sizeOf(context).width * 0.3,
+                              height: MediaQuery.sizeOf(context).height * 0.05,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              // color: Color.fromARGB(255, 57, 82, 196),
+                              child: QuantityWidget(
+                                shoe: shoe.product,
+                                quantity: shoe.quantity!,
+                                index: index,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
               ),
             ],
