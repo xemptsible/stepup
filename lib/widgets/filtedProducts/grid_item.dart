@@ -24,17 +24,20 @@ List<CartItem> proList = [];
 class _GridItemState extends State<GridItem> {
   IconData cartIcon = Icons.add;
   bool _pressed = false;
+  late Timer timer;
+
   _addedToCartVisual() {
     setState(() {
       _pressed = !_pressed;
       cartIcon = Icons.check;
     });
-    Timer(
-      const Duration(milliseconds: 750),
+    timer = Timer(
+      Durations.long2,
       () {
         setState(
           () {
             cartIcon = Icons.add;
+            timer.cancel();
           },
         );
       },
@@ -44,11 +47,11 @@ class _GridItemState extends State<GridItem> {
   Future<List<CartItem>> loadProData() async {
     SharePreHelper sharePreHelper = SharePreHelper();
     proList = await sharePreHelper.getCartItemList().then(
-      (value) {
+      (list) {
         Provider.of<ProductVMS>(context, listen: false)
-            .listFromSharedPref(proList);
+            .listFromSharedPref(list);
         Provider.of<ProductVMS>(context, listen: false).totalPrice();
-        return proList;
+        return list;
       },
     );
 
@@ -134,10 +137,10 @@ class _GridItemState extends State<GridItem> {
                           height: 48,
                           padding: EdgeInsets.zero,
                           onPressed: () {
+                            _addedToCartVisual();
                             CartItem cartItem =
                                 CartItem(product: widget.product, quantity: 1);
                             cart.add(cartItem);
-                            _addedToCartVisual();
                           },
                           child: Icon(
                             cartIcon,

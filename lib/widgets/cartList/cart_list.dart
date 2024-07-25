@@ -24,12 +24,11 @@ class _CartListState extends State<CartList> {
   Future<List<CartItem>> _loadCartData() async {
     SharePreHelper sharePreHelper = SharePreHelper();
     List<CartItem> lstPro = await sharePreHelper.getCartItemList().then(
-          (cart) {
-            return Provider.of<ProductVMS>(context, listen: false)
-                .listFromSharedPref(cart);
-          },
-        ) ??
-        [];
+      (cart) {
+        return Provider.of<ProductVMS>(context, listen: false)
+            .listFromSharedPref(cart);
+      },
+    );
     for (var element in lstPro) {
       print(element.product.name);
     }
@@ -75,9 +74,9 @@ class _CartListState extends State<CartList> {
                     return Dismissible(
                         direction: DismissDirection.endToStart,
                         background: Container(
-                          padding: const EdgeInsets.only(right: 50),
+                          // padding: const EdgeInsets.only(right: 50),
                           alignment: Alignment.centerRight,
-                          color: Colors.red,
+                          color: Colors.red[800],
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -85,9 +84,6 @@ class _CartListState extends State<CartList> {
                                 'Xóa khỏi giỏ hàng',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20),
-                              ),
-                              SizedBox(
-                                width: 50,
                               ),
                               Icon(
                                 Icons.delete,

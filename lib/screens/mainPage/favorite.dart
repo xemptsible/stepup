@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:stepup/data/models/product_model.dart';
 import 'package:stepup/data/providers/favorite_vm.dart';
 import 'package:stepup/data/providers/provider.dart';
-import 'package:stepup/widgets/filtedProducts/GridItem.dart';
+import 'package:stepup/widgets/filtedProducts/old_grid_item.dart';
 import 'package:stepup/widgets/filtedProducts/grid_item.dart';
 
 class FavoritePage extends StatefulWidget {

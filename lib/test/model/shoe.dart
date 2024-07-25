@@ -33,7 +33,7 @@ class Shoe extends StatelessWidget {
           ),
         ),
         Text(
-          "Size: " + size.toString(),
+          "Size: $size",
         ),
         Text(
           '${NumberFormat('###,###.###').format(price)}đ',
