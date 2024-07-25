@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/data/providers/filter_vm.dart';
 import 'package:stepup/data/providers/product_vm.dart';
+import 'package:stepup/widgets/filtedProducts/grid_item.dart';
 
 import 'package:stepup/widgets/filter/filter_widget.dart';
 
 import '../../data/models/product_model.dart';
 import '../../data/providers/provider.dart';
-import '../../widgets/filtedProducts/GridItem.dart';
 
 class SearchPage extends StatefulWidget {
   bool? isSearch = false;
@@ -64,7 +64,7 @@ class _SearchPageState extends State<SearchPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(!widget.isSearch! ? "Sản Phẩm" : "Tìm kiếm"),
+          title: Text(!widget.isSearch! ? "Sản phẩm" : "Tìm kiếm"),
         ),
         body: SingleChildScrollView(
           child: ChangeNotifierProvider<ProductVMS>(
@@ -166,7 +166,6 @@ class _SearchPageState extends State<SearchPage> {
                               )
                             : SingleChildScrollView(
                                 child: Container(
-                                  color: Colors.white,
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 8),
                                   child: Column(
@@ -176,16 +175,13 @@ class _SearchPageState extends State<SearchPage> {
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.7,
-                                        child: Container(
-                                            child: Consumer<ProductVMS>(
+                                        child: Consumer<ProductVMS>(
                                           builder: (context, myType, child) {
                                             return GridView.builder(
                                               gridDelegate:
                                                   const SliverGridDelegateWithFixedCrossAxisCount(
-                                                childAspectRatio: 0.8,
+                                                childAspectRatio: 0.764,
                                                 crossAxisCount: 2,
-                                                mainAxisSpacing: 10,
-                                                crossAxisSpacing: 1,
                                               ),
                                               itemCount: proList.length,
                                               itemBuilder: (context, index) {
@@ -200,15 +196,15 @@ class _SearchPageState extends State<SearchPage> {
                                                                 proList[index]);
                                                       },
                                                       child: GridItem(
-                                                          product:
-                                                              proList[index]),
+                                                        product: proList[index],
+                                                      ),
                                                     ),
                                                   ),
                                                 );
                                               },
                                             );
                                           },
-                                        )),
+                                        ),
                                       ),
                                     ],
                                   ),

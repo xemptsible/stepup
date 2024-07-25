@@ -9,21 +9,21 @@ import '../../data/models/product_model.dart';
 import '../../data/providers/favorite_vm.dart';
 import '../../utilities/const.dart';
 
-class GridItem extends StatefulWidget {
+class OldGridItem extends StatefulWidget {
   final Product product;
 
-  const GridItem({
+  const OldGridItem({
     super.key,
     required this.product,
   });
 
   @override
-  State<GridItem> createState() => _GridItemState();
+  State<OldGridItem> createState() => _OldGridItemState();
 }
 
 List<CartItem> proList = [];
 
-class _GridItemState extends State<GridItem> {
+class _OldGridItemState extends State<OldGridItem> {
   Future<List<CartItem>> _loadProData() async {
     SharePreHelper sharePreHelper = SharePreHelper();
     proList = await sharePreHelper.getCartItemList().then(

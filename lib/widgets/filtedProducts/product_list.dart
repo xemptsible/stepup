@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:stepup/data/api/api.dart';
 import 'package:stepup/data/providers/brand_vm.dart';
 import 'package:stepup/data/providers/favorite_vm.dart';
-import 'package:stepup/widgets/filtedProducts/GridItem.dart';
 import 'package:stepup/widgets/filtedProducts/grid_item.dart';
 
 import '../../data/models/product_model.dart';
-import '../../data/providers/product_vm.dart';
 import '../../data/providers/provider.dart';
 import 'package:provider/provider.dart';
 
@@ -99,10 +97,8 @@ class _ProductListState extends State<ProductList> {
                           itemCount: proList.length,
                           itemBuilder: (context, index) {
                             final product = proList[index];
-                            final isFavorited =
-                                proFavoritedLst.any((e) => e.id == product.id);
 
-                            return GridItem2(
+                            return GridItem(
                               product: product,
                             );
                           },

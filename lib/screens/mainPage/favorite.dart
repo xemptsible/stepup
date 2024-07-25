@@ -6,6 +6,7 @@ import 'package:stepup/data/models/product_model.dart';
 import 'package:stepup/data/providers/favorite_vm.dart';
 import 'package:stepup/data/providers/provider.dart';
 import 'package:stepup/widgets/filtedProducts/GridItem.dart';
+import 'package:stepup/widgets/filtedProducts/grid_item.dart';
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
@@ -42,7 +43,6 @@ class _FavoritePageState extends State<FavoritePage> {
                     ? SingleChildScrollView(
                         child: Container(
                           // height: MediaQuery.of(context).size.height,
-                          color: Colors.white,
                           padding: EdgeInsets.symmetric(horizontal: 8),
                           child: Column(
                             children: [
@@ -54,10 +54,8 @@ class _FavoritePageState extends State<FavoritePage> {
                                   child: GridView.builder(
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
-                                      childAspectRatio: 0.8,
+                                      childAspectRatio: 0.764,
                                       crossAxisCount: 2,
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 1,
                                     ),
                                     itemCount: proList.length,
                                     itemBuilder: (context, index) {
@@ -70,7 +68,8 @@ class _FavoritePageState extends State<FavoritePage> {
                                                   arguments: proList[index]);
                                             },
                                             child: GridItem(
-                                                product: proList[index]),
+                                              product: proList[index],
+                                            ),
                                           ),
                                         ),
                                       );

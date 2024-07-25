@@ -5,6 +5,7 @@ import 'package:stepup/data/models/cart_item.dart';
 import 'package:stepup/data/models/product_model.dart';
 import 'package:stepup/data/providers/favorite_vm.dart';
 import 'package:stepup/data/providers/product_vm.dart';
+import 'package:stepup/data/shared_preferences/sharedPre.dart';
 import 'package:stepup/utilities/const.dart';
 
 class GridItem extends StatefulWidget {
@@ -16,12 +17,33 @@ class GridItem extends StatefulWidget {
   State<StatefulWidget> createState() => _GridItemState();
 }
 
+List<CartItem> proList = [];
+
 class _GridItemState extends State<GridItem> {
+  Future<List<CartItem>> loadProData() async {
+    SharePreHelper sharePreHelper = SharePreHelper();
+    proList = await sharePreHelper.getCartItemList().then(
+      (value) {
+        Provider.of<ProductVMS>(context, listen: false)
+            .listFromSharedPref(proList);
+        Provider.of<ProductVMS>(context, listen: false).totalPrice();
+        return proList;
+      },
+    );
+
+    return proList;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadProData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer2<FavoriteVm, ProductVM>(
+    return Consumer2<FavoriteVm, ProductVMS>(
       builder: (context, favorite, cart, child) {
-        CartItem cartItem = CartItem(product: widget.product, quantity: 1);
         bool isFavorited = favorite.isProductFavorited(widget.product);
         return Card.outlined(
           elevation: 8,
@@ -83,18 +105,24 @@ class _GridItemState extends State<GridItem> {
                       topLeft: Radius.circular(20),
                     ),
                     clipBehavior: Clip.antiAlias,
-                    child: MaterialButton(
-                      onPressed: () {
-                        cart.add(cartItem);
+                    child: Consumer<ProductVMS>(
+                      builder: (context, value, child) {
+                        return MaterialButton(
+                          onPressed: () {
+                            CartItem cartItem =
+                                CartItem(product: widget.product, quantity: 1);
+                            cart.add(cartItem);
+                          },
+                          color: Theme.of(context).primaryColor,
+                          minWidth: 48,
+                          height: 48,
+                          padding: EdgeInsets.zero,
+                          child: const Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          ),
+                        );
                       },
-                      color: Theme.of(context).primaryColor,
-                      minWidth: 48,
-                      height: 48,
-                      padding: EdgeInsets.zero,
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
                     ),
                   ),
                 ),
