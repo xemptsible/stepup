@@ -5,41 +5,24 @@ import 'package:stepup/data/models/cart_item.dart';
 import 'package:stepup/data/models/product_model.dart';
 import 'package:stepup/data/providers/favorite_vm.dart';
 import 'package:stepup/data/providers/product_vm.dart';
-import 'package:stepup/data/shared_preferences/sharedPre.dart';
 import 'package:stepup/utilities/const.dart';
 
-class GridItem2 extends StatefulWidget {
-  const GridItem2({super.key, required this.product});
+class GridItem extends StatefulWidget {
+  const GridItem({super.key, required this.product});
 
   final Product product;
 
   @override
-  State<StatefulWidget> createState() => _GridItem2State();
+  State<StatefulWidget> createState() => _GridItemState();
 }
 
-class _GridItem2State extends State<GridItem2> {
-  List<CartItem> proList = [];
-
-  Future<List<CartItem>> _loadProData() async {
-    SharePreHelper sharePreHelper = SharePreHelper();
-    proList = await sharePreHelper.getCartItemList().then(
-      (value) {
-        Provider.of<ProductVMS>(context, listen: false)
-            .listFromSharedPref(proList);
-        Provider.of<ProductVMS>(context, listen: false).totalPrice();
-        return proList;
-      },
-    );
-    return proList;
-  }
-
+class _GridItemState extends State<GridItem> {
   @override
   Widget build(BuildContext context) {
-    return Consumer2<FavoriteVm, ProductVMS>(
+    return Consumer2<FavoriteVm, ProductVM>(
       builder: (context, favorite, cart, child) {
         CartItem cartItem = CartItem(product: widget.product, quantity: 1);
         bool isFavorited = favorite.isProductFavorited(widget.product);
-        bool isInCart = cart.isInCart(cartItem);
         return Card.outlined(
           elevation: 8,
           surfaceTintColor: Colors.white,
@@ -57,7 +40,7 @@ class _GridItem2State extends State<GridItem2> {
                   children: <Widget>[
                     Container(
                       padding: const EdgeInsets.only(top: 36),
-                      color: Colors.grey[200],
+                      // color: Colors.grey[200],
                       child: Image.asset(
                         height: 120,
                         width: double.infinity,
@@ -101,7 +84,9 @@ class _GridItem2State extends State<GridItem2> {
                     ),
                     clipBehavior: Clip.antiAlias,
                     child: MaterialButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        cart.add(cartItem);
+                      },
                       color: Theme.of(context).primaryColor,
                       minWidth: 48,
                       height: 48,
@@ -116,8 +101,21 @@ class _GridItem2State extends State<GridItem2> {
                 Align(
                   alignment: Alignment.topRight,
                   child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.favorite_border),
+                    onPressed: () {
+                      setState(
+                        () {
+                          favorite.addFavorite(widget.product);
+                          isFavorited =
+                              favorite.isProductFavorited(widget.product);
+                        },
+                      );
+                    },
+                    icon: isFavorited
+                        ? const Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          )
+                        : const Icon(Icons.favorite_border),
                   ),
                 ),
               ],
@@ -128,28 +126,3 @@ class _GridItem2State extends State<GridItem2> {
     );
   }
 }
-
-                
-
-                // InkWell(
-                //     borderRadius: const BorderRadius.only(
-                //       topLeft: Radius.circular(20),
-                //     ),
-                //     onTap: () => print('test'),
-                //     child: Ink(
-                //       decoration: BoxDecoration(
-                //           boxShadow: const [
-                //             BoxShadow(offset: Offset(1, 3), blurRadius: 10)
-                //           ],
-                //           borderRadius: const BorderRadius.only(
-                //             topLeft: Radius.circular(20),
-                //           ),
-                //           color: Theme.of(context).primaryColor),
-                //       height: 48,
-                //       width: 48,
-                //       child: const Icon(
-                //         Icons.add,
-                //         color: Colors.white,
-                //       ),
-                //     ),
-                //   ),
