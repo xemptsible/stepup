@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stepup/data/models/cart_item.dart';
 import 'package:stepup/data/models/product_model.dart';
-import 'package:stepup/data/providers/product_vm.dart';
 
 import 'package:stepup/data/shared_preferences/user.dart';
 
@@ -51,7 +49,7 @@ class SharePreHelper {
 
   Future<List<CartItem>> getCartItemList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? strCartItemList = await prefs.getStringList("cart");
+    List<String>? strCartItemList = prefs.getStringList("cart");
     if (strCartItemList != null) {
       return strCartItemList
           .map((strCartItem) => CartItem.fromJson(jsonDecode(strCartItem)))
@@ -70,7 +68,7 @@ class SharePreHelper {
 
   Future<List<Product>> getFavoriteItemList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? strFavoriteList = await prefs.getStringList("favorite");
+    List<String>? strFavoriteList = prefs.getStringList("favorite");
     if (strFavoriteList != null) {
       return strFavoriteList
           .map((strFavoriteList) =>

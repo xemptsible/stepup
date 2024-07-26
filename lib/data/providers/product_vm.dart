@@ -1,11 +1,7 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stepup/data/models/cart_item.dart';
-import 'package:stepup/data/models/product_model.dart';
-import 'package:stepup/data/providers/quantity_vm.dart';
 import 'package:stepup/data/shared_preferences/sharedPre.dart';
 
 class ProductVMS with ChangeNotifier {

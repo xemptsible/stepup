@@ -20,7 +20,7 @@ class _DetailHistoryState extends State<DetailHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chi Tiết Đơn Hàng"),
+        title: const Text("Chi Tiết Đơn Hàng"),
       ),
       body: ListView.builder(
         itemCount: widget.order.items.length,
@@ -34,14 +34,14 @@ class _DetailHistoryState extends State<DetailHistory> {
 
 Widget ListItem(Order order, int index) {
   return Card(
-    margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
     child: Container(
       decoration: BoxDecoration(
         border: Border.all(width: 1),
         borderRadius: BorderRadius.circular(10),
       ),
       height: 90,
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -54,7 +54,7 @@ Widget ListItem(Order order, int index) {
           Expanded(
             flex: 3,
             child: Container(
-              margin: EdgeInsets.only(left: 16),
+              margin: const EdgeInsets.only(left: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -66,15 +66,15 @@ Widget ListItem(Order order, int index) {
                     ),
                   ),
                   Text(
-                    "Số Lượng : " + order.items[index].quantity.toString(),
-                    style: TextStyle(
+                    "Số Lượng : ${order.items[index].quantity}",
+                    style: const TextStyle(
                       fontSize: 16,
                     ),
                   ),
                   Container(
                     child: Text(
                       'Giá: ${NumberFormat('###,###.###').format(order.items[index].product.price)}đ',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),

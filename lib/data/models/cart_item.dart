@@ -8,16 +8,16 @@ class CartItem {
   CartItem({required this.product, this.quantity, this.size});
 
   setIncreaseQuantity(int i) {
-    this.quantity = quantity! + i;
-    print("tang ${this.quantity}");
+    quantity = quantity! + i;
+    print("tang $quantity");
   }
 
   setDecreaseQuantity(int i) {
-    if (this.quantity! <= 1) {
+    if (quantity! <= 1) {
       print("Khong the tru");
     } else {
-      this.quantity = quantity! - i;
-      print("tang ${this.quantity}");
+      quantity = quantity! - i;
+      print("tang $quantity");
     }
   }
 

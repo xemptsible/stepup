@@ -16,7 +16,7 @@ class _FilterWidgetState extends State<FilterWidget> {
   int _selectedIndex = 0;
   int indexSelect = 0;
   String selectedBrand = '';
-  RangeValues selectedPrice = RangeValues(0, 10);
+  RangeValues selectedPrice = const RangeValues(0, 10);
   int selectedSize = 0;
   bool isAscendingPrice = false;
 
@@ -25,22 +25,22 @@ class _FilterWidgetState extends State<FilterWidget> {
     return Consumer<FilterVMS>(
       builder: (context, filterVMS, child) {
         return Container(
-          padding: EdgeInsets.only(left: 25, top: 20),
+          padding: const EdgeInsets.only(left: 25, top: 20),
           width: MediaQuery.sizeOf(context).width,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Sắp xếp và lọc",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Container(
-                  padding: EdgeInsets.only(right: 30),
-                  child: Row(
+                  padding: const EdgeInsets.only(right: 30),
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
@@ -56,19 +56,19 @@ class _FilterWidgetState extends State<FilterWidget> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
-                BrandGrid(),
-                SizedBox(
+                const BrandGrid(),
+                const SizedBox(
                   height: 10,
                 ),
                 Container(
-                  padding: EdgeInsets.only(right: 30),
+                  padding: const EdgeInsets.only(right: 30),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Lọc theo size",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w500),
@@ -77,7 +77,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                         onTap: () {
                           filterVMS.removeSizeFilter();
                         },
-                        child: Text(
+                        child: const Text(
                           "Bỏ lọc",
                           style: TextStyle(
                               fontSize: 16,
@@ -88,10 +88,10 @@ class _FilterWidgetState extends State<FilterWidget> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: 40,
                   child: ListView.builder(
@@ -105,7 +105,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                             filterVMS.selectSize(selectedSize);
                           }),
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Container(
                                 width: 35,
                                 decoration: BoxDecoration(
@@ -114,7 +114,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                                             ? 0
                                             : 1),
                                     color: filterVMS.size - 40 == index
-                                        ? Color.fromARGB(255, 26, 28, 127)
+                                        ? const Color.fromARGB(255, 26, 28, 127)
                                         : Colors.white,
                                     shape: BoxShape.circle),
                                 child: Center(
@@ -129,15 +129,15 @@ class _FilterWidgetState extends State<FilterWidget> {
                         );
                       }),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Container(
-                  padding: EdgeInsets.only(right: 30),
+                  padding: const EdgeInsets.only(right: 30),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Giá",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w500),
@@ -146,7 +146,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                         onTap: () {
                           filterVMS.removePriceFilter();
                         },
-                        child: Text(
+                        child: const Text(
                           "Bỏ lọc",
                           style: TextStyle(
                               fontSize: 16,
@@ -157,14 +157,14 @@ class _FilterWidgetState extends State<FilterWidget> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                PriceSlider(),
-                SizedBox(
+                const PriceSlider(),
+                const SizedBox(
                   height: 10,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 )
               ],

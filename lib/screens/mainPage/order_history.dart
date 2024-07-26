@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:stepup/data/api/api.dart';
 import 'package:stepup/data/models/order_model.dart';
 import 'package:stepup/data/providers/account_vm.dart';
 import 'package:stepup/data/providers/provider.dart';
@@ -53,12 +52,12 @@ class OrderHistoryState extends State<OrderHistory> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image.asset(
-                                  urlimg + "empty_order.png",
+                                  "${urlimg}empty_order.png",
                                   width: 150,
                                   height: 150,
                                 ),
-                                SizedBox(height: 16),
-                                Text(
+                                const SizedBox(height: 16),
+                                const Text(
                                   "Tài khoản chưa có đơn hàng",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -95,7 +94,7 @@ class OrderHistoryState extends State<OrderHistory> {
 //           }
 
 Widget ListItem(int index, Order order, BuildContext context) {
-  String orderDate = DateFormat('dd/MM/yyyy').format(order.dateOrder!);
+  String orderDate = DateFormat('dd/MM/yyyy').format(order.dateOrder);
   return InkWell(
     onTap: () {
       Navigator.push(

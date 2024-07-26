@@ -20,7 +20,7 @@ class _GuidePageState extends State<GuidePage> {
       initialVideoId: YoutubePlayer.convertUrlToId(
               "https://www.youtube.com/watch?v=FOLTnk8WUg4")
           .toString(),
-      flags: YoutubePlayerFlags(
+      flags: const YoutubePlayerFlags(
         autoPlay: false,
         mute: false,
       ),
@@ -38,28 +38,28 @@ class _GuidePageState extends State<GuidePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Hướng dẫn"),
+          title: const Text("Hướng dẫn"),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               _youtubeController.pause();
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => App()));
+                  context, MaterialPageRoute(builder: (context) => const App()));
             },
           ),
         ),
-        body: Container(
+        body: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: YoutubePlayer(controller: _youtubeController)),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
-              Container(
+              SizedBox(
                 height: MediaQuery.of(context).size.height * 0.5,
                 child: ListView.builder(
                     itemCount: 4,
@@ -87,19 +87,19 @@ class _GuidePageState extends State<GuidePage> {
                               switch (index) {
                                 case 0:
                                   _youtubeController
-                                      .seekTo(Duration(seconds: 0));
+                                      .seekTo(const Duration(seconds: 0));
                                   break;
                                 case 1:
                                   _youtubeController
-                                      .seekTo(Duration(seconds: 220));
+                                      .seekTo(const Duration(seconds: 220));
                                   break;
                                 case 2:
                                   _youtubeController
-                                      .seekTo(Duration(seconds: 320));
+                                      .seekTo(const Duration(seconds: 320));
                                   break;
                                 case 3:
                                   _youtubeController
-                                      .seekTo(Duration(seconds: 500));
+                                      .seekTo(const Duration(seconds: 500));
                                   break;
                               }
                             });
@@ -120,7 +120,7 @@ Widget FunctionSelect(BuildContext context, String text, bool isSelected) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
     child: Container(
-        padding: EdgeInsets.all(30),
+        padding: const EdgeInsets.all(30),
         decoration: BoxDecoration(
             border: isSelected ? null : Border.all(width: 0.5),
             color: isSelected ? Colors.blue : Colors.white),

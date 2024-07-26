@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class FilterVMS with ChangeNotifier {
   String brand = 'Tất cả';
-  RangeValues price = RangeValues(100000, 3000000);
+  RangeValues price = const RangeValues(100000, 3000000);
   int size = 40;
   bool ascendingPrice = false;
   int brandSelectedIndex = 0;
@@ -13,18 +13,18 @@ class FilterVMS with ChangeNotifier {
     this.price = price;
     this.size = size;
     print(
-        "${brand}, Gía: ${price}, Size: ${size}, Gía tăng: ${ascendingPrice}");
+        "$brand, Gía: $price, Size: $size, Gía tăng: $ascendingPrice");
     notifyListeners();
   }
 
   bool isSelectedSize(int index) {
-    print("size: ${sizeIndex}, index: ${index}");
+    print("size: $sizeIndex, index: $index");
     return sizeIndex == index ? true : false;
   }
 
   selectSize(int size) {
     this.size = size;
-    print("size: ${size}, ");
+    print("size: $size, ");
     notifyListeners();
   }
 
@@ -39,12 +39,12 @@ class FilterVMS with ChangeNotifier {
   }
 
   removePriceFilter() {
-    price = RangeValues(0, 0);
+    price = const RangeValues(0, 0);
     notifyListeners();
   }
 
   select(String brand, int index) {
-    this.brandSelectedIndex = index;
+    brandSelectedIndex = index;
     this.brand = brand;
     print(this.brand);
     notifyListeners();

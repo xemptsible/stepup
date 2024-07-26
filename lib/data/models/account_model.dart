@@ -18,23 +18,23 @@ class Account {
       this.Image});
 
   setUserName(String name) {
-    this.UserName = name;
+    UserName = name;
   }
 
   setAdress(String address) {
-    this.Address = address;
+    Address = address;
   }
 
   setPhoneNumber(int phone) {
-    this.PhoneNumber = phone;
+    PhoneNumber = phone;
   }
 
   setBirthDay(DateTime birthDay) {
-    this.BirthDay = birthDay;
+    BirthDay = birthDay;
   }
 
   setImage(String img) {
-    this.Image = img;
+    Image = img;
   }
 
   Account.fromJsonApi(Map<String, dynamic> json) {
@@ -59,7 +59,7 @@ class Account {
       'UserName': UserName,
       'Address': Address,
       'PhoneNumber': PhoneNumber,
-      'BirthDay': BirthDay!.toIso8601String() ?? null,
+      'BirthDay': BirthDay!.toIso8601String(),
       'Image': Image,
     };
   }

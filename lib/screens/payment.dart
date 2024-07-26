@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:stepup/utilities/const.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -21,7 +20,7 @@ class _PaymentPageState extends State<PaymentPage> {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.1,
               child: Row(
                 children: [
@@ -55,7 +54,7 @@ class _PaymentPageState extends State<PaymentPage> {
                               width: 50,
                               margin: EdgeInsets.symmetric(horizontal: 16),
                               child: Image.asset(
-                                urlimg + "anh1.png",
+                                "${urlimg}anh1.png",
                                 height: 100,
                                 errorBuilder: (context, error, stackTrace) =>
                                     Icon(Icons.image),
@@ -92,7 +91,7 @@ class _PaymentPageState extends State<PaymentPage> {
                               width: 50,
                               margin: EdgeInsets.symmetric(horizontal: 16),
                               child: Image.asset(
-                                urlimg + "anh2.png",
+                                "${urlimg}anh2.png",
                                 height: 100,
                                 errorBuilder: (context, error, stackTrace) =>
                                     Icon(Icons.image),
@@ -128,7 +127,7 @@ class _PaymentPageState extends State<PaymentPage> {
                               width: 50,
                               margin: EdgeInsets.symmetric(horizontal: 16),
                               child: Image.asset(
-                                urlimg + "anh3.png",
+                                "${urlimg}anh3.png",
                                 height: 100,
                                 errorBuilder: (context, error, stackTrace) =>
                                     Icon(Icons.image),

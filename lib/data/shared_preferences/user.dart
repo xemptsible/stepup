@@ -9,7 +9,7 @@ class User {
   }
 
   setInt(int name) {
-    this.age = age;
+    age = age;
   }
 
   Map<String, dynamic> toJson() {

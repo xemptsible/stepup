@@ -42,7 +42,7 @@ class ProductCard extends StatelessWidget {
                 child: Container(
               alignment: Alignment.center,
               width: double.maxFinite,
-              margin: EdgeInsets.only(top: 5),
+              margin: const EdgeInsets.only(top: 5),
               child: Image.asset(
                 urlimg + image,
                 fit: BoxFit.contain,
@@ -50,42 +50,42 @@ class ProductCard extends StatelessWidget {
             )),
             Expanded(
                 child: Container(
-              padding: EdgeInsets.only(left: 10),
+              padding: const EdgeInsets.only(left: 10),
               child: Column(
                 children: [
                   Expanded(
                       flex: 2,
                       child: Container(
-                        padding: EdgeInsets.only(top: 5),
-                        child: Text(
+                        padding: const EdgeInsets.only(top: 5),
+                        width: double.maxFinite,
+                        child: const Text(
                           "BEST SELLER",
                           style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                               color: Colors.blue),
                         ),
-                        width: double.maxFinite,
                       )),
                   Expanded(
                       flex: 2,
-                      child: Container(
+                      child: SizedBox(
+                        width: double.maxFinite,
                         child: Text(
                           name,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
-                        width: double.maxFinite,
                       )),
                   Expanded(
                       flex: 3,
                       child: Container(
-                        padding: EdgeInsets.only(top: 8),
+                        padding: const EdgeInsets.only(top: 8),
+                        width: double.maxFinite,
                         child: Text(
-                          "${price}Đ",
-                          style: TextStyle(
+                          "$priceĐ",
+                          style: const TextStyle(
                               fontSize: 14, fontWeight: FontWeight.bold),
                         ),
-                        width: double.maxFinite,
                       ))
                 ],
               ),
@@ -101,19 +101,19 @@ class ProductCard extends StatelessWidget {
                 alignment: Alignment.center,
                 width: 45,
                 height: 45,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color.fromRGBO(20, 17, 126, 1),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20),
                       bottomRight: Radius.circular(20)),
                 ),
-                child: Text(
+                child: const Text(
                   "+",
                   style: TextStyle(fontSize: 24, color: Colors.white),
                 ),
               ),
             )
-          : Positioned(
+          : const Positioned(
               top: 10,
               left: 10,
               child: Icon(

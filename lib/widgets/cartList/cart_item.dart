@@ -20,13 +20,13 @@ class Shoe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Brand? brandData;
-    Future<String> _loadBrandUseId() async {
+    Future<String> loadBrandUseId() async {
       brandData = await ReadData().getBrandById(int.parse(brand));
       return '';
     }
 
     return FutureBuilder(
-        future: _loadBrandUseId(),
+        future: loadBrandUseId(),
         builder: (context, snapshot) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,9 +43,9 @@ class Shoe extends StatelessWidget {
               Text(
                 overflow: TextOverflow.ellipsis,
                 brandData != null ? brandData!.name.toString() : '',
-                style: TextStyle(fontSize: 14, color: Colors.grey),
+                style: const TextStyle(fontSize: 14, color: Colors.grey),
               ),
-              Text(
+              const Text(
                 "Cỡ giày: 44",
                 style: TextStyle(fontSize: 12, color: Colors.grey),
               ),

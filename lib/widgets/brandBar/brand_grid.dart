@@ -8,7 +8,6 @@ import 'package:stepup/utilities/const.dart';
 import 'package:stepup/widgets/brandBar/brand_logo_selected.dart';
 
 import '../../data/models/brand_model.dart';
-import '../../data/providers/brand_vm.dart';
 import '../../data/providers/provider.dart';
 
 class BrandGrid extends StatefulWidget {
@@ -38,7 +37,7 @@ class _BrandGridState extends State<BrandGrid> {
     return FutureBuilder(
         future: loadBrandList(),
         builder: (context, snapshot) {
-          return Container(
+          return SizedBox(
             height: 70,
             child: MasonryGridView.builder(
               scrollDirection: Axis.horizontal,
@@ -47,7 +46,7 @@ class _BrandGridState extends State<BrandGrid> {
                 return Consumer<FilterVMS>(
                   builder: (context, value, child) {
                     return Container(
-                      margin: EdgeInsets.symmetric(vertical: 2),
+                      margin: const EdgeInsets.symmetric(vertical: 2),
                       child: GestureDetector(
                           onTap: () {
                             value.select(
@@ -69,7 +68,7 @@ class _BrandGridState extends State<BrandGrid> {
                   },
                 );
               },
-              gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2),
             ),
           );

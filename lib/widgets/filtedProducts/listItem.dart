@@ -25,7 +25,7 @@ class ProductListItem extends StatelessWidget {
             children: [
               SizedBox(
                 width: 120,
-                child: Image.asset(urlimg + "giayNike1.png"),
+                child: Image.asset("${urlimg}giayNike1.png"),
                 // child: thumbnail,
               ),
               Expanded(
@@ -33,7 +33,7 @@ class ProductListItem extends StatelessWidget {
                   // color: Colors.amber,
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                         // color: Colors.amber,
                         width: MediaQuery.sizeOf(context).width,
                         height: MediaQuery.sizeOf(context).height * 0.12,
@@ -62,13 +62,13 @@ class ProductListItem extends StatelessWidget {
 
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Color.fromARGB(255, 57, 82, 196)),
+                                    color: const Color.fromARGB(255, 57, 82, 196)),
                                 // color: Color.fromARGB(255, 57, 82, 196),
                                 child: TextButton(
                                   onPressed: () {},
                                   child: Text(
                                     text,
-                                    style: TextStyle(color: Colors.white),
+                                    style: const TextStyle(color: Colors.white),
                                   ),
                                 ),
                               ),
@@ -90,9 +90,9 @@ class ProductListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(child: () {
-      if (page == 1)
+      if (page == 1) {
         return ListItemDonHang(context, "Xem sản phẩm");
-      else if (page == 2)
+      } else if (page == 2)
         return ListItemDonHang(context, "Xem chi tiết");
       else
         return ListItemDonHang(context, "Hủy bỏ");

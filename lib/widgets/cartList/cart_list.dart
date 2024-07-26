@@ -1,11 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/data/models/cart_item.dart';
-import 'package:stepup/data/models/product_model.dart';
 import 'package:stepup/data/providers/product_vm.dart';
-import 'package:stepup/data/providers/provider.dart';
-import 'package:stepup/data/providers/quantity_vm.dart';
 import 'package:stepup/data/shared_preferences/sharedPre.dart';
 import 'package:stepup/test/model/shoe.dart';
 import 'package:stepup/utilities/const.dart';

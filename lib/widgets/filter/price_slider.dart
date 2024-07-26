@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/data/providers/filter_vm.dart';
-import 'package:stepup/data/providers/price_vm.dart';
 
 class PriceSlider extends StatefulWidget {
   const PriceSlider({super.key});
@@ -13,7 +11,7 @@ class PriceSlider extends StatefulWidget {
 }
 
 class _PriceSliderState extends State<PriceSlider> {
-  RangeValues values = RangeValues(10000, 5000000);
+  RangeValues values = const RangeValues(10000, 5000000);
   @override
   Widget build(BuildContext context) {
     return Consumer<FilterVMS>(
