@@ -251,13 +251,13 @@ class _InfoPageState extends State<InfoPage> {
                                           ?.setAdress(_diaChiController.text);
                                       value.currentAcc?.setPhoneNumber(
                                           int.parse(_soDienThoaiController.text));
-                            
+
                                       //add date
                                       value.currentAcc?.setBirthDay(birthDay!);
-                            
+
                                       //update account
                                       value.updateCurrentAcc();
-                            
+
                                       dialogCustom(context);
                                     },
                                     label: const Text('Lưu thay đổi'),

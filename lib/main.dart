@@ -56,9 +56,7 @@ class MyApp extends StatelessWidget {
             "/homePage": (context) => const App(),
             "/productDetail": (context) => const ProductDetail(),
             "/account": (context) => const AccountPage(),
-            "/search": (context) => SearchPage(
-                  isSearch: true,
-                ),
+            "/search": (context) => const SearchPage(),
           },
           theme: brightness == Brightness.light ? theme.light() : theme.dark(),
           home: const StartScreen()),

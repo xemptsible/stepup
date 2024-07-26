@@ -62,7 +62,8 @@ class ProductListItem extends StatelessWidget {
 
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: const Color.fromARGB(255, 57, 82, 196)),
+                                    color:
+                                        const Color.fromARGB(255, 57, 82, 196)),
                                 // color: Color.fromARGB(255, 57, 82, 196),
                                 child: TextButton(
                                   onPressed: () {},
@@ -92,10 +93,11 @@ class ProductListItem extends StatelessWidget {
     return Container(child: () {
       if (page == 1) {
         return ListItemDonHang(context, "Xem sản phẩm");
-      } else if (page == 2)
+      } else if (page == 2) {
         return ListItemDonHang(context, "Xem chi tiết");
-      else
+      } else {
         return ListItemDonHang(context, "Hủy bỏ");
+      }
     }());
   }
 }

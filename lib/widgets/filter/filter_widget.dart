@@ -13,7 +13,6 @@ class FilterWidget extends StatefulWidget {
 }
 
 class _FilterWidgetState extends State<FilterWidget> {
-  int _selectedIndex = 0;
   int indexSelect = 0;
   String selectedBrand = '';
   RangeValues selectedPrice = const RangeValues(0, 10);
@@ -25,7 +24,7 @@ class _FilterWidgetState extends State<FilterWidget> {
     return Consumer<FilterVMS>(
       builder: (context, filterVMS, child) {
         return Container(
-          padding: const EdgeInsets.only(left: 25, top: 20),
+          padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 20),
           width: MediaQuery.sizeOf(context).width,
           child: SingleChildScrollView(
             child: Column(
@@ -33,10 +32,7 @@ class _FilterWidgetState extends State<FilterWidget> {
               children: [
                 const Text(
                   "Sắp xếp và lọc",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(
-                  height: 10,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 Container(
                   padding: const EdgeInsets.only(right: 30),
@@ -100,7 +96,6 @@ class _FilterWidgetState extends State<FilterWidget> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () => setState(() {
-                            _selectedIndex = index;
                             selectedSize = 40 + index;
                             filterVMS.selectSize(selectedSize);
                           }),
@@ -132,41 +127,21 @@ class _FilterWidgetState extends State<FilterWidget> {
                 const SizedBox(
                   height: 15,
                 ),
-                Container(
-                  padding: const EdgeInsets.only(right: 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Giá",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          filterVMS.removePriceFilter();
-                        },
-                        child: const Text(
-                          "Bỏ lọc",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Color.fromARGB(255, 40, 40, 134)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Giá",
+                      style: TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w500),
+                    ),
+                    TextButton(
+                      onPressed: () => filterVMS.removePriceFilter(),
+                      child: const Text("Bỏ lọc"),
+                    ),
+                  ],
                 ),
                 const PriceSlider(),
-                const SizedBox(
-                  height: 10,
-                ),
-                const SizedBox(
-                  height: 20,
-                )
               ],
             ),
           ),

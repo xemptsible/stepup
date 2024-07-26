@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class FilterVMS with ChangeNotifier {
   String brand = 'Tất cả';
-  RangeValues price = const RangeValues(100000, 3000000);
-  int size = 40;
+  RangeValues price = const RangeValues(100000, 1000000);
+  int size = 0;
   bool ascendingPrice = false;
   int brandSelectedIndex = 0;
   int sizeIndex = 0;
@@ -12,8 +12,7 @@ class FilterVMS with ChangeNotifier {
     this.ascendingPrice = ascendingPrice;
     this.price = price;
     this.size = size;
-    print(
-        "$brand, Gía: $price, Size: $size, Gía tăng: $ascendingPrice");
+    print("$brand, Giá: $price, Size: $size, Giá tăng: $ascendingPrice");
     notifyListeners();
   }
 

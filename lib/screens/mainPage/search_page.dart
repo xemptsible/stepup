@@ -10,40 +10,47 @@ import '../../data/models/product_model.dart';
 import '../../data/providers/provider.dart';
 
 class SearchPage extends StatefulWidget {
-  bool? isSearch = false;
-  SearchPage({
-    super.key,
-    this.isSearch,
-  });
+  const SearchPage({super.key});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  List<Product> proList = [];
+  bool isSearchMode = false;
+
   final TextEditingController _searchController = TextEditingController();
-  String searchText = '';
+
+  final bool _isSearchNotEmpty = false;
   bool isLoading = false;
-  Future<String> _loadProData(
-      String text, String brand, RangeValues price, int size) async {
-    isLoading = true;
-    proList = await ReadData()
-        .searchProduct(text, brand: brand, price: price, size: size);
-    print("$text, $brand, $size, $price");
-    isLoading = false;
-    return '';
+
+  String searchText = '';
+  List<Product> proList = [];
+
+  late Future loadAll;
+
+  Future _loadAllProData() async {
+    proList = await ReadData().loadProductData();
   }
 
-  Future<String> _loadAllProData() async {
-    proList = await ReadData().loadProductData();
-    return '';
+  Future<List<Product>> _loadProData(
+      String text, String brand, RangeValues price, int size) async {
+    isLoading = true;
+    if (_isSearchNotEmpty == false) {
+      proList = await ReadData()
+          .searchProduct(text, brand: brand, price: price, size: size);
+    } else {
+      proList = await _loadAllProData();
+    }
+    // print("$text, $brand, $size, $price");
+    isLoading = false;
+    return proList;
   }
 
   bool isSearch(String text, String brand, int size, RangeValues price) {
-    if (text.isNotEmpty ||
-        brand != "" ||
-        size != 0 ||
+    while (text.isNotEmpty &&
+        brand != "" &&
+        size != 0 &&
         price != const RangeValues(0.0, 10.0)) {
       return true;
     }
@@ -53,171 +60,145 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-    widget.isSearch = false;
+    _loadAllProData();
+    _loadProData('', '', const RangeValues(0.0, 0.0), 0);
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(!widget.isSearch! ? "Sản phẩm" : "Tìm kiếm"),
-        ),
-        body: SingleChildScrollView(
-          child: ChangeNotifierProvider<ProductVMS>(
-            create: (context) => ProductVMS(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(30)),
-                  child: Row(
-                    children: [
-                      Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          child: const Icon(Icons.search)),
-                      Expanded(
-                          child: TextField(
-                        controller: _searchController,
-                        decoration: const InputDecoration(
-                          hintText: 'Nhập từ khóa ở đây',
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors
-                                    .transparent), // Tắt gạch dưới khi không focus
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors
-                                    .transparent), // Tắt gạch dưới khi focus
-                          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(!isSearchMode ? "Sản phẩm" : "Tìm kiếm"),
+        forceMaterialTransparency: true,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Consumer<FilterVMS>(
+            builder: (context, myType, child) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: TextField(
+                  controller: _searchController,
+                  onSubmitted: (value) {
+                    setState(() {
+                      isSearchMode = isSearch(
+                          value, myType.brand, myType.size, myType.price);
+                      searchText = value;
+
+                      value.isEmpty ? !_isSearchNotEmpty : _isSearchNotEmpty;
+                    });
+                  },
+                  onTapOutside: (event) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: 'Nhập từ khoá ở đây',
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: Wrap(
+                      children: [
+                        _searchController.text.isNotEmpty
+                            ? IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _searchController.clear();
+                                    isSearchMode = isSearch(
+                                        _searchController.text,
+                                        myType.brand,
+                                        myType.size,
+                                        myType.price);
+                                    searchText = _searchController.text;
+                                  });
+                                },
+                                icon: const Icon(Icons.clear))
+                            : const SizedBox.shrink(),
+                        IconButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return Consumer<FilterVMS>(
+                                    builder: (context, myType, child) {
+                                      return const FilterWidget();
+                                    },
+                                  );
+                                }).whenComplete(() {
+                              // Khi modal bottom sheet đóng, bỏ focus khỏi TextField
+                              FocusScope.of(context).unfocus();
+                            });
+                          },
+                          icon: const Icon(Icons.filter_alt_outlined),
                         ),
-                        onSubmitted: (value) {
-                          setState(() {
-                            searchText = value;
-                            widget.isSearch = true;
-                          });
-                        },
-                      )),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            widget.isSearch = true;
-                          });
-                          showModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return Consumer<FilterVMS>(
-                                  builder: (context, myType, child) {
-                                    return const FilterWidget();
-                                  },
-                                );
-                              }).whenComplete(() {
-                            // Khi modal bottom sheet đóng, bỏ focus khỏi TextField
-                            FocusScope.of(context).unfocus();
-                          });
-                        },
-                        child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
-                            child: const Icon(Icons.filter_alt_outlined)),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-                searchText == ''
-                    ? const Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Text(
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.start,
-                            'Tất cả sản phẩm'),
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Text(
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.start,
-                            'Kết quả tìm kiếm cho \'$searchText\''),
-                      ),
-                Consumer<FilterVMS>(
-                  builder: (context, myType, child) {
-                    return FutureBuilder(
-                      future: isSearch(_searchController.text, myType.brand,
-                              myType.size, myType.price)
-                          ? _loadProData(searchText, myType.brand, myType.price,
-                              myType.size)
-                          : _loadAllProData(),
-                      builder: (BuildContext context, snapshot) {
-                        return isLoading
-                            ? Container(
-                                alignment: Alignment.center,
-                                child: const CircularProgressIndicator(),
-                              )
-                            : SingleChildScrollView(
-                                child: Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 5),
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.7,
-                                        child: Consumer<ProductVMS>(
-                                          builder: (context, myType, child) {
-                                            return GridView.builder(
-                                              gridDelegate:
-                                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                                childAspectRatio: 0.764,
-                                                crossAxisCount: 2,
-                                              ),
-                                              itemCount: proList.length,
-                                              itemBuilder: (context, index) {
-                                                return Center(
-                                                  child: Container(
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.pushNamed(
-                                                            context,
-                                                            "/productDetail",
-                                                            arguments:
-                                                                proList[index]);
-                                                      },
-                                                      child: GridItem(
-                                                        product: proList[index],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                      },
-                    );
-                  },
+              );
+            },
+          ),
+          searchText.isEmpty
+              ? const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.start,
+                      'Tất cả sản phẩm'),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.start,
+                      'Kết quả tìm kiếm cho \'$searchText\''),
                 ),
-              ],
+          const Divider(
+            height: 0,
+          ),
+          Expanded(
+            child: Consumer<FilterVMS>(
+              builder: (context, filter, child) {
+                return FutureBuilder(
+                  future: _loadProData(
+                      searchText, filter.brand, filter.price, filter.size),
+                  builder: (BuildContext context, snapshot) {
+                    return isLoading
+                        ? Container(
+                            alignment: Alignment.center,
+                            child: const CircularProgressIndicator(),
+                          )
+                        : Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Consumer<ProductVMS>(
+                              builder: (context, myType, child) {
+                                return GridView.builder(
+                                  physics: const ScrollPhysics(),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: 0.764,
+                                    crossAxisCount: 2,
+                                  ),
+                                  itemCount: proList.length,
+                                  itemBuilder: (context, index) {
+                                    return GridItem(
+                                      product: proList[index],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                  },
+                );
+              },
             ),
           ),
-        ),
+        ],
       ),
     );
   }
