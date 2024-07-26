@@ -103,7 +103,7 @@ class _CartPageState extends State<CartPage> {
                       },
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Consumer<ProductVMS>(
                         builder: (BuildContext context, ProductVMS value,
                             Widget? child) {

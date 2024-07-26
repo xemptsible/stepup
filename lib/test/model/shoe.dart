@@ -21,16 +21,13 @@ class Shoe extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Expanded(
-          child: Text(
-            name,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-          ),
+        Text(
+          name,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        Expanded(
-          child: Text(
-            brand,
-          ),
+        Text(
+          brand,
         ),
         Text(
           "Size: $size",

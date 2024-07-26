@@ -83,7 +83,8 @@ class _ProductListState extends State<ProductList> {
             return isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    
                     child: Consumer<FavoriteVm>(
                       builder: (context, productVM, child) {
                         return GridView.builder(

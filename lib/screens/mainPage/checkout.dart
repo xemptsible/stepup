@@ -11,10 +11,7 @@ import 'package:stepup/data/models/product_model.dart';
 import 'package:stepup/data/providers/account_vm.dart';
 import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/data/providers/provider.dart';
-import 'package:stepup/test/model/shoe.dart';
 import 'package:stepup/utilities/const.dart';
-import 'package:stepup/widgets/cartList/cart_list.dart';
-import 'package:stepup/widgets/quantity_widget.dart';
 
 class Checkout extends StatefulWidget {
   const Checkout({super.key});
@@ -28,7 +25,11 @@ class _CheckoutState extends State<Checkout> {
   final TextEditingController _hoTenController = TextEditingController();
   final TextEditingController _diaChiController = TextEditingController();
   final TextEditingController _soDienThoaiController = TextEditingController();
+
   List<Product> proList = [];
+
+  final _formKey = GlobalKey<FormState>();
+
   Future<String> _loadProData() async {
     proList = await ReadData().loadProductData();
     Provider.of<ProductVMS>(context, listen: false).getQuantity();
@@ -62,100 +63,131 @@ class _CheckoutState extends State<Checkout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Thanh Toán"),
+        title: Text("Thanh toán"),
+        forceMaterialTransparency: true,
       ),
-      body: Container(
+      body: Form(
+        key: _formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _inputField("Tên Khách Hàng", _hoTenController, TextInputType.text),
-            _inputField("Địa chỉ", _diaChiController, TextInputType.text),
-            _inputField(
-                "Số điện thoại", _soDienThoaiController, TextInputType.number),
-            Consumer<ProductVMS>(builder: (context, value, child) {
-              return Container(
-                  margin: EdgeInsets.only(left: 16, top: 16),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Số lượng giày: ${value.quatity.toString()}",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ));
-            }),
-            Consumer<ProductVMS>(
-              builder: (context, value, child) {
-                return Expanded(
-                  child: Container(
-                    // margin: EdgeInsets.only(top: 16),
-                    // color: Colors.red,
-                    child: FutureBuilder(
-                      future: _loadProData(),
-                      builder: (context, snapshot) {
-                        return ListView.builder(
-                            itemCount: value.lst.length,
-                            itemBuilder: (context, index) {
-                              return itemList(
-                                  context, value.lst[index].product, index);
-                            });
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  _inputField(
+                      "Tên khách hàng", _hoTenController, TextInputType.text),
+                  _inputField("Địa chỉ", _diaChiController, TextInputType.text),
+                  _inputField("Số điện thoại", _soDienThoaiController,
+                      TextInputType.number),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Consumer<ProductVMS>(
+                      builder: (context, value, child) {
+                        return Text(
+                          "Số lượng giày: ${value.quatity.toString()}",
+                          style: TextStyle(fontSize: 18),
+                        );
                       },
                     ),
                   ),
-                );
-              },
-            ),
-            Divider(),
-            Consumer<ProductVMS>(
-              builder: (BuildContext context, ProductVMS value, Widget? child) {
-                return Container(
-                  margin: EdgeInsets.only(bottom: 16),
-                  child: Text(
-                    "Tổng Đơn Hàng: ${NumberFormat('###,###.###').format(value.total)}đ",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  Divider(
+                    height: 0,
                   ),
-                );
-              },
-            ),
-            Consumer<AccountVMS>(
-              builder: (BuildContext context, AccountVMS value, Widget? child) {
-                return Container(
-                  margin: EdgeInsets.only(bottom: 30),
-                  // color: Colors.amber,
-                  child: Consumer<ProductVMS>(
-                    builder: (BuildContext context, ProductVMS valueOder,
-                        Widget? child) {
-                      return Row(
-                        children: [
-                          Expanded(
-                            child: FilledButton.icon(
-                              onPressed: () {
-                                List<CartItem> orderItem =
-                                    Provider.of<ProductVMS>(context,
-                                            listen: false)
-                                        .lst;
-                                Order order = Order(
-                                    nameUser: value.currentAcc!.UserName!,
-                                    items: orderItem,
-                                    email: value.currentAcc!.Email!,
-                                    dateOrder: nowDate,
-                                    price: valueOder.total);
-                                print(order.toJson());
-
-                                ApiService apiService = ApiService();
-                                apiService.postOrder(order);
-
-                                Provider.of<ProductVMS>(context, listen: false)
-                                    .clear();
-                                dialogCustom(context);
+                  Consumer<ProductVMS>(
+                    builder: (context, value, child) {
+                      return Expanded(
+                        child: FutureBuilder(
+                          future: _loadProData(),
+                          builder: (context, snapshot) {
+                            return ListView.builder(
+                              itemCount: value.lst.length,
+                              itemBuilder: (context, index) {
+                                return itemList(
+                                    context, value.lst[index].product, index);
                               },
-                              label: Text('Thanh toán'),
-                              icon: Icon(Icons.credit_card),
-                            ),
-                          ),
-                        ],
+                            );
+                          },
+                        ),
                       );
                     },
                   ),
-                );
-              },
-            )
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(16),
+              decoration: const BoxDecoration(
+                color: Color.fromRGBO(236, 236, 243, 0.612),
+                border: Border(
+                  top: BorderSide(width: 1, color: Colors.black26),
+                ),
+              ),
+              child: Column(
+                children: [
+                  Consumer<ProductVMS>(
+                    builder: (BuildContext context, ProductVMS value,
+                        Widget? child) {
+                      return Text(
+                        "Tổng đơn hàng: ${NumberFormat('###,###.###').format(value.total)}đ",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
+                  ),
+                  Consumer<AccountVMS>(
+                    builder: (BuildContext context, AccountVMS value,
+                        Widget? child) {
+                      return Consumer<ProductVMS>(
+                        builder: (BuildContext context, ProductVMS valueOder,
+                            Widget? child) {
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: FilledButton.icon(
+                                  onPressed: () {
+                                    List<CartItem> orderItem =
+                                        Provider.of<ProductVMS>(context,
+                                                listen: false)
+                                            .lst;
+                                    Order order = Order(
+                                        nameUser: value.currentAcc!.UserName!,
+                                        items: orderItem,
+                                        email: value.currentAcc!.Email!,
+                                        dateOrder: nowDate,
+                                        price: valueOder.total);
+                                    print(order.toJson());
+
+                                    ApiService apiService = ApiService();
+                                    apiService.postOrder(order);
+
+                                    Provider.of<ProductVMS>(context,
+                                            listen: false)
+                                        .clear();
+                                    dialogCustom(context);
+                                  },
+                                  label: Text('Thanh toán'),
+                                  icon: Icon(Icons.credit_card),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -165,49 +197,38 @@ class _CheckoutState extends State<Checkout> {
 
 Widget itemList(BuildContext context, Product shoe, int index) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-    child: SizedBox(
-      height: 140,
-      child: Card.outlined(
-        elevation: 3,
-        shadowColor: Colors.black,
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: () {},
-          child: Row(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                // color: Color.fromARGB(255, 234, 233, 233),
-                width: 120,
-                child: Image.asset(
-                  width: 100,
-                  urlimg + shoe.img.toString(),
-                  fit: BoxFit.cover,
-                ),
-                // child: thumbnail,
+    padding: const EdgeInsets.symmetric(horizontal: 8),
+    child: Card.outlined(
+      elevation: 4,
+      shadowColor: Colors.black,
+      clipBehavior: Clip.antiAlias,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Container(
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.grey[100],
+                border: Border.all(
+                    strokeAlign: BorderSide.strokeAlignOutside,
+                    color: Colors.grey.shade300),
               ),
-              Expanded(
-                child: Container(
-                  // color: Colors.amber,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        // color: Colors.amber,
-                        width: MediaQuery.sizeOf(context).width,
-                        height: MediaQuery.sizeOf(context).height * 0.135,
-                        // color: Colors.red,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8, left: 10),
-                          child: item(shoe, index),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              child: Image.asset(
+                width: 100,
+                height: 100,
+                urlimg + shoe.img.toString(),
+                fit: BoxFit.fitWidth,
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: item(shoe, index),
+              ),
+            ),
+          ],
         ),
       ),
     ),
@@ -216,16 +237,16 @@ Widget itemList(BuildContext context, Product shoe, int index) {
 
 Widget item(Product shoe, int index) {
   return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
-      Expanded(
-        child: Text(
-          shoe.name!,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        ),
+      Text(
+        shoe.name!,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
       ),
       Text(
-        "Hãng Giày: ${shoe.brand!}",
+        "Hãng giày: ${shoe.brand!}",
       ),
       Text(
         'Giá: ${NumberFormat('###,###.###').format(shoe.price)}đ',
@@ -233,7 +254,7 @@ Widget item(Product shoe, int index) {
       Consumer<ProductVMS>(
         builder: (BuildContext context, ProductVMS value, Widget? child) {
           return Text(
-            'Số Lượng: ${value.lst[index].quantity}',
+            'Số lượng: ${value.lst[index].quantity}',
           );
         },
       ),
@@ -301,45 +322,67 @@ void dialogCustom(BuildContext context) {
 
 Widget _inputField(
     String label, TextEditingController textController, TextInputType type) {
-  return SingleChildScrollView(
-    child: Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //label
-          Container(
-            margin: EdgeInsets.only(left: 24, bottom: 8),
-            child: Text(
-              label,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ),
-
-          //textfield
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
-            padding: EdgeInsets.only(left: 16),
-            decoration: BoxDecoration(
-              border: Border.all(
-                  width: 1, color: Color.fromARGB(255, 110, 108, 108)),
-              borderRadius: BorderRadius.all(
-                Radius.circular(5),
-              ),
-            ),
-            child: TextFormField(
-              controller: textController,
-              keyboardType: type,
-              decoration: InputDecoration(border: InputBorder.none),
-              validator: (value) {
-                if (value == null || value.isEmpty || value == "null") {
-                  return 'Vui lòng nhập';
-                }
-                return null;
-              },
-            ),
-          ),
-        ],
-      ),
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 4, top: 4),
+    child: TextFormField(
+      controller: textController,
+      keyboardType: type,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          filled: true,
+          fillColor: Colors.white,
+          label: Text(label),
+          helperText: " "),
+      readOnly: type == TextInputType.datetime,
+      validator: (value) {
+        if (value == null || value.isEmpty || value == "null") {
+          return 'Vui lòng nhập';
+        }
+        return null;
+      },
     ),
   );
 }
+
+// Widget _inputField(
+//     String label, TextEditingController textController, TextInputType type) {
+//   return SingleChildScrollView(
+//     child: Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         //label
+//         Container(
+//           margin: EdgeInsets.only(left: 24, bottom: 8),
+//           child: Text(
+//             label,
+//             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+//           ),
+//         ),
+
+//         //textfield
+//         Container(
+//           margin: EdgeInsets.symmetric(horizontal: 16),
+//           padding: EdgeInsets.only(left: 16),
+//           decoration: BoxDecoration(
+//             border:
+//                 Border.all(width: 1, color: Color.fromARGB(255, 110, 108, 108)),
+//             borderRadius: BorderRadius.all(
+//               Radius.circular(5),
+//             ),
+//           ),
+//           child: TextFormField(
+//             controller: textController,
+//             keyboardType: type,
+//             decoration: InputDecoration(border: InputBorder.none),
+//             validator: (value) {
+//               if (value == null || value.isEmpty || value == "null") {
+//                 return 'Vui lòng nhập';
+//               }
+//               return null;
+//             },
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// }
