@@ -162,51 +162,43 @@ class _InfoPageState extends State<InfoPage> {
             Column(
               children: [
                 //Image
-                Stack(
-                  children: [
-                    Consumer<AccountVMS>(
-                      builder: (context, value, child) {
-                        return Container(
+                Consumer<AccountVMS>(
+                  builder: (context, value, child) {
+                    return Stack(
+                      children: [
+                        Container(
                           clipBehavior: Clip.antiAlias,
-                          margin: EdgeInsets.only(top: 16),
                           width: 150,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            // color: Colors.amber,
                           ),
                           child: Image.network(
+                            width: 150,
                             // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD3OmwXK7xXXVWJZiocRJOasPkHLK27kGGOQ&s",
                             value.currentAcc!.Image!,
                             errorBuilder: (context, error, stackTrace) {
-                              return Image.asset("${urlimg}account.png");
+                              return Image.asset(
+                                  width: 150, "${urlimg}account.png");
                             },
                           ),
-                        );
-                      },
-                    ),
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            pickImage();
-                          });
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color.fromARGB(255, 14, 6, 133)),
-                          child: Icon(
-                            Icons.edit,
-                            color: Colors.white,
+                        ),
+                        Positioned(
+                          top: 105,
+                          left: 105,
+                          child: IconButton.filled(
+                            onPressed: () {
+                              setState(() {
+                                pickImage();
+                              });
+                            },
+                            icon: Icon(
+                              Icons.edit_outlined,
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  ],
+                      ],
+                    );
+                  },
                 ),
                 Padding(
                   padding: EdgeInsets.all(16),
@@ -250,7 +242,8 @@ class _InfoPageState extends State<InfoPage> {
                                       value.currentAcc
                                           ?.setAdress(_diaChiController.text);
                                       value.currentAcc?.setPhoneNumber(
-                                          int.parse(_soDienThoaiController.text));
+                                          int.parse(
+                                              _soDienThoaiController.text));
 
                                       //add date
                                       value.currentAcc?.setBirthDay(birthDay!);
