@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:stepup/data/api/api.dart';
 import 'package:stepup/screens/mainPage/search_page.dart';
 import '../../data/providers/brand_vm.dart';
 import '../../data/providers/product_vm.dart';
-import '../../widgets/brandBar/brand_select_bar.dart';
+import '../../widgets/brandBar/brand_chips.dart';
 import '../../widgets/filtedProducts/brand_selected_product.dart';
 import '../../widgets/filtedProducts/product_list.dart';
 
@@ -43,20 +40,24 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SearchPage(
-                                    isSearch: false,
-                                  )),
-                        );
-                      },
-                      child: const Text("Xem tất cả")),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SearchPage(),
+                        ),
+                      );
+                    },
+                    child: const Text("Xem tất cả"),
+                  ),
                 ],
               ),
             ),
-            const BrandBar(),
+            // const BrandBar(),
+            const SizedBox(
+              height: 48,
+              child: BrandChipsBar(),
+            ),
             const Expanded(
               child: ProductList(),
             ),

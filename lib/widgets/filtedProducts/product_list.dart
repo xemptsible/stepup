@@ -20,18 +20,13 @@ class _ProductListState extends State<ProductList> {
   List<Product> proFavoritedLst = [];
   bool isLoading = false;
 
-  late Future<List<Product>> Function() shoesByBrand;
-  late Future shoes;
-
-  late Function test;
-
   Future<String> _loadProData() async {
     ApiService apiService = ApiService();
     isLoading = true;
     proList = await ReadData().loadProductData();
-    if (proList.length > 6) {
-      proList = proList.sublist(0, 6);
-    }
+    // if (proList.length > 6) {
+    //   proList = proList.sublist(0, 6);
+    // }
     isLoading = false;
     return '';
   }
@@ -40,9 +35,9 @@ class _ProductListState extends State<ProductList> {
     isLoading = true;
     proList = await ReadData().loadProductUseBrand(name);
     isLoading = false;
-    if (proList.length > 6) {
-      proList = proList.sublist(0, 6);
-    }
+    // if (proList.length > 6) {
+    //   proList = proList.sublist(0, 6);
+    // }
     return proList;
   }
 
@@ -68,7 +63,7 @@ class _ProductListState extends State<ProductList> {
   void initState() {
     super.initState();
     _loadProDataUseBrand('');
-    shoes = _loadProData();
+    _loadProData();
   }
 
   @override
@@ -77,14 +72,13 @@ class _ProductListState extends State<ProductList> {
       builder: (context, brandVM, child) {
         return FutureBuilder(
           future: brandVM.selectedIndex == 0
-              ? shoes
+              ? _loadProData()
               : _loadProDataUseBrand(brandVM.selectedBrand),
           builder: (BuildContext context, snapshot) {
             return isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
-                    
                     child: Consumer<FavoriteVm>(
                       builder: (context, productVM, child) {
                         return GridView.builder(
