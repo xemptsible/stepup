@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stepup/widgets/brandBar/brand_chips.dart';
 import 'package:stepup/widgets/filter/price_slider.dart';
 
 import '../../data/providers/filter_vm.dart';
-import '../brandBar/brand_grid.dart';
 
 class FilterWidget extends StatefulWidget {
   const FilterWidget({super.key});
@@ -15,7 +15,7 @@ class FilterWidget extends StatefulWidget {
 class _FilterWidgetState extends State<FilterWidget> {
   int indexSelect = 0;
   String selectedBrand = '';
-  RangeValues selectedPrice = const RangeValues(0, 10);
+  RangeValues selectedPrice = const RangeValues(0, 0);
   int selectedSize = 0;
   bool isAscendingPrice = false;
 
@@ -23,125 +23,109 @@ class _FilterWidgetState extends State<FilterWidget> {
   Widget build(BuildContext context) {
     return Consumer<FilterVMS>(
       builder: (context, filterVMS, child) {
-        return Container(
-          padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 20),
-          width: MediaQuery.sizeOf(context).width,
-          child: SingleChildScrollView(
+        return SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(0, 16, 0, 48),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Sắp xếp và lọc",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(right: 30),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Lọc theo hãng",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      Text(
-                        "",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                    ],
+                const Padding(
+                  padding: EdgeInsets.only(left: 16),
+                  child: Text(
+                    "Sắp xếp và lọc",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const BrandGrid(),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  padding: const EdgeInsets.only(right: 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
                     children: [
                       const Text(
-                        "Lọc theo size",
+                        "Hãng giày",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w500),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          filterVMS.removeSizeFilter();
-                        },
-                        child: const Text(
-                          "Bỏ lọc",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Color.fromARGB(255, 40, 40, 134)),
+                      // const BrandGrid(),
+                      const BrandChipsModal(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Cỡ giày",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500),
+                          ),
+                          TextButton(
+                            style: const ButtonStyle(
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            onPressed: () => filterVMS.removeSizeFilter(),
+                            child: const Text("Bỏ lọc"),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 40,
+                        child: ListView.builder(
+                          itemCount: 10,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () => setState(() {
+                                selectedSize = 40 + index;
+                                filterVMS.selectSize(selectedSize);
+                              }),
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Container(
+                                  width: 35,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: filterVMS.size - 40 == index
+                                              ? 0
+                                              : 1),
+                                      color: filterVMS.size - 40 == index
+                                          ? Theme.of(context)
+                                              .primaryColorLight
+                                          : Colors.white,
+                                      shape: BoxShape.circle),
+                                  child: Center(
+                                    child: Text(
+                                      "${40 + index}",
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Giá",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500),
+                          ),
+                          TextButton(
+                            style: const ButtonStyle(
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            onPressed: () => filterVMS.removePriceFilter(),
+                            child: const Text("Bỏ lọc"),
+                          ),
+                        ],
+                      ),
+                      const PriceSlider(),
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 40,
-                  child: ListView.builder(
-                      itemCount: 10,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () => setState(() {
-                            selectedSize = 40 + index;
-                            filterVMS.selectSize(selectedSize);
-                          }),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Container(
-                                width: 35,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: filterVMS.size - 40 == index
-                                            ? 0
-                                            : 1),
-                                    color: filterVMS.size - 40 == index
-                                        ? const Color.fromARGB(255, 26, 28, 127)
-                                        : Colors.white,
-                                    shape: BoxShape.circle),
-                                child: Center(
-                                    child: Text(
-                                  "${40 + index}",
-                                  style: TextStyle(
-                                      color: filterVMS.size - 40 == index
-                                          ? Colors.white
-                                          : Colors.black),
-                                ))),
-                          ),
-                        );
-                      }),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Giá",
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                    TextButton(
-                      onPressed: () => filterVMS.removePriceFilter(),
-                      child: const Text("Bỏ lọc"),
-                    ),
-                  ],
-                ),
-                const PriceSlider(),
               ],
             ),
           ),

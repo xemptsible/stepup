@@ -11,12 +11,12 @@ class PriceSlider extends StatefulWidget {
 }
 
 class _PriceSliderState extends State<PriceSlider> {
-  RangeValues values = const RangeValues(10000, 5000000);
+  RangeValues values = const RangeValues(0, 0);
   @override
   Widget build(BuildContext context) {
     return Consumer<FilterVMS>(
       builder: (context, myType, child) {
-        values = myType.price ?? values;
+        values = myType.price;
         return RangeSlider(
           values: values,
           divisions: 20,

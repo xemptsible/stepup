@@ -125,10 +125,12 @@ class _SearchPageState extends State<SearchPage> {
                                       return const FilterWidget();
                                     },
                                   );
-                                }).whenComplete(() {
-                              // Khi modal bottom sheet đóng, bỏ focus khỏi TextField
-                              FocusScope.of(context).unfocus();
-                            });
+                                }).whenComplete(
+                              () {
+                                // Khi modal bottom sheet đóng, bỏ focus khỏi TextField
+                                FocusScope.of(context).unfocus();
+                              },
+                            );
                           },
                           icon: const Icon(Icons.filter_alt_outlined),
                         ),

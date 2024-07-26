@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:stepup/data/providers/filter_vm.dart';
 import 'package:stepup/utilities/const.dart';
 
 import '../../data/models/brand_model.dart';
@@ -67,13 +68,86 @@ class _BrandState extends State<BrandChipsBar> {
                                 brandIndex,
                                 brandList[brandIndex].name.toString(),
                               );
-                              print(_selectedIndex);
+                              // print(_selectedIndex);
                             },
                           );
                         },
                       );
                     },
                   ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+
+class BrandChipsModal extends StatefulWidget {
+  const BrandChipsModal({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _BrandModalState();
+}
+
+class _BrandModalState extends State<BrandChipsModal> {
+  int? _selectedIndex = 0;
+
+  late Future brands;
+
+  List<Brand> brandList = [];
+  Future<String> loadBrandList() async {
+    brandList = await ReadData().loadBrandData();
+    return '';
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    brands = loadBrandList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: brands,
+      builder: (context, snapshot) {
+        return SingleChildScrollView(
+          // scrollDirection: Axis.horizontal,
+          child: Consumer<FilterVMS>(
+            builder: (context, brand, child) {
+              return Wrap(
+                spacing: 8,
+                children: List.generate(
+                  brandList.length,
+                  (brandIndex) {
+                    return ChoiceChip(
+                      showCheckmark: false,
+                      avatar: Image.asset(
+                        imgLogoUrl + brandList[brandIndex].img.toString(),
+                        fit: BoxFit.contain,
+                        color: Colors.black,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(Icons.category);
+                        },
+                      ),
+                      label: Text(brandList[brandIndex].name.toString()),
+                      selected: _selectedIndex == brandIndex,
+                      onSelected: (isSelected) {
+                        setState(
+                          () {
+                            _selectedIndex = isSelected ? brandIndex : 0;
+                            brand.select(
+                              brandList[brandIndex].name.toString(),
+                              brandIndex,
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
                 ),
               );
             },
