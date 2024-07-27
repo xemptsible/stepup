@@ -30,7 +30,7 @@ class _FilterWidgetState extends State<FilterWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Padding(
-                  padding: EdgeInsets.only(left: 16),
+                  padding: EdgeInsets.only(left: 24),
                   child: Text(
                     "Sắp xếp và lọc",
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -40,11 +40,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
                         "Hãng giày",
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
+                            fontSize: 16, fontWeight: FontWeight.w500),
                       ),
                       // const BrandGrid(),
                       const BrandChipsModal(),
@@ -72,32 +73,26 @@ class _FilterWidgetState extends State<FilterWidget> {
                           itemCount: 10,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return GestureDetector(
+                            return InkWell(
                               onTap: () => setState(() {
                                 selectedSize = 40 + index;
                                 filterVMS.selectSize(selectedSize);
                               }),
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Container(
-                                  width: 35,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: filterVMS.size - 40 == index
-                                              ? 0
-                                              : 1),
-                                      color: filterVMS.size - 40 == index
-                                          ? Theme.of(context)
-                                              .primaryColorLight
-                                          : Colors.white,
-                                      shape: BoxShape.circle),
-                                  child: Center(
-                                    child: Text(
-                                      "${40 + index}",
-                                      style:
-                                          const TextStyle(color: Colors.black),
-                                    ),
+                              child: Ink(
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: filterVMS.size - 40 == index
+                                      ? null
+                                      : Border.all(),
+                                  color: filterVMS.size - 40 == index
+                                      ? Theme.of(context).primaryColorLight
+                                      : Colors.white,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "${40 + index}",
+                                    style: const TextStyle(color: Colors.black),
                                   ),
                                 ),
                               ),
