@@ -139,7 +139,8 @@ class _LoginState extends State<LoginScreen> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Lỗi đăng nhập'),
-          content: Text(message ?? 'Không biết lỗi'),
+          // content: Text(message ?? 'Không biết lỗi'),
+          content: Text('Tài khoản hoặc mật khẩu của bạn đã sai'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -184,7 +185,8 @@ class _LoginState extends State<LoginScreen> {
     } on FirebaseAuthException catch (e) {
       logger.e('Failed with error code: ${e.code}');
       logger.e(e.message);
-      errorDialogDangNhap(e.message);
+      await errorDialogDangNhap(e.message);
+      Navigator.pop(context);
     }
   }
 }
