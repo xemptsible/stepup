@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +7,6 @@ import 'package:stepup/data/providers/account_vm.dart';
 import 'package:stepup/data/providers/favorite_vm.dart';
 import 'package:stepup/data/providers/filter_vm.dart';
 import 'package:stepup/data/providers/product_vm.dart';
-import 'package:stepup/global/functions.dart';
 import 'package:stepup/screens/mainPage/account.dart';
 
 import 'package:stepup/screens/mainPage/search_page.dart';
@@ -72,9 +72,36 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
+  Future<void> kiemTraDangNhapTrongApp() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+
+    FirebaseAuth.instance.authStateChanges().listen(
+      (User? user) {
+        if (user == null) {
+          logger.d('User is currently signed out!');
+        } else {
+          if (context.mounted) {
+            AsyncSnapshot.waiting;
+            Provider.of<AccountVMS>(context, listen: false)
+                .setCurrentAcc(user.email!);
+
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const App(),
+              ),
+              ModalRoute.withName('/homePage'),
+            );
+          }
+        }
+      },
+    );
+  }
+
   @override
   void initState() {
-    kiemTraTaiKhoan();
+    kiemTraDangNhapTrongApp();
     super.initState();
   }
 

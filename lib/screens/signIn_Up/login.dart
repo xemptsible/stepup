@@ -1,6 +1,7 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/app.dart';
 
@@ -17,7 +18,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginState extends State<LoginScreen> {
-  bool isLoading = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -36,7 +36,10 @@ class _LoginState extends State<LoginScreen> {
       body: CustomScrollView(
         slivers: [
           const SliverAppBar.large(
-            title: Text('Đăng nhập'),
+            title: Text(
+              'Đăng nhập',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
           SliverFillRemaining(
             hasScrollBody: false,
@@ -75,25 +78,25 @@ class _LoginState extends State<LoginScreen> {
                           ],
                         ),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(top: 16),
-                      //   child: TextButton(
-                      //     onPressed: () async {
-                      //       await FirebaseAuth.instance.signOut();
-                      //     },
-                      //     child: const Text(
-                      //       "Quên mật khẩu?",
-                      //     ),
-                      //   ),
-                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: TextButton(
+                          onPressed: () async {
+                            await FirebaseAuth.instance.signOut();
+                          },
+                          child: const Text(
+                            "Quên mật khẩu?",
+                          ),
+                        ),
+                      ),
                       SizedBox(
                         width: double.infinity,
                         child: FilledButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              dialogCustom(context, isLoading);
-                              xuLyDangNhap(isLoading, _emailController,
-                                  _passwordController);
+                              dialogCustom(context);
+                              xuLyDangNhap(
+                                  _emailController, _passwordController);
 
                               // Navigator.push(
                               //     context,
@@ -151,66 +154,67 @@ class _LoginState extends State<LoginScreen> {
     }
   }
 
-  Future<void> xuLyDangNhap(bool isLoading, TextEditingController email,
-      TextEditingController password) async {
+  Future<void> xuLyDangNhap(
+      TextEditingController email, TextEditingController password) async {
     try {
-      isLoading = true;
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: email.text, password: password.text)
           .then(
         (value) async {
+          final context = _formKey.currentContext;
           if (value.user != null) {
             AsyncSnapshot.waiting;
-            await Provider.of<AccountVMS>(context, listen: false)
+            await Provider.of<AccountVMS>(context!, listen: false)
                 .setCurrentAcc(_emailController.text);
-            print(Provider.of<AccountVMS>(context, listen: false)
-                .currentAcc!
-                .UserName!);
-            await Future.delayed(const Duration(milliseconds: 200));
-            isLoading = false;
-            print("finish");
+            // print(Provider.of<AccountVMS>(context, listen: false)
+            //     .currentAcc!
+            //     .UserName!);
+            // await Future.delayed(const Duration(milliseconds: 200));
+            // print("finish");
 
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const App(),
-              ),
-              ModalRoute.withName('/homePage'),
-            );
+            if (context.mounted) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const App(),
+                ),
+                ModalRoute.withName('/homePage'),
+              );
+            }
           }
         },
       );
     } on FirebaseAuthException catch (e) {
       logger.e('Failed with error code: ${e.code}');
       logger.e(e.message);
-      errorDialogDangNhap(e.message);
+      if (e.code == "invalid-credential") {
+        errorDialogDangNhap('Mật khẩu hoặc email đăng nhập không đúng');
+      } else if (e.code == 'network-request-failed') {
+        errorDialogDangNhap('Không có kết nối Wi-Fi hoặc dữ liệu di động');
+      }
     }
   }
-}
 
-void dialogCustom(BuildContext context, bool isLoading) {
-  Dialog errorDialog = Dialog(
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0)), //this right here
-    child: SizedBox(
-      height: 150.0,
-      width: 150.0,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            width: MediaQuery.sizeOf(context).width * 0.7,
-            child: const Text(
-              "Đang Đăng Nhập",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+  dialogCustom(BuildContext context) {
+    Dialog loadingDialog = Dialog(
+        child: Container(
+      padding: const EdgeInsets.only(top: 16, bottom: 32),
+      child: const Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Text(
+              'Đang đăng nhập',
+              style: TextStyle(fontSize: 18),
             ),
           ),
-          const Center(child: CircularProgressIndicator())
+          CircularProgressIndicator(),
         ],
       ),
-    ),
-  );
-  showDialog(context: context, builder: (BuildContext context) => errorDialog);
+    ));
+    showDialog(
+        context: context, builder: (BuildContext context) => loadingDialog);
+  }
 }

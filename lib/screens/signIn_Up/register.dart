@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:stepup/app.dart';
 import 'package:stepup/data/api/api.dart';
 import 'package:stepup/data/models/account_model.dart';
+import 'package:stepup/main.dart';
 
 import 'package:stepup/screens/signIn_Up/login.dart';
 import 'package:stepup/utilities/const.dart';
@@ -15,6 +19,40 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterState extends State<RegisterScreen> {
+  _xacNhanEmail(User? user) {
+    dialogDangKy(context);
+
+    Timer.periodic(const Duration(seconds: 10), (timer) async {
+      FirebaseAuth.instance.signOut();
+      FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
+      final signIn = FirebaseAuth.instance.currentUser;
+
+      if (signIn?.emailVerified == true) {
+        timer.cancel();
+        logger.d('Đăng ký thành công và xác nhận email');
+
+        // post account lên api
+        Account newAcc = Account(
+            Email: _emailController.text,
+            Password: _passwordController.text,
+            UserName: _usernameController.text);
+        ApiService apiService = ApiService();
+        apiService.postAccount(newAcc);
+
+        if (context.mounted) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const App(),
+            ),
+            ModalRoute.withName('/homePage'),
+          );
+        }
+      }
+    });
+  }
+
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPWController = TextEditingController();
@@ -37,7 +75,10 @@ class _RegisterState extends State<RegisterScreen> {
       body: CustomScrollView(
         slivers: [
           const SliverAppBar.large(
-            title: Text('Đăng ký'),
+            title: Text(
+              'Đăng ký',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
           SliverFillRemaining(
             hasScrollBody: false,
@@ -148,25 +189,20 @@ class _RegisterState extends State<RegisterScreen> {
   }
 
   Future<void> taoTaiKhoanTrongFirebase(
-      TextEditingController tecEmail, TextEditingController tecPassword) async {
+    TextEditingController tecEmail,
+    TextEditingController tecPassword,
+  ) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: tecEmail.text,
-        password: tecPassword.text,
-      );
-      //post account lên api
-      Account newAcc = Account(
-          Email: _emailController.text,
-          Password: _passwordController.text,
-          UserName: _usernameController.text);
-      ApiService apiService = ApiService();
-      await apiService.postAccount(newAcc);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
-        ),
-      );
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: tecEmail.text, password: tecPassword.text)
+          .then((auth) async {
+        if (auth.user != null) {
+          guiEmailXacNhan(auth.user);
+
+          _xacNhanEmail(FirebaseAuth.instance.currentUser!);
+        }
+      });
     } on FirebaseAuthException catch (e) {
       logger.e('Failed with error code: ${e.code}');
       logger.e(e.message);
@@ -175,8 +211,7 @@ class _RegisterState extends State<RegisterScreen> {
       } else if (e.code == 'email-already-in-use') {
         errorDialogDangKy('Tài khoản đã tồn tại');
       } else if (e.code == 'network-request-failed') {
-        errorDialogDangKy(
-            'Bị mất hoặc không có kết nối mạng khi đang tạo tài khoản');
+        errorDialogDangKy('Không có kết nối Wi-Fi hoặc dữ liệu di động');
       } else {
         errorDialogDangKy(e.message);
       }
@@ -194,4 +229,26 @@ class _RegisterState extends State<RegisterScreen> {
   //     fetchData(e.message);
   //   }
   // }
+
+  dialogDangKy(BuildContext context) {
+    Dialog loadingDialog = Dialog(
+        child: Container(
+      padding: const EdgeInsets.only(top: 16, bottom: 32),
+      child: const Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Text(
+              'Đang đăng ký',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          CircularProgressIndicator(),
+        ],
+      ),
+    ));
+    showDialog(
+        context: context, builder: (BuildContext context) => loadingDialog);
+  }
 }

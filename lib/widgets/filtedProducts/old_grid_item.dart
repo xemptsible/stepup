@@ -151,7 +151,7 @@ class _OldGridItemState extends State<OldGridItem> {
                             "${widget.product.name!} / ${widget.product.price}");
                         value.add(cartItem);
 
-                        dialogCustom(context);
+                        dialogGioHang(context);
                       },
                       child: Container(
                         width: 50,
@@ -182,7 +182,7 @@ class _OldGridItemState extends State<OldGridItem> {
   }
 }
 
-void dialogCustom(BuildContext context) {
+void dialogGioHang(BuildContext context) {
   Dialog errorDialog = Dialog(
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0)), //this right here

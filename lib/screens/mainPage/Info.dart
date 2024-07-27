@@ -251,7 +251,7 @@ class _InfoPageState extends State<InfoPage> {
                                       //update account
                                       value.updateCurrentAcc();
 
-                                      dialogCustom(context);
+                                      dialogSuaThongTin(context);
                                     },
                                     label: const Text('Lưu thay đổi'),
                                     icon: const Icon(Icons.save),
@@ -274,7 +274,7 @@ class _InfoPageState extends State<InfoPage> {
   }
 }
 
-void dialogCustom(BuildContext context) {
+void dialogSuaThongTin(BuildContext context) {
   Dialog errorDialog = Dialog(
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0)), //this right here

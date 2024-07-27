@@ -42,7 +42,7 @@ class _SearchPageState extends State<SearchPage> {
     } else {
       proList = await _loadAllProData();
     }
-    // print("$text, $brand, $size, $price");
+    print("$text, $brand, $size, $price");
     isLoading = false;
     return proList;
   }
@@ -51,7 +51,7 @@ class _SearchPageState extends State<SearchPage> {
     while (text.isNotEmpty &&
         brand != "" &&
         size != 0 &&
-        price != const RangeValues(0.0, 10.0)) {
+        price != const RangeValues(0.0, 0.0)) {
       return true;
     }
     return false;

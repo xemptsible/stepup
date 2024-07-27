@@ -173,7 +173,7 @@ class _CheckoutState extends State<Checkout> {
                                     Provider.of<ProductVMS>(context,
                                             listen: false)
                                         .clear();
-                                    dialogCustom(context);
+                                    dialogThanhToan(context);
                                   },
                                   label: Text('Thanh toán'),
                                   icon: Icon(Icons.credit_card),
@@ -262,7 +262,7 @@ Widget item(Product shoe, int index) {
   );
 }
 
-void dialogCustom(BuildContext context) {
+dialogThanhToan(BuildContext context) {
   Dialog errorDialog = Dialog(
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0)), //this right here
@@ -276,7 +276,7 @@ void dialogCustom(BuildContext context) {
             alignment: Alignment.center,
             width: MediaQuery.sizeOf(context).width * 0.7,
             child: Text(
-              "Thanh Toán Thành Công",
+              "Thanh toán thành công",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ),

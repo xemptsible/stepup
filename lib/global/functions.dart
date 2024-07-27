@@ -95,3 +95,7 @@ Future<void> kiemTraTaiKhoan() async {
     },
   );
 }
+
+Future<void> guiEmailXacNhan(User? user) async {
+  await user?.sendEmailVerification();
+}

@@ -74,6 +74,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return InkWell(
+                              customBorder: const CircleBorder(),
                               onTap: () => setState(() {
                                 selectedSize = 40 + index;
                                 filterVMS.selectSize(selectedSize);
