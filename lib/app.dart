@@ -70,12 +70,12 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
           ),
           forceMaterialTransparency: true,
           actions: [
-            IconButton(
+            selectedIndex != 3 ? IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, "/search");
               },
               icon: const Icon(Icons.search),
-            )
+            ) : const SizedBox.shrink()
           ],
         ),
         body: PageView(
