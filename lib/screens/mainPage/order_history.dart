@@ -96,7 +96,7 @@ class OrderHistoryState extends State<OrderHistory> {
 
 Widget billItem(int index, Order order, BuildContext context) {
   String orderDate = DateFormat('dd/MM/yyyy').format(order.dateOrder);
-  return Card(
+  return Card.outlined(
     clipBehavior: Clip.antiAlias,
     elevation: 5,
     margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

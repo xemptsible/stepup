@@ -115,6 +115,7 @@ class _ProductDetailState extends State<ProductDetail> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Card(
+                    elevation: 4,
                     child: Padding(
                       padding: EdgeInsets.all(8),
                       child: Row(
@@ -165,7 +166,9 @@ class _ProductDetailState extends State<ProductDetail> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 8),
                   Card(
+                    elevation: 4,
                     child: Padding(
                       padding: const EdgeInsets.all(8),
                       child: Column(
@@ -228,7 +231,9 @@ class _ProductDetailState extends State<ProductDetail> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 8),
                   Card(
+                    elevation: 4,
                     child: Padding(
                       padding: const EdgeInsets.all(8),
                       child: Column(

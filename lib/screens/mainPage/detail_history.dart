@@ -34,7 +34,7 @@ class _DetailHistoryState extends State<DetailHistory> {
 }
 
 Widget listItem(Order order, int index) {
-  return Card(
+  return Card.outlined(
     elevation: 5,
     margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     child: Container(
