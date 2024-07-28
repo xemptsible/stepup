@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/data/providers/account_vm.dart';
+import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/main.dart';
 import 'package:stepup/screens/mainPage/Info.dart';
 import 'package:stepup/screens/mainPage/order_history.dart';
@@ -32,7 +33,6 @@ class _AccountPageState extends State<AccountPage> {
               children: [
                 Container(
                   clipBehavior: Clip.antiAlias,
-                  margin: EdgeInsets.only(top: 50),
                   height: 150,
                   width: 150,
                   decoration: BoxDecoration(
@@ -108,6 +108,9 @@ class _AccountPageState extends State<AccountPage> {
       onTap: () {
         if (label.contains('Đăng xuất')) {
           _signOut();
+          
+          Provider.of<ProductVMS>(context, listen: false).clear();
+
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(

@@ -30,10 +30,11 @@ class _CheckoutState extends State<Checkout> {
 
   final _formKey = GlobalKey<FormState>();
 
-  Future<String> _loadProData() async {
+  Future _loadProData() async {
     proList = await ReadData().loadProductData();
-    Provider.of<ProductVMS>(context, listen: false).getQuantity();
-    return '';
+    if (context.mounted) {
+      Provider.of<ProductVMS>(context, listen: false).getQuantity();
+    }
   }
 
   @override
