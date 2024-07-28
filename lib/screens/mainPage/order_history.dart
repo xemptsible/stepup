@@ -16,7 +16,11 @@ class OrderHistory extends StatefulWidget {
 
 class OrderHistoryState extends State<OrderHistory> {
   List<Order> orderList = [];
+
   bool isLoading = false;
+
+  late Future bill;
+
   Future<String> _loadOrderData() async {
     isLoading = true;
     orderList = await ReadData().loadOrderDataUser(
@@ -30,7 +34,7 @@ class OrderHistoryState extends State<OrderHistory> {
   @override
   void initState() {
     super.initState();
-    _loadOrderData();
+    bill = _loadOrderData();
   }
 
   @override
@@ -40,37 +44,34 @@ class OrderHistoryState extends State<OrderHistory> {
         title: const Text("Lịch sử đơn hàng"),
       ),
       body: FutureBuilder(
-        future: _loadOrderData(),
+        future: bill,
         builder: (context, snapshot) {
           return isLoading
               ? const Center(child: CircularProgressIndicator())
               : Container(
                   child: orderList.isEmpty
-                      ? Container(
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  "${urlimg}empty_order.png",
-                                  width: 150,
-                                  height: 150,
-                                ),
-                                const SizedBox(height: 16),
-                                const Text(
-                                  "Tài khoản chưa có đơn hàng",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                )
-                              ],
-                            ),
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "${urlimg}empty_order.png",
+                                width: 150,
+                                height: 150,
+                              ),
+                              const SizedBox(height: 16),
+                              const Text(
+                                "Tài khoản chưa có đơn hàng",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              )
+                            ],
                           ),
                         )
                       : ListView.builder(
                           itemCount: orderList.length,
                           itemBuilder: (context, index) {
-                            return ListItem(index, orderList[index], context);
+                            return billItem(index, orderList[index], context);
                           },
                         ),
                 );
@@ -93,49 +94,53 @@ class OrderHistoryState extends State<OrderHistory> {
 //             );
 //           }
 
-Widget ListItem(int index, Order order, BuildContext context) {
+Widget billItem(int index, Order order, BuildContext context) {
   String orderDate = DateFormat('dd/MM/yyyy').format(order.dateOrder);
-  return InkWell(
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DetailHistory(
-            order: order,
+  return Card(
+    clipBehavior: Clip.antiAlias,
+    elevation: 5,
+    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    surfaceTintColor: Colors.white,
+    child: InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailHistory(
+              order: order,
+            ),
           ),
-        ),
-      );
-    },
-    child: Card(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        );
+      },
       child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(width: 1),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        height: 90,
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               order.nameUser,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontSize: 18,
               ),
             ),
-            Text(
-              "Ngày Mua: $orderDate",
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-            ),
-            Text(
-              'Tổng Giá Đơn Hàng: ${NumberFormat('###,###.###').format(order.price)}đ',
-              style: const TextStyle(
-                fontSize: 16,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  orderDate,
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  'Tổng giá: ${NumberFormat('###,###.###').format(order.price)}đ',
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

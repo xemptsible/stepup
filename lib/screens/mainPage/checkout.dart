@@ -32,8 +32,10 @@ class _CheckoutState extends State<Checkout> {
 
   Future _loadProData() async {
     proList = await ReadData().loadProductData();
-    if (context.mounted) {
-      Provider.of<ProductVMS>(context, listen: false).getQuantity();
+    if (mounted) {
+      await Provider.of<ProductVMS>(context, listen: false).getQuantity();
+    } else {
+      return;
     }
   }
 
@@ -156,25 +158,32 @@ class _CheckoutState extends State<Checkout> {
                               Expanded(
                                 child: FilledButton.icon(
                                   onPressed: () {
-                                    List<CartItem> orderItem =
+                                    if (_formKey.currentState!.validate()) {
+                                      List<CartItem> orderItem =
+                                          Provider.of<ProductVMS>(context,
+                                                  listen: false)
+                                              .lst;
+                                      if (orderItem.isNotEmpty) {
+                                        Order order = Order(
+                                            nameUser:
+                                                value.currentAcc!.UserName!,
+                                            items: orderItem,
+                                            email: value.currentAcc!.Email!,
+                                            dateOrder: nowDate,
+                                            price: valueOder.total);
+                                        print(order.toJson());
+
+                                        ApiService apiService = ApiService();
+                                        apiService.postOrder(order);
+
                                         Provider.of<ProductVMS>(context,
                                                 listen: false)
-                                            .lst;
-                                    Order order = Order(
-                                        nameUser: value.currentAcc!.UserName!,
-                                        items: orderItem,
-                                        email: value.currentAcc!.Email!,
-                                        dateOrder: nowDate,
-                                        price: valueOder.total);
-                                    print(order.toJson());
-
-                                    ApiService apiService = ApiService();
-                                    apiService.postOrder(order);
-
-                                    Provider.of<ProductVMS>(context,
-                                            listen: false)
-                                        .clear();
-                                    dialogThanhToan(context);
+                                            .clear();
+                                        dialogThanhToan(context);
+                                      } else {
+                                        dialogGioHangRong(context);
+                                      }
+                                    }
                                   },
                                   label: Text('Thanh toán'),
                                   icon: Icon(Icons.credit_card),
@@ -249,13 +258,18 @@ Widget item(Product shoe, int index) {
       Text(
         "Hãng giày: ${shoe.brand!}",
       ),
-      Text(
-        'Giá: ${NumberFormat('###,###.###').format(shoe.price)}đ',
-      ),
       Consumer<ProductVMS>(
         builder: (BuildContext context, ProductVMS value, Widget? child) {
-          return Text(
-            'Số lượng: ${value.lst[index].quantity}',
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${NumberFormat('###,###.###').format(shoe.price)}đ - Tổng: ${NumberFormat('###,###.###').format(shoe.price! * value.lst[index].quantity!)}đ',
+              ),
+              Text(
+                'Số lượng: ${value.lst[index].quantity}',
+              ),
+            ],
           );
         },
       ),
@@ -265,53 +279,104 @@ Widget item(Product shoe, int index) {
 
 dialogThanhToan(BuildContext context) {
   Dialog errorDialog = Dialog(
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0)), //this right here
-    child: SizedBox(
-      height: 300.0,
-      width: 300.0,
+//this right here
+    child: Container(
+      padding: EdgeInsets.symmetric(vertical: 16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            width: MediaQuery.sizeOf(context).width * 0.7,
-            child: Text(
-              "Thanh toán thành công",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
+          Text(
+            "Thanh toán thành công",
+            style: TextStyle(fontSize: 18),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 16),
-            child: Image.network(
-                width: 150,
-                height: 150,
-                "https://cdn4.iconfinder.com/data/icons/e-commerce-and-shopping-3/500/cart-checked-512.png"),
+            child: Icon(
+              Icons.check_circle_outline_outlined,
+              size: 100,
+              color: Colors.green,
+            ),
           ),
           Consumer<ProductVMS>(
             builder: (BuildContext context, ProductVMS value, Widget? child) {
-              return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => App(),
+              return Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: FilledButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const App(),
+                            ),
+                            ModalRoute.withName('/homePage'),
+                          );
+                          value.clear();
+                        },
+                        child: Text('Trở về'),
                       ),
-                    );
-                    value.clear();
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.sizeOf(context).width * 0.7,
-                    height: MediaQuery.sizeOf(context).height * 0.05,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Color.fromARGB(255, 32, 74, 150)),
-                    child: Text(
-                      'Trở về',
-                      style: TextStyle(color: Colors.white, fontSize: 18.0),
                     ),
-                  ));
+                  )
+                ],
+              );
+            },
+          )
+        ],
+      ),
+    ),
+  );
+  showDialog(context: context, builder: (BuildContext context) => errorDialog);
+}
+
+dialogGioHangRong(BuildContext context) {
+  Dialog errorDialog = Dialog(
+//this right here
+    child: Container(
+      padding: EdgeInsets.symmetric(vertical: 16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(
+            "Không có gì để thanh toán!",
+            style: TextStyle(fontSize: 18),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 16),
+            child: Icon(
+              Icons.warning_amber_outlined,
+              size: 100,
+              color: Colors.red,
+            ),
+          ),
+          Consumer<ProductVMS>(
+            builder: (BuildContext context, ProductVMS value, Widget? child) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: FilledButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const App(),
+                            ),
+                            ModalRoute.withName('/homePage'),
+                          );
+                        },
+                        child: Text('Trở về'),
+                      ),
+                    ),
+                  )
+                ],
+              );
             },
           )
         ],
@@ -329,6 +394,9 @@ Widget _inputField(
       controller: textController,
       keyboardType: type,
       decoration: InputDecoration(
+          prefix: label.toLowerCase().contains('số điện thoại')
+              ? Text('+84 ')
+              : null,
           border: OutlineInputBorder(),
           filled: true,
           fillColor: Colors.white,
@@ -339,51 +407,13 @@ Widget _inputField(
         if (value == null || value.isEmpty || value == "null") {
           return 'Vui lòng nhập';
         }
+        if (label.toLowerCase() == 'số điện thoại') {
+          if (value.length > 10 || value.length < 10) {
+            return 'Vui lòng nhập số điện thoại hợp lệ';
+          }
+        }
         return null;
       },
     ),
   );
 }
-
-// Widget _inputField(
-//     String label, TextEditingController textController, TextInputType type) {
-//   return SingleChildScrollView(
-//     child: Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         //label
-//         Container(
-//           margin: EdgeInsets.only(left: 24, bottom: 8),
-//           child: Text(
-//             label,
-//             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-//           ),
-//         ),
-
-//         //textfield
-//         Container(
-//           margin: EdgeInsets.symmetric(horizontal: 16),
-//           padding: EdgeInsets.only(left: 16),
-//           decoration: BoxDecoration(
-//             border:
-//                 Border.all(width: 1, color: Color.fromARGB(255, 110, 108, 108)),
-//             borderRadius: BorderRadius.all(
-//               Radius.circular(5),
-//             ),
-//           ),
-//           child: TextFormField(
-//             controller: textController,
-//             keyboardType: type,
-//             decoration: InputDecoration(border: InputBorder.none),
-//             validator: (value) {
-//               if (value == null || value.isEmpty || value == "null") {
-//                 return 'Vui lòng nhập';
-//               }
-//               return null;
-//             },
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }

@@ -20,64 +20,63 @@ class _DetailHistoryState extends State<DetailHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Chi Tiết Đơn Hàng"),
+        title: const Text("Chi tiết đơn hàng"),
       ),
       body: ListView.builder(
+        itemExtent: 130,
         itemCount: widget.order.items.length,
         itemBuilder: (context, index) {
-          return ListItem(widget.order, index);
+          return listItem(widget.order, index);
         },
       ),
     );
   }
 }
 
-Widget ListItem(Order order, int index) {
+Widget listItem(Order order, int index) {
   return Card(
-    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+    elevation: 5,
+    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     child: Container(
-      decoration: BoxDecoration(
-        border: Border.all(width: 1),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      height: 90,
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      padding: const EdgeInsets.all(8),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              child: Image.asset(urlimg + order.items[index].product.img!),
+          Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                  strokeAlign: BorderSide.strokeAlignOutside,
+                  color: Colors.grey.shade300),
+              color: Colors.grey[100],
+            ),
+            child: Image.asset(
+              width: 100,
+              urlimg + order.items[index].product.img!,
+              fit: BoxFit.fitWidth,
             ),
           ),
           Expanded(
-            flex: 3,
-            child: Container(
-              margin: const EdgeInsets.only(left: 16),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
+                    overflow: TextOverflow.clip,
                     order.items[index].product.name!,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 18,
                     ),
                   ),
                   Text(
-                    "Số Lượng : ${order.items[index].quantity}",
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
+                    "Số lượng : ${order.items[index].quantity}",
                   ),
-                  Container(
-                    child: Text(
-                      'Giá: ${NumberFormat('###,###.###').format(order.items[index].product.price)}đ',
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
+                  Text(
+                    'Giá: ${NumberFormat('###,###.###').format(order.items[index].product.price! * order.items[index].quantity!)}đ',
                   ),
                 ],
               ),
