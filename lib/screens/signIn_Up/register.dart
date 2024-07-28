@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:stepup/app.dart';
 import 'package:stepup/data/api/api.dart';
 import 'package:stepup/data/models/account_model.dart';
-import 'package:stepup/main.dart';
 
-import 'package:stepup/screens/signIn_Up/login.dart';
 import 'package:stepup/utilities/const.dart';
 import 'package:stepup/global/functions.dart';
 
@@ -240,7 +238,7 @@ class _RegisterState extends State<RegisterScreen> {
           Padding(
             padding: EdgeInsets.all(8),
             child: Text(
-              'Đang đăng ký',
+              'Vui lòng kiểm tra email',
               style: TextStyle(fontSize: 18),
             ),
           ),

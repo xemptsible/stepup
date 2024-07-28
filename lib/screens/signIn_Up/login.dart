@@ -162,10 +162,9 @@ class _LoginState extends State<LoginScreen> {
               email: email.text, password: password.text)
           .then(
         (value) async {
-          final context = _formKey.currentContext;
           if (value.user != null) {
             AsyncSnapshot.waiting;
-            await Provider.of<AccountVMS>(context!, listen: false)
+            await Provider.of<AccountVMS>(context, listen: false)
                 .setCurrentAcc(_emailController.text);
             // print(Provider.of<AccountVMS>(context, listen: false)
             //     .currentAcc!
@@ -173,7 +172,7 @@ class _LoginState extends State<LoginScreen> {
             // await Future.delayed(const Duration(milliseconds: 200));
             // print("finish");
 
-            if (context.mounted) {
+            if (mounted) {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
