@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   const Text(
                     "Phổ biến",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                   ),
                   TextButton(
                     onPressed: () {

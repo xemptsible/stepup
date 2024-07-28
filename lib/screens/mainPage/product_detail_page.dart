@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:stepup/app.dart';
 import 'package:stepup/data/models/cart_item.dart';
 import 'package:stepup/data/models/product_model.dart';
 import 'package:stepup/data/providers/favorite_vm.dart';
@@ -93,14 +94,19 @@ class _ProductDetailState extends State<ProductDetail> {
             Center(
               child: Container(
                 decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    color: Colors.white,
+                    border: Border.all(width: 1, color: Colors.black26),
+                    color: Colors.grey[100],
                     borderRadius: BorderRadius.circular(20)),
                 margin: EdgeInsets.symmetric(horizontal: 15),
                 alignment: Alignment.center,
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.4,
-                child: Image.asset(urlimg + product.img!),
+                height: MediaQuery.of(context).size.height * 0.3,
+                child: Image.asset(
+                  fit: BoxFit.fitHeight,
+                  urlimg + product.img!,
+                  errorBuilder: (context, error, stackTrace) =>
+                      Icon(Icons.image_not_supported_outlined),
+                ),
               ),
             ),
             Container(
@@ -159,70 +165,83 @@ class _ProductDetailState extends State<ProductDetail> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Kích cỡ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 18),
-                        ),
-                        Container(
-                          height: 40,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: product.size!.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(
-                                    () {
-                                      selectedIndex = index;
-                                      size = product.size![index];
-                                      // print("Size " + size.toString());
-                                    },
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Kích cỡ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 18),
+                          ),
+                          SingleChildScrollView(
+                            child: Container(
+                              height: 42,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: product.size!.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 20),
+                                    child: InkWell(
+                                      customBorder: CircleBorder(),
+                                      onTap: () {
+                                        setState(
+                                          () {
+                                            selectedIndex = index;
+                                            size = product.size![index];
+                                            // print("Size " + size.toString());
+                                          },
+                                        );
+                                      },
+                                      child: Ink(
+                                        width: 42,
+                                        child: Center(
+                                          child: Text(
+                                            "${product.size![index]}",
+                                            style: TextStyle(
+                                                color: selectedIndex == index
+                                                    ? Colors.white
+                                                    : Colors.black),
+                                          ),
+                                        ),
+                                        decoration: BoxDecoration(
+                                          border: selectedIndex == index
+                                              ? null
+                                              : Border.all(
+                                                  color: Colors.black38),
+                                          shape: BoxShape.circle,
+                                          color: selectedIndex == index
+                                              ? Theme.of(context).primaryColor
+                                              : Colors.white,
+                                        ),
+                                      ),
+                                    ),
                                   );
                                 },
-                                child: Container(
-                                  width: 40,
-                                  margin: EdgeInsets.only(right: 20),
-                                  alignment: Alignment.center,
-                                  // padding: EdgeInsets.all(10),
-                                  child: Text(
-                                    "${product.size![index]}",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: selectedIndex == index
-                                        ? null
-                                        : Border.all(),
-                                    shape: BoxShape.circle,
-                                    color: selectedIndex == index
-                                        ? Theme.of(context).primaryColorLight
-                                        : Colors.white,
-                                  ),
-                                ),
-                              );
-                            },
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Số lượng",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 18),
-                        ),
-                        quantityPro(),
-                      ],
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Số lượng",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 18),
+                          ),
+                          quantityPro(),
+                        ],
+                      ),
                     ),
                   ),
                   Consumer<ProductVMS>(
@@ -242,7 +261,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                   print(product.price! * quantity);
                                   value.add(cartItem);
 
-                                  DiaglogCustom(context);
+                                  dialogThemGioHang(context);
                                 },
                                 label: Text('Thêm vào giỏ hàng'),
                                 icon: Icon(Icons.add_shopping_cart),
@@ -293,47 +312,54 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 }
 
-void DiaglogCustom(BuildContext context) {
+dialogThemGioHang(BuildContext context) {
   Dialog errorDialog = Dialog(
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0)), //this right here
+//this right here
     child: Container(
-      height: 300.0,
-      width: 300.0,
+      padding: EdgeInsets.symmetric(vertical: 16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            width: MediaQuery.sizeOf(context).width * 0.7,
-            child: Text(
-              "Thêm Giỏ Hàng Thành Công",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
+          Text(
+            "Thêm giỏ hàng thành công",
+            style: TextStyle(fontSize: 18),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 16),
-            child: Image.network(
-                width: 150,
-                height: 150,
-                "https://cdn4.iconfinder.com/data/icons/e-commerce-and-shopping-3/500/cart-checked-512.png"),
+            child: Image.asset(
+              width: 100,
+              color: Colors.green,
+              '${urlimg}cart-check.png',
+              errorBuilder: (context, error, stackTrace) => Icon(
+                Icons.check_circle_rounded,
+                color: Colors.green,
+                size: 100,
+              ),
+            ),
           ),
-          InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: MediaQuery.sizeOf(context).width * 0.7,
-                height: MediaQuery.sizeOf(context).height * 0.05,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Color.fromARGB(255, 32, 74, 150)),
-                child: Text(
-                  'Trở về',
-                  style: TextStyle(color: Colors.white, fontSize: 18.0),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: FilledButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const App(),
+                        ),
+                        ModalRoute.withName('/homePage'),
+                      );
+                    },
+                    child: Text('Trở về'),
+                  ),
                 ),
-              ))
+              )
+            ],
+          )
         ],
       ),
     ),

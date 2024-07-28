@@ -20,7 +20,7 @@ class _BrandSelectProState extends State<BrandSelectPro> {
             alignment: Alignment.centerLeft,
             child: Text(
               "Tin mới",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
             ),
           ),
         ),

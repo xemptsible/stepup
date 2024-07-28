@@ -42,10 +42,14 @@ class _QuantityWidgetState extends State<QuantityWidget> {
               },
               icon: const Icon(Icons.remove),
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
+            SizedBox(
+              width: 40,
+              // margin: const EdgeInsets.symmetric(horizontal: 10),
               // child: Text(value.lst[widget.index].quantity.toString()),
-              child: Text(widget.quantity.toString()),
+              child: Text(
+                widget.quantity.toString(),
+                textAlign: TextAlign.center,
+              ),
             ),
             IconButton.filled(
               padding: EdgeInsets.zero,

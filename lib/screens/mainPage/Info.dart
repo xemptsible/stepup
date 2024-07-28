@@ -26,6 +26,8 @@ class _InfoPageState extends State<InfoPage> {
   final TextEditingController _ngaySinhController = TextEditingController();
   final TextEditingController _soDienThoaiController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -66,7 +68,7 @@ class _InfoPageState extends State<InfoPage> {
         }
 
         //check phoneNumber
-        print(account.PhoneNumber.toString());
+        // print(account.PhoneNumber.toString());
         if (account.PhoneNumber == null) {
           _soDienThoaiController.text = "";
         } else {
@@ -82,10 +84,12 @@ class _InfoPageState extends State<InfoPage> {
       builder: (BuildContext context, AccountVMS value, child) {
         return Container(
           padding: const EdgeInsets.symmetric(vertical: 16),
-          child: TextField(
+          child: TextFormField(
             controller: textController,
             keyboardType: type,
             decoration: InputDecoration(
+              prefixText:
+                  label.toLowerCase() == 'số điện thoại' ? '+84 ' : null,
               border: OutlineInputBorder(),
               filled: true,
               fillColor: Colors.white,
@@ -95,6 +99,17 @@ class _InfoPageState extends State<InfoPage> {
             onTap: type == TextInputType.datetime
                 ? () => _selectDate(context)
                 : null,
+            validator: (value) {
+              if (value == null || value.isEmpty || value == "null") {
+                return 'Vui lòng nhập';
+              }
+              if (label.toLowerCase() == 'số điện thoại') {
+                if (value.length > 10 || value.length < 10) {
+                  return 'Vui lòng nhập số điện thoại hợp lệ';
+                }
+              }
+              return null;
+            },
           ),
         );
       },
@@ -137,9 +152,11 @@ class _InfoPageState extends State<InfoPage> {
       setState(() async {
         imageUrl = await referenceImageToUpload.getDownloadURL();
         print(imageUrl);
-        Provider.of<AccountVMS>(context, listen: false)
-            .currentAcc!
-            .setImage(imageUrl!);
+        if (mounted) {
+          Provider.of<AccountVMS>(context, listen: false)
+              .currentAcc!
+              .setImage(imageUrl!);
+        }
         print(
             "Link img: ${Provider.of<AccountVMS>(context, listen: false).currentAcc!.Image!}");
       });
@@ -178,7 +195,18 @@ class _InfoPageState extends State<InfoPage> {
                             value.currentAcc!.Image!,
                             errorBuilder: (context, error, stackTrace) {
                               return Image.asset(
-                                  width: 150, "${urlimg}account.png");
+                                width: 150,
+                                "${urlimg}account.png",
+                                errorBuilder: (context, error, stackTrace) {
+                                  return SizedBox(
+                                    height: 150,
+                                    child: Icon(
+                                      Icons.image_not_supported_outlined,
+                                      size: 100,
+                                    ),
+                                  );
+                                },
+                              );
                             },
                           ),
                         ),
@@ -202,67 +230,74 @@ class _InfoPageState extends State<InfoPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      //Input
-                      _inputField(
-                        'Họ tên',
-                        _hoTenController,
-                        TextInputType.text,
-                      ),
-                      _inputField(
-                        'Địa chỉ',
-                        _diaChiController,
-                        TextInputType.text,
-                      ),
-                      _inputField(
-                        'Ngày sinh',
-                        _ngaySinhController,
-                        TextInputType.text,
-                      ),
-                      _inputField(
-                        'Số điện thoại',
-                        _soDienThoaiController,
-                        TextInputType.text,
-                      ),
+                  child: Form(
+                    key: _formKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Column(
+                      children: [
+                        //Input
+                        _inputField(
+                          'Họ tên',
+                          _hoTenController,
+                          TextInputType.text,
+                        ),
+                        _inputField(
+                          'Địa chỉ',
+                          _diaChiController,
+                          TextInputType.text,
+                        ),
+                        _inputField(
+                          'Ngày sinh',
+                          _ngaySinhController,
+                          TextInputType.datetime,
+                        ),
+                        _inputField(
+                          'Số điện thoại',
+                          _soDienThoaiController,
+                          TextInputType.phone,
+                        ),
 
-                      //TextButton
-                      Consumer<AccountVMS>(
-                        builder: (BuildContext context, value, Widget? child) {
-                          return Container(
-                            margin: EdgeInsets.only(top: 16),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: FilledButton.icon(
-                                    onPressed: () {
-                                      //set current account provider
-                                      value.currentAcc
-                                          ?.setUserName(_hoTenController.text);
-                                      value.currentAcc
-                                          ?.setAdress(_diaChiController.text);
-                                      value.currentAcc?.setPhoneNumber(
-                                          int.parse(
-                                              _soDienThoaiController.text));
+                        //TextButton
+                        Consumer<AccountVMS>(
+                          builder:
+                              (BuildContext context, value, Widget? child) {
+                            return Container(
+                              margin: EdgeInsets.only(top: 16),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: FilledButton.icon(
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          //set current account provider
+                                          value.currentAcc?.setUserName(
+                                              _hoTenController.text);
+                                          value.currentAcc?.setAdress(
+                                              _diaChiController.text);
+                                          value.currentAcc?.setPhoneNumber(
+                                              int.parse(
+                                                  _soDienThoaiController.text));
 
-                                      //add date
-                                      value.currentAcc?.setBirthDay(birthDay!);
+                                          //add date
+                                          value.currentAcc
+                                              ?.setBirthDay(birthDay!);
 
-                                      //update account
-                                      value.updateCurrentAcc();
-
-                                      dialogSuaThongTin(context);
-                                    },
-                                    label: const Text('Lưu thay đổi'),
-                                    icon: const Icon(Icons.save),
+                                          //update account
+                                          value.updateCurrentAcc();
+                                          dialogSuaThongTin(context);
+                                        }
+                                      },
+                                      label: const Text('Lưu thay đổi'),
+                                      icon: const Icon(Icons.save),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -275,47 +310,35 @@ class _InfoPageState extends State<InfoPage> {
 }
 
 void dialogSuaThongTin(BuildContext context) {
-  Dialog errorDialog = Dialog(
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0)), //this right here
-    child: SizedBox(
-      height: 300.0,
-      width: 300.0,
+  Dialog editDialog = Dialog(
+    child: Container(
+      padding: EdgeInsets.symmetric(vertical: 16),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            width: MediaQuery.sizeOf(context).width * 0.7,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             child: Text(
-              "Sửa thông tin thành công",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              'Sửa thông tin thành công',
+              style: TextStyle(fontSize: 18),
             ),
           ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 16),
-            child: Image.asset(
-                width: 150, height: 150, "${urlimg}update_account.png"),
-          ),
-          InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: MediaQuery.sizeOf(context).width * 0.7,
-                height: MediaQuery.sizeOf(context).height * 0.05,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Color.fromARGB(255, 32, 74, 150)),
-                child: Text(
-                  'Trở về',
-                  style: TextStyle(color: Colors.white, fontSize: 18.0),
-                ),
-              ))
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Expanded(
+                  child: FilledButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text('OK'),
+                  ),
+                )
+              ],
+            ),
+          )
         ],
       ),
     ),
   );
-  showDialog(context: context, builder: (BuildContext context) => errorDialog);
+  showDialog(context: context, builder: (BuildContext context) => editDialog);
 }
