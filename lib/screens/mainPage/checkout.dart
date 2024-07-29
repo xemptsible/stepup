@@ -147,51 +147,163 @@ class _CheckoutState extends State<Checkout> {
                       );
                     },
                   ),
-                  Consumer<AccountVMS>(
-                    builder: (BuildContext context, AccountVMS value,
-                        Widget? child) {
-                      return Consumer<ProductVMS>(
-                        builder: (BuildContext context, ProductVMS valueOder,
-                            Widget? child) {
-                          return Row(
-                            children: [
-                              Expanded(
-                                child: FilledButton.icon(
-                                  onPressed: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      List<CartItem> orderItem =
-                                          Provider.of<ProductVMS>(context,
-                                                  listen: false)
-                                              .lst;
-                                      if (orderItem.isNotEmpty) {
-                                        Order order = Order(
-                                            nameUser:
-                                                value.currentAcc!.UserName!,
-                                            items: orderItem,
-                                            email: value.currentAcc!.Email!,
-                                            dateOrder: nowDate,
-                                            price: valueOder.total);
-                                        print(order.toJson());
+                  Consumer2<AccountVMS, ProductVMS>(
+                    builder: (context, account, checkout, child) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: FilledButton.icon(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  thanhToan() {
+                                    Navigator.pop(context);
 
-                                        ApiService apiService = ApiService();
-                                        apiService.postOrder(order);
-
+                                    List<CartItem> orderItem =
                                         Provider.of<ProductVMS>(context,
                                                 listen: false)
-                                            .clear();
-                                        dialogThanhToan(context);
-                                      } else {
-                                        dialogGioHangRong(context);
-                                      }
+                                            .lst;
+                                    if (orderItem.isNotEmpty) {
+                                      Order order = Order(
+                                          nameUser:
+                                              account.currentAcc!.UserName!,
+                                          items: orderItem,
+                                          email: account.currentAcc!.Email!,
+                                          dateOrder: nowDate,
+                                          price: checkout.total);
+                                      print(order.toJson());
+
+                                      ApiService apiService = ApiService();
+                                      apiService.postOrder(order);
+
+                                      Provider.of<ProductVMS>(context,
+                                              listen: false)
+                                          .clear();
+                                      dialogThanhToan(context);
+                                    } else {
+                                      dialogGioHangRong(context);
                                     }
-                                  },
-                                  label: Text('Thanh toán'),
-                                  icon: Icon(Icons.credit_card),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
+                                  }
+
+                                  showModalBottomSheet<void>(
+                                    showDragHandle: true,
+                                    isScrollControlled: true,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Text(
+                                            'Chọn phương thức thanh toán',
+                                            style: TextStyle(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Divider(),
+                                          ListView(
+                                            shrinkWrap: true,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            children: [
+                                              InkWell(
+                                                onTap: () => thanhToan(),
+                                                child: ListTile(
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 16,
+                                                          vertical: 8),
+                                                  leading: Image.asset(
+                                                    width: 56,
+                                                    '${urlimg}momo.png',
+                                                    errorBuilder: (context,
+                                                            error,
+                                                            stackTrace) =>
+                                                        Icon(
+                                                            Icons
+                                                                .payment_outlined,
+                                                            size: 56),
+                                                  ),
+                                                  title: Text('Momo'),
+                                                  trailing:
+                                                      Icon(Icons.arrow_forward),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () => thanhToan(),
+                                                child: ListTile(
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 16,
+                                                          vertical: 8),
+                                                  leading: Image.asset(
+                                                    width: 56,
+                                                    '${urlimg}vnpay.png',
+                                                    errorBuilder: (context,
+                                                            error,
+                                                            stackTrace) =>
+                                                        Icon(
+                                                            Icons
+                                                                .payment_outlined,
+                                                            size: 56),
+                                                  ),
+                                                  title: Text('VNPAY'),
+                                                  trailing:
+                                                      Icon(Icons.arrow_forward),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () => thanhToan(),
+                                                child: ListTile(
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 16,
+                                                          vertical: 8),
+                                                  leading: Image.asset(
+                                                    width: 56,
+                                                    '${urlimg}zalopay.png',
+                                                    errorBuilder: (context,
+                                                            error,
+                                                            stackTrace) =>
+                                                        Icon(
+                                                            Icons
+                                                                .payment_outlined,
+                                                            size: 56),
+                                                  ),
+                                                  title: Text('ZaloPay'),
+                                                  trailing:
+                                                      Icon(Icons.arrow_forward),
+                                                ),
+                                              ),
+                                              Divider(),
+                                              InkWell(
+                                                onTap: () => thanhToan(),
+                                                child: ListTile(
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 16,
+                                                          vertical: 8),
+                                                  leading: Icon(
+                                                    Icons.payment_outlined,
+                                                    size: 56,
+                                                  ),
+                                                  title: Text('Ngân hàng'),
+                                                  trailing:
+                                                      Icon(Icons.arrow_forward),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              label: Text('Thanh toán'),
+                              icon: Icon(Icons.credit_card),
+                            ),
+                          ),
+                        ],
                       );
                     },
                   )
@@ -393,6 +505,9 @@ Widget _inputField(
     child: TextFormField(
       controller: textController,
       keyboardType: type,
+      onTapOutside: (event) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
       decoration: InputDecoration(
           prefix: label.toLowerCase().contains('số điện thoại')
               ? Text('+84 ')
