@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           routes: {
             "/start": (context) => const StartScreen(),
+            "/login": (context) => const LoginScreen(),
             "/homePage": (context) => const App(),
             "/productDetail": (context) => const ProductDetail(),
             "/account": (context) => const AccountPage(),
@@ -81,8 +82,9 @@ class _StartScreenState extends State<StartScreen> {
         if (user == null) {
           logger.d('User is currently signed out!');
         } else {
-          if (context.mounted) {
+          if (mounted && user.emailVerified != false) {
             AsyncSnapshot.waiting;
+
             Provider.of<AccountVMS>(context, listen: false)
                 .setCurrentAcc(user.email!);
 
@@ -93,6 +95,8 @@ class _StartScreenState extends State<StartScreen> {
               ),
               ModalRoute.withName('/homePage'),
             );
+
+            // Navigator.pushNamed(context, '/homePage');
           }
         }
       },

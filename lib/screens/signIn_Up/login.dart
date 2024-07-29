@@ -1,7 +1,6 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:stepup/app.dart';
 
@@ -94,7 +93,6 @@ class _LoginState extends State<LoginScreen> {
                         child: FilledButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              dialogCustom(context);
                               xuLyDangNhap(
                                   _emailController, _passwordController);
 
@@ -137,6 +135,8 @@ class _LoginState extends State<LoginScreen> {
     final context = _formKey.currentContext;
 
     if (context != null && context.mounted) {
+      Navigator.pop(context);
+
       /// statements after async gap without warning
       return showDialog(
         context: context,
@@ -157,6 +157,7 @@ class _LoginState extends State<LoginScreen> {
   Future<void> xuLyDangNhap(
       TextEditingController email, TextEditingController password) async {
     try {
+      dialogCustom(context);
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: email.text, password: password.text)
@@ -173,6 +174,10 @@ class _LoginState extends State<LoginScreen> {
             // print("finish");
 
             if (mounted) {
+              Navigator.popUntil(
+                context,
+                ModalRoute.withName('/start'),
+              );
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
