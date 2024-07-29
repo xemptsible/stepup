@@ -32,20 +32,34 @@ class _AccountPageState extends State<AccountPage> {
             child: Column(
               children: [
                 Container(
-                  clipBehavior: Clip.antiAlias,
-                  height: 150,
-                  width: 150,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: Image.network(
-                    fit: BoxFit.cover,
-                    value.currentAcc!.Image!,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset("${urlimg}account.png");
+                      border: Border.all(
+                          strokeAlign: BorderSide.strokeAlignOutside,
+                          color: Colors.black26),
+                      shape: BoxShape.circle),
+                  child: CircleAvatar(
+                    radius: 75,
+                    backgroundImage: NetworkImage(value.currentAcc!.Image!),
+                    onBackgroundImageError: (exception, stackTrace) {
+                      AssetImage("${urlimg}account.png");
                     },
                   ),
                 ),
+                // Container(
+                //   clipBehavior: Clip.antiAlias,
+                //   height: 150,
+                //   width: 150,
+                //   decoration: BoxDecoration(
+                //     shape: BoxShape.circle,
+                //   ),
+                //   child: Image.network(
+                //     fit: BoxFit.contain,
+                //     value.currentAcc!.Image!,
+                //     errorBuilder: (context, error, stackTrace) {
+                //       return Image.asset("${urlimg}account.png");
+                //     },
+                //   ),
+                // ),
                 //Text
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 16),
@@ -108,7 +122,7 @@ class _AccountPageState extends State<AccountPage> {
       onTap: () {
         if (label.contains('Đăng xuất')) {
           _signOut();
-          
+
           Provider.of<ProductVMS>(context, listen: false).clear();
 
           Navigator.pushAndRemoveUntil(

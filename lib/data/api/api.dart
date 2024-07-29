@@ -241,11 +241,18 @@ class ApiService {
   Future updateAccount(Account account) async {
     try {
       Dio api = Dio();
-      final response = await api.put(
+      await api
+          .put(
         '$baseUrlTest/account/${account.Email}',
         data: account.toJson(),
+      )
+          .then(
+        (res) {
+          if (res.statusCode == 200) {
+            print("Update thành công");
+          }
+        },
       );
-      print("Update thành công");
     } catch (e) {
       throw Exception('Failed to update account');
     }

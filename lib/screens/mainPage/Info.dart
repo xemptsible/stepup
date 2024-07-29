@@ -87,6 +87,9 @@ class _InfoPageState extends State<InfoPage> {
           child: TextFormField(
             controller: textController,
             keyboardType: type,
+            onTapOutside: (event) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
             decoration: InputDecoration(
               prefixText:
                   label.toLowerCase() == 'số điện thoại' ? '+84 ' : null,
@@ -156,6 +159,7 @@ class _InfoPageState extends State<InfoPage> {
           Provider.of<AccountVMS>(context, listen: false)
               .currentAcc!
               .setImage(imageUrl!);
+          setState(() {});
         }
         print(
             "Link img: ${Provider.of<AccountVMS>(context, listen: false).currentAcc!.Image!}");
@@ -175,44 +179,27 @@ class _InfoPageState extends State<InfoPage> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(
-              children: [
-                //Image
-                Consumer<AccountVMS>(
-                  builder: (context, value, child) {
-                    return Stack(
-                      children: [
-                        Container(
-                          clipBehavior: Clip.antiAlias,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: Image.network(
-                            width: 150,
-                            // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD3OmwXK7xXXVWJZiocRJOasPkHLK27kGGOQ&s",
-                            value.currentAcc!.Image!,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                                width: 150,
-                                "${urlimg}account.png",
-                                errorBuilder: (context, error, stackTrace) {
-                                  return SizedBox(
-                                    height: 150,
-                                    child: Icon(
-                                      Icons.image_not_supported_outlined,
-                                      size: 100,
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                        Positioned(
-                          top: 105,
-                          left: 105,
+            //Image
+            Consumer<AccountVMS>(
+              builder: (context, value, child) {
+                return Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              strokeAlign: BorderSide.strokeAlignOutside,
+                              color: Colors.black26),
+                          shape: BoxShape.circle),
+                      child: CircleAvatar(
+                        radius: 75,
+                        backgroundImage: NetworkImage(value.currentAcc!.Image!),
+                        onBackgroundImageError: (exception, stackTrace) {
+                          AssetImage("${urlimg}account.png");
+                        },
+                        child: Align(
+                          alignment: Alignment.bottomRight,
                           child: IconButton.filled(
                             onPressed: () {
                               setState(() {
@@ -221,86 +208,127 @@ class _InfoPageState extends State<InfoPage> {
                             },
                             icon: Icon(
                               Icons.edit_outlined,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                      ],
-                    );
-                  },
-                ),
-                Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Form(
-                    key: _formKey,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Column(
-                      children: [
-                        //Input
-                        _inputField(
-                          'Họ tên',
-                          _hoTenController,
-                          TextInputType.text,
-                        ),
-                        _inputField(
-                          'Địa chỉ',
-                          _diaChiController,
-                          TextInputType.text,
-                        ),
-                        _inputField(
-                          'Ngày sinh',
-                          _ngaySinhController,
-                          TextInputType.datetime,
-                        ),
-                        _inputField(
-                          'Số điện thoại',
-                          _soDienThoaiController,
-                          TextInputType.phone,
-                        ),
-
-                        //TextButton
-                        Consumer<AccountVMS>(
-                          builder:
-                              (BuildContext context, value, Widget? child) {
-                            return Container(
-                              margin: EdgeInsets.only(top: 16),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: FilledButton.icon(
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          //set current account provider
-                                          value.currentAcc?.setUserName(
-                                              _hoTenController.text);
-                                          value.currentAcc?.setAdress(
-                                              _diaChiController.text);
-                                          value.currentAcc?.setPhoneNumber(
-                                              int.parse(
-                                                  _soDienThoaiController.text));
-
-                                          //add date
-                                          value.currentAcc
-                                              ?.setBirthDay(birthDay!);
-
-                                          //update account
-                                          value.updateCurrentAcc();
-                                          dialogSuaThongTin(context);
-                                        }
-                                      },
-                                      label: const Text('Lưu thay đổi'),
-                                      icon: const Icon(Icons.save),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    // Container(
+                    //   clipBehavior: Clip.antiAlias,
+                    //   width: 150,
+                    //   height: 150,
+                    //   decoration: BoxDecoration(
+                    //     shape: BoxShape.circle,
+                    //     // color: Colors.indigoAccent
+                    //   ),
+                    //   child: Image.network(
+                    //     fit: BoxFit.contain,
+                    //     // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD3OmwXK7xXXVWJZiocRJOasPkHLK27kGGOQ&s",
+                    //     value.currentAcc!.Image!,
+                    //     errorBuilder: (context, error, stackTrace) {
+                    //       return Image.asset(
+                    //         "${urlimg}account.png",
+                    //         errorBuilder: (context, error, stackTrace) {
+                    //           return SizedBox(
+                    //             height: 150,
+                    //             child: Icon(
+                    //               Icons.image_not_supported_outlined,
+                    //               size: 100,
+                    //             ),
+                    //           );
+                    //         },
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
+                    // Positioned(
+                    //   top: 105,
+                    //   left: 105,
+                    //   child: IconButton.filled(
+                    //     onPressed: () {
+                    //       setState(() {
+                    //         pickImage();
+                    //       });
+                    //     },
+                    //     icon: Icon(
+                    //       Icons.edit_outlined,
+                    //     ),
+                    //   ),
+                    // ),
+                  ],
+                );
+              },
+            ),
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Column(
+                  children: [
+                    //Input
+                    _inputField(
+                      'Họ tên',
+                      _hoTenController,
+                      TextInputType.text,
+                    ),
+                    _inputField(
+                      'Địa chỉ',
+                      _diaChiController,
+                      TextInputType.text,
+                    ),
+                    _inputField(
+                      'Ngày sinh',
+                      _ngaySinhController,
+                      TextInputType.datetime,
+                    ),
+                    _inputField(
+                      'Số điện thoại',
+                      _soDienThoaiController,
+                      TextInputType.phone,
+                    ),
+
+                    //TextButton
+                    Consumer<AccountVMS>(
+                      builder: (BuildContext context, value, Widget? child) {
+                        return Container(
+                          margin: EdgeInsets.only(top: 16),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: FilledButton.icon(
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      //set current account provider
+                                      value.currentAcc
+                                          ?.setUserName(_hoTenController.text);
+                                      value.currentAcc
+                                          ?.setAdress(_diaChiController.text);
+                                      value.currentAcc?.setPhoneNumber(
+                                          int.parse(
+                                              _soDienThoaiController.text));
+
+                                      //add date
+                                      value.currentAcc?.setBirthDay(birthDay!);
+
+                                      //update account
+                                      value.updateCurrentAcc();
+                                      dialogSuaThongTin(context);
+                                    }
+                                  },
+                                  label: const Text('Lưu thay đổi'),
+                                  icon: const Icon(Icons.save),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ],
         ),

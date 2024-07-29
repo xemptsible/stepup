@@ -113,11 +113,13 @@ class _SearchPageState extends State<SearchPage> {
                                     searchText = _searchController.text;
                                   });
                                 },
-                                icon: const Icon(Icons.clear))
+                                icon: const Icon(Icons.clear),
+                              )
                             : const SizedBox.shrink(),
                         IconButton(
                           onPressed: () {
                             showModalBottomSheet(
+                                showDragHandle: true,
                                 context: context,
                                 builder: (context) {
                                   return Consumer<FilterVMS>(
