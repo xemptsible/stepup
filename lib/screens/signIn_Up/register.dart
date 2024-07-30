@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:stepup/app.dart';
 import 'package:stepup/data/api/api.dart';
 import 'package:stepup/data/models/account_model.dart';
+import 'package:stepup/screens/signIn_Up/login.dart';
 
 import 'package:stepup/utilities/const.dart';
 import 'package:stepup/global/functions.dart';
@@ -17,38 +18,49 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterState extends State<RegisterScreen> {
-  _xacNhanEmail(User? user) {
+  _xacNhanEmail(User? user) async {
     dialogDangKy(context);
 
-    Timer.periodic(const Duration(seconds: 10), (timer) async {
-      FirebaseAuth.instance.signOut();
-      FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text, password: _passwordController.text);
-      final signIn = FirebaseAuth.instance.currentUser;
+    // post account lên api
+    Account newAcc = Account(
+        Email: _emailController.text,
+        Password: _passwordController.text,
+        UserName: _usernameController.text);
+    ApiService apiService = ApiService();
+    await apiService.postAccount(newAcc).then(
+      (response) {
+        if (response == 200) {
+          Timer.periodic(
+            const Duration(seconds: 6),
+            (timer) async {
+              FirebaseAuth.instance.signOut();
+              FirebaseAuth.instance.signInWithEmailAndPassword(
+                  email: _emailController.text,
+                  password: _passwordController.text);
+              final signIn = FirebaseAuth.instance.currentUser;
 
-      if (signIn?.emailVerified == true) {
-        timer.cancel();
-        logger.d('Đăng ký thành công và xác nhận email');
+              if (signIn?.emailVerified == true) {
+                logger.d('Đăng ký thành công và xác nhận email');
+                timer.cancel();
 
-        // post account lên api
-        Account newAcc = Account(
-            Email: _emailController.text,
-            Password: _passwordController.text,
-            UserName: _usernameController.text);
-        ApiService apiService = ApiService();
-        apiService.postAccount(newAcc);
-
-        if (context.mounted) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const App(),
-            ),
-            ModalRoute.withName('/homePage'),
+                if (mounted) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginScreen(),
+                    ),
+                  );
+                }
+              } else if (!mounted) {
+                logger.d('Huỷ xác nhận đăng ký');
+                timer.cancel();
+                FirebaseAuth.instance.signOut();
+              }
+            },
           );
         }
-      }
-    });
+      },
+    );
   }
 
   final _usernameController = TextEditingController();

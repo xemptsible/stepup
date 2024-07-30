@@ -42,18 +42,16 @@ class _GuidePageState extends State<GuidePage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             _youtubeController.pause();
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => const App()));
+            Navigator.pop(context);
           },
         ),
       ),
-      body: SizedBox(
-        width: MediaQuery.of(context).size.width,
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-                width: MediaQuery.of(context).size.width * 0.9,
+                // width: MediaQuery.of(context).size.width * 0.9,
                 child: YoutubePlayer(controller: _youtubeController)),
             const SizedBox(
               height: 30,
@@ -64,7 +62,7 @@ class _GuidePageState extends State<GuidePage> {
                   itemCount: 4,
                   itemBuilder: (context, index) {
                     String text = "";
-    
+                
                     switch (index) {
                       case 0:
                         text = "Chức năng 1: Đăng nhập & đăng ký";

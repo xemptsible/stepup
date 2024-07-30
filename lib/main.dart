@@ -85,23 +85,19 @@ class _StartScreenState extends State<StartScreen> {
       (User? user) {
         if (user == null) {
           logger.d('User is currently signed out!');
-        } else {
-          if (mounted && user.emailVerified != false) {
-            AsyncSnapshot.waiting;
+        } else if (mounted && user.emailVerified == true) {
+          AsyncSnapshot.waiting;
 
-            Provider.of<AccountVMS>(context, listen: false)
-                .setCurrentAcc(user.email!);
+          Provider.of<AccountVMS>(context, listen: false)
+              .setCurrentAcc(user.email!);
 
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const App(),
-              ),
-              ModalRoute.withName('/homePage'),
-            );
-
-            // Navigator.pushNamed(context, '/homePage');
-          }
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const App(),
+            ),
+            ModalRoute.withName('/homePage'),
+          );
         }
       },
     );

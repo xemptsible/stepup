@@ -212,7 +212,7 @@ class ApiService {
     }
   }
 
-  Future<void> postAccount(Account account) async {
+  Future<int?> postAccount(Account account) async {
     try {
       Dio api = Dio();
 
@@ -225,14 +225,17 @@ class ApiService {
       );
 
       if (response.statusCode == 200) {
-        print('Order posted successfully');
+        print('Account posted successfully');
+        return response.statusCode;
       } else {
         print('Failed to post order. Status code: ${response.statusCode}');
         print('Response body: ${response.data}');
       }
+      return response.statusCode;
     } catch (e) {
       print('Error occurred: $e' "lỗi đăng ký tài khoản api");
     }
+    return null;
   }
 
   Future updateAccount(Account account) async {

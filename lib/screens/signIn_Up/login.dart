@@ -77,17 +77,17 @@ class _LoginState extends State<LoginScreen> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: TextButton(
-                          onPressed: () async {
-                            await FirebaseAuth.instance.signOut();
-                          },
-                          child: const Text(
-                            "Quên mật khẩu?",
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(top: 16),
+                      //   child: TextButton(
+                      //     onPressed: () async {
+                      //       await FirebaseAuth.instance.signOut();
+                      //     },
+                      //     child: const Text(
+                      //       "Quên mật khẩu?",
+                      //     ),
+                      //   ),
+                      // ),
                       SizedBox(
                         width: double.infinity,
                         child: FilledButton(
@@ -95,12 +95,6 @@ class _LoginState extends State<LoginScreen> {
                             if (_formKey.currentState!.validate()) {
                               xuLyDangNhap(
                                   _emailController, _passwordController);
-
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //       builder: (context) => const App(),
-                              //     ));
                             }
                           },
                           child: const Text("Đăng nhập"),
@@ -163,7 +157,7 @@ class _LoginState extends State<LoginScreen> {
               email: email.text, password: password.text)
           .then(
         (value) async {
-          if (value.user != null) {
+          if (value.user != null && value.user!.emailVerified != false) {
             AsyncSnapshot.waiting;
             await Provider.of<AccountVMS>(context, listen: false)
                 .setCurrentAcc(_emailController.text);
@@ -186,6 +180,9 @@ class _LoginState extends State<LoginScreen> {
                 ModalRoute.withName('/homePage'),
               );
             }
+          } else {
+            FirebaseAuth.instance.signOut();
+            errorDialogDangNhap('Email tài khoản chưa xác nhận');
           }
         },
       );
