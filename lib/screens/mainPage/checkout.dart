@@ -11,6 +11,7 @@ import 'package:stepup/data/models/product_model.dart';
 import 'package:stepup/data/providers/account_vm.dart';
 import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/data/providers/provider.dart';
+import 'package:stepup/screens/credit_card.dart';
 import 'package:stepup/utilities/const.dart';
 
 class Checkout extends StatefulWidget {
@@ -275,7 +276,16 @@ class _CheckoutState extends State<Checkout> {
                                                   height: 0,
                                                 ),
                                                 InkWell(
-                                                  onTap: () => thanhToan(),
+                                                  onTap: () {
+                                                    // thanhToan();
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            CreditCardPage(),
+                                                      ),
+                                                    );
+                                                  },
                                                   child: ListTile(
                                                     contentPadding:
                                                         EdgeInsets.symmetric(
@@ -391,6 +401,8 @@ Widget item(Product shoe, int index) {
   );
 }
 
+
+
 dialogThanhToan(BuildContext context) {
   Dialog errorDialog = Dialog(
 //this right here
@@ -414,31 +426,49 @@ dialogThanhToan(BuildContext context) {
           ),
           Consumer<ProductVMS>(
             builder: (BuildContext context, ProductVMS value, Widget? child) {
-              return Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: FilledButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const App(),
-                            ),
-                            ModalRoute.withName('/homePage'),
-                          );
-                          value.clear();
-                        },
-                        child: Text('Trở về'),
-                      ),
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: FilledButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const App(),
+                                ),
+                                ModalRoute.withName('/homePage'),
+                              );
+                              value.clear();
+                            },
+                            child: Text('Trở về'),
+                          ),
+                        ),
+                      ],
                     ),
-                  )
-                ],
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.popAndPushNamed(context, '/history');
+                              value.clear();
+                            },
+                            child: Text('Xem đơn hàng'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               );
             },
-          )
+          ),
         ],
       ),
     ),

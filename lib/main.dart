@@ -8,6 +8,8 @@ import 'package:stepup/data/providers/favorite_vm.dart';
 import 'package:stepup/data/providers/filter_vm.dart';
 import 'package:stepup/data/providers/product_vm.dart';
 import 'package:stepup/screens/mainPage/account.dart';
+import 'package:stepup/screens/mainPage/checkout.dart';
+import 'package:stepup/screens/mainPage/order_history.dart';
 
 import 'package:stepup/screens/mainPage/search_page.dart';
 
@@ -58,6 +60,8 @@ class MyApp extends StatelessWidget {
             "/productDetail": (context) => const ProductDetail(),
             "/account": (context) => const AccountPage(),
             "/search": (context) => const SearchPage(),
+            "/history": (context) => const OrderHistory(),
+            "/checkout": (context) => const Checkout(),
           },
           theme: brightness == Brightness.light ? theme.light() : theme.dark(),
           home: const StartScreen()),

@@ -121,17 +121,31 @@ class _AccountPageState extends State<AccountPage> {
       ),
       onTap: () {
         if (label.contains('Đăng xuất')) {
-          _signOut();
-
-          Provider.of<ProductVMS>(context, listen: false).clear();
-
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const StartScreen(),
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Chắc chắn đăng xuất?'),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text('Huỷ')),
+                TextButton(
+                  onPressed: () {
+                    _signOut();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const StartScreen(),
+                      ),
+                      ModalRoute.withName('/start'),
+                    );
+                  },
+                  child: const Text('Xác nhận'),
+                )
+              ],
             ),
-            ModalRoute.withName('/start'),
           );
+          Provider.of<ProductVMS>(context, listen: false).clear();
         } else {
           Navigator.push(
             context,

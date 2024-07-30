@@ -75,7 +75,7 @@ class ApiService {
 
       // Nếu không có tiêu chí lọc cụ thể, trả về danh sách đã lọc dựa trên từ khóa (nếu có)
       if (brand == "Tất cả" &&
-          (price == null || price == RangeValues(0, 0)) &&
+          (price == null || price == const RangeValues(0, 0)) &&
           (size == null || size == 0)) {
         return proList;
       }

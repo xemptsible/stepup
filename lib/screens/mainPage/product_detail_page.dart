@@ -59,12 +59,14 @@ class _ProductDetailState extends State<ProductDetail> {
             },
             icon: const Icon(Icons.remove),
           ),
-          Container(
-              margin: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                quantity.toString(),
-                style: TextStyle(fontSize: 16),
-              )),
+          SizedBox(
+            width: 50,
+            child: Text(
+              textAlign: TextAlign.center,
+              quantity.toString(),
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
           IconButton.filled(
             padding: EdgeInsets.zero,
             // constraints: const BoxConstraints(),
@@ -85,7 +87,7 @@ class _ProductDetailState extends State<ProductDetail> {
     // Build Page
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chi tiết sản phẩm"),
+        // title: Text("Chi tiết sản phẩm"),
       ),
       body: Container(
         color: Colors.white,
