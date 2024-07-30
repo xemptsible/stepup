@@ -124,7 +124,8 @@ class _AccountPageState extends State<AccountPage> {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: const Text('Chắc chắn đăng xuất?'),
+              title: const Text('Cảnh báo'),
+              content: Text('Bạn chắc chắn muốn đăng xuất?'),
               actions: [
                 TextButton(
                     onPressed: () => Navigator.pop(context),
