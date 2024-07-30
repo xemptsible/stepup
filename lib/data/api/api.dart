@@ -65,44 +65,41 @@ class ApiService {
       // Lấy danh sách sản phẩm từ API
       List<Product> proList = await fetchProducts();
 
-      if (text != "") {
-        return proList
-            .where(
-                (test) => test.name!.toLowerCase().contains(text.toLowerCase()))
+      // Lọc danh sách sản phẩm dựa trên từ khóa tìm kiếm nếu có
+      if (text.isNotEmpty) {
+        proList = proList
+            .where((product) =>
+                product.name!.toLowerCase().contains(text.toLowerCase()))
             .toList();
-      } else if (brand == "Tất cả") {
-        return proList.where((product) {
-          bool matchesBrand =
-              brand == null || brand == "Tất cả" || product.brand == brand;
-          bool matchesPrice = price == null ||
-              price == const RangeValues(0, 0) ||
-              (product.price != null &&
-                  product.price! >= price.start &&
-                  product.price! <= price.end);
-          bool matchesSize = size == null ||
-              size == 0 ||
-              (product.size != null && product.size!.contains(size));
-
-          return matchesBrand && matchesPrice && matchesSize;
-        }).toList();
       }
-      // Lọc danh sách sản phẩm dựa trên từ khóa tìm kiếm và các tiêu chí khác
-      List<Product> searchList = proList.where((product) {
-        bool matchesText = product.name != null &&
-            product.name!.toLowerCase().contains(text.toLowerCase());
+
+      // Nếu không có tiêu chí lọc cụ thể, trả về danh sách đã lọc dựa trên từ khóa (nếu có)
+      if (brand == "Tất cả" &&
+          (price == null || price == RangeValues(0, 0)) &&
+          (size == null || size == 0)) {
+        return proList;
+      }
+
+      // Lọc danh sách sản phẩm dựa trên các tiêu chí khác (brand, price, size)
+      List<Product> filteredList = proList.where((product) {
         bool matchesBrand =
             brand == null || brand == "Tất cả" || product.brand == brand;
+
+        // Kiểm tra giá chỉ khi price không phải là RangeValues(0, 0)
         bool matchesPrice = price == null ||
+            (price.start == 0 && price.end == 0) ||
             (product.price != null &&
                 product.price! >= price.start &&
                 product.price! <= price.end);
+
         bool matchesSize = size == null ||
+            size == 0 ||
             (product.size != null && product.size!.contains(size));
 
-        return matchesText && matchesBrand && matchesPrice && matchesSize;
+        return matchesBrand && matchesPrice && matchesSize;
       }).toList();
 
-      return searchList;
+      return filteredList;
     } catch (e) {
       print('Error: $e');
       rethrow;
