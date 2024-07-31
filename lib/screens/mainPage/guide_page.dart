@@ -18,7 +18,7 @@ class _GuidePageState extends State<GuidePage> {
     super.initState();
     _youtubeController = YoutubePlayerController(
       initialVideoId: YoutubePlayer.convertUrlToId(
-              "https://www.youtube.com/watch?v=FOLTnk8WUg4")
+              "https://www.youtube.com/watch?v=RZuLdLFhKtA")
           .toString(),
       flags: const YoutubePlayerFlags(
         autoPlay: false,
@@ -59,22 +59,25 @@ class _GuidePageState extends State<GuidePage> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.5,
               child: ListView.builder(
-                  itemCount: 4,
+                  itemCount: 5,
                   itemBuilder: (context, index) {
                     String text = "";
-                
+
                     switch (index) {
                       case 0:
                         text = "Chức năng 1: Đăng nhập & đăng ký";
                         break;
                       case 1:
-                        text = "Chức năng 2: Tìm kiếm sản phẩm";
+                        text = "Chức năng 2: Thêm sản phẩm vào giỏ hàng";
                         break;
                       case 2:
-                        text = "Chức năng 3: Thêm sản phẩm vào giỏ hàng";
+                        text = "Chức năng 3: Thanh toán";
                         break;
                       case 3:
-                        text = "Chức năng 4: Thanh toán";
+                        text = "Chức năng 4: Sử thông tin người dùng";
+                        break;
+                      case 4:
+                        text = "Chức năng 5: Tìm kiếm sản phẩm";
                         break;
                     }
                     return GestureDetector(
@@ -88,15 +91,19 @@ class _GuidePageState extends State<GuidePage> {
                                 break;
                               case 1:
                                 _youtubeController
-                                    .seekTo(const Duration(seconds: 220));
+                                    .seekTo(const Duration(seconds: 39));
                                 break;
                               case 2:
                                 _youtubeController
-                                    .seekTo(const Duration(seconds: 320));
+                                    .seekTo(const Duration(seconds: 74));
                                 break;
                               case 3:
-                                _youtubeController
-                                    .seekTo(const Duration(seconds: 500));
+                                _youtubeController.seekTo(
+                                    const Duration(minutes: 2, seconds: 37));
+                                break;
+                              case 4:
+                                _youtubeController.seekTo(
+                                    const Duration(minutes: 3, seconds: 12));
                                 break;
                             }
                           });
