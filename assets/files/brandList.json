@@ -1,0 +1,35 @@
+{
+  "brand": [
+    {
+      "id": 0,
+      "name": "Tất cả",
+      "img": null
+    },
+    {
+      "id": 1,
+      "name": "Nike",
+      "img": "nikeLogo.png"
+    },
+    {
+      "id": 2,
+      "name": "Puma",
+      "img": "pumaLogo.png"
+    },
+    {
+      "id": 3,
+      "name": "Under Armor",
+      "img": "underArmorLogo.png"
+    },
+    {
+      "id": 4,
+      "name": "Adidas",
+      "img": "adidasLogo.png"
+    },
+    {
+      "id": 5,
+      "name": "Converse",
+      "img": "converseLogo.png"
+    }
+  ]
+}
+

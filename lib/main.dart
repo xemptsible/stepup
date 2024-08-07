@@ -1,12 +1,29 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:stepup/global/functions.dart';
-import 'package:stepup/screens/login.dart';
-import 'package:stepup/screens/register.dart';
+import 'package:provider/provider.dart';
+import 'package:stepup/app.dart';
+import 'package:stepup/data/providers/account_vm.dart';
+import 'package:stepup/data/providers/favorite_vm.dart';
+import 'package:stepup/data/providers/filter_vm.dart';
+import 'package:stepup/data/providers/product_vm.dart';
+import 'package:stepup/screens/mainPage/account.dart';
+import 'package:stepup/screens/mainPage/checkout.dart';
+import 'package:stepup/screens/mainPage/order_history.dart';
+
+import 'package:stepup/screens/mainPage/search_page.dart';
+
+import 'package:stepup/screens/signIn_Up/login.dart';
+import 'package:stepup/screens/mainPage/product_detail_page.dart';
+import 'package:stepup/screens/signIn_Up/register.dart';
+
 import 'package:stepup/utilities/const.dart';
 // import 'utilities/font.dart';
 import 'global/theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -25,9 +42,30 @@ class MyApp extends StatelessWidget {
     // TextTheme textTheme = createTextTheme(context, "Alata", "Alata");
 
     MaterialTheme theme = MaterialTheme(textTheme);
-    return MaterialApp(
-        theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-        home: const StartScreen());
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ProductVMS(),
+        ),
+        ChangeNotifierProvider(create: (context) => FilterVMS()),
+        ChangeNotifierProvider(create: (context) => FavoriteVm()),
+        ChangeNotifierProvider(create: (context) => AccountVMS()),
+      ],
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          routes: {
+            "/start": (context) => const StartScreen(),
+            "/login": (context) => const LoginScreen(),
+            "/homePage": (context) => const App(),
+            "/productDetail": (context) => const ProductDetail(),
+            "/account": (context) => const AccountPage(),
+            "/search": (context) => const SearchPage(),
+            "/history": (context) => const OrderHistory(),
+            "/checkout": (context) => const Checkout(),
+          },
+          theme: brightness == Brightness.light ? theme.light() : theme.dark(),
+          home: const StartScreen()),
+    );
   }
 }
 
@@ -39,9 +77,35 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
+  Future<void> kiemTraDangNhapTrongApp() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+
+    FirebaseAuth.instance.authStateChanges().listen(
+      (User? user) {
+        if (user == null) {
+          logger.d('User is currently signed out!');
+        } else if (mounted && user.emailVerified == true) {
+          AsyncSnapshot.waiting;
+
+          Provider.of<AccountVMS>(context, listen: false)
+              .setCurrentAcc(user.email!);
+
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const App(),
+            ),
+            ModalRoute.withName('/homePage'),
+          );
+        }
+      },
+    );
+  }
+
   @override
   void initState() {
-    kiemTraTaiKhoan();
+    kiemTraDangNhapTrongApp();
     super.initState();
   }
 
@@ -51,6 +115,7 @@ class _StartScreenState extends State<StartScreen> {
       body: CustomScrollView(
         slivers: [
           const SliverAppBar.large(
+            automaticallyImplyLeading: false,
             title: Text('Chào mừng đến StepUP'),
           ),
           SliverFillRemaining(

@@ -1,0 +1,79 @@
+{
+  "product": [
+    {
+      "id": 1,
+      "name": "Nike jordan",
+      "price": 1000000,
+      "des": "Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở  Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở  Nike Air Max 270 ‘White Black’ sử dụng nhựa tổng hợp nhẹ và mềm ở phía trên. Điều này có các lỗ để đảm bảo không khí lưu thông đến chân, ngay cả trong những ngày nắng nóng.",
+      "img": "giayNike1.png",
+      "brand": "Nike",
+      "size": [40, 41]
+    },
+    {
+      "id": 2,
+      "name": "Nike jordan Low",
+      "price": 1500000,
+      "des": "BEST SELLER",
+      "img": "giayNike2.png",
+      "size": [40, 41, 42, 43],
+      "quantity": 10,
+      "brand": "Nike",
+      "color": "0x14117E"
+    },
+    {
+      "id": 3,
+      "name": "Nike jordan Low",
+      "price": 1500000,
+      "des": "BEST SELLER",
+      "img": "giayNike2.png",
+      "size": [40, 41, 42, 43],
+      "quantity": 10,
+      "brand": "Nike",
+      "color": "0x14117E"
+    },
+    {
+      "id": 6,
+      "name": "Nike jordan Low",
+      "price": 1500000,
+      "des": "BEST SELLER",
+      "img": "giayNike2.png",
+      "size": [40, 41, 42, 43],
+      "quantity": 10,
+      "brand": "Nike",
+      "color": "0x14117E"
+    },
+    {
+      "id": 4,
+      "name": "Puma 1",
+      "price": 1500000,
+      "des": "BEST SELLER",
+      "img": "giayNike2.png",
+      "size": [40, 41, 42, 43],
+      "quantity": 10,
+      "brand": "Puma",
+      "color": "0x14117E"
+    },
+    {
+      "id": 8,
+      "name": "Puma 2",
+      "price": 1500000,
+      "des": "BEST SELLER",
+      "img": "giayNike2.png",
+      "size": [40, 41, 42, 43],
+      "quantity": 10,
+      "brand": "Puma",
+      "color": "0x14117E"
+    },
+    {
+      "id": 9,
+      "name": "Puma 3",
+      "price": 1500000,
+      "des": "BEST SELLER",
+      "img": "giayNike2.png",
+      "size": [40, 41, 42, 43],
+      "quantity": 10,
+      "brand": "Puma",
+      "color": "0x14117E"
+    }
+  ]
+}

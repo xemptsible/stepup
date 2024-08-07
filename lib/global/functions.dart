@@ -14,6 +14,7 @@ textField(TextEditingController tec, String label, String hint, Icon icon,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         filled: true,
+        fillColor: Colors.white,
         labelText: label,
         hintText: hint,
         prefixIcon: icon,
@@ -42,6 +43,7 @@ pwTextField(TextEditingController tec, TextEditingController tec2, String label,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         filled: true,
+        fillColor: Colors.white,
         labelText: label,
         hintText: hint,
         prefixIcon: icon,
@@ -88,8 +90,12 @@ Future<void> kiemTraTaiKhoan() async {
       } else if (user.isAnonymous) {
         logger.d("Signed in with temporary account.");
       } else {
-        logger.d('User is signed in!');
+        logger.d('Signed in');
       }
     },
   );
+}
+
+Future<void> guiEmailXacNhan(User? user) async {
+  await user?.sendEmailVerification();
 }
