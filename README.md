@@ -22,8 +22,6 @@ StepUP là một ứng dụng Android làm trong Flutter cho mọi người mê 
 ## Video minh hoạ
 [Video minh hoạ app được chạy có thể xem ở đây](https://youtu.be/rRs7ZU_NBwY)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/rRs7ZU_NBwY?si=o6Oe1wi29uGs37PQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
 ## Cách xây dựng
 Đề nghị sử dụng Visual Studio Code và tối thiểu có những extensions và cài đặt như sau:
 - [Dart bởi dartcode.org](https://marketplace.visualstudio.com/items?itemName=Dart-Code.dart-code)
