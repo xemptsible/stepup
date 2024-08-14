@@ -13,11 +13,16 @@ StepUP là một ứng dụng Android làm trong Flutter cho mọi người mê 
 ## Figma
 [Tài liệu Figma có thể truy cập ở đây](https://www.figma.com/design/0T63Hh4DTyMP6dsgXOlAu5/App-b%C3%A1n-gi%C3%A0y-StepUP?node-id=2002-203&t=rHzctrVxjYbV6MZ7-1)
 
-[Đăng ký và đăng nhập](/media/giao_dien%20(1).jpg)
-
+![giao_dien_(1)](/media/giao_dien%20(1).jpg)
+![giao_dien (2)](/media/giao_dien%20(2).jpg)
+![giao_dien (3)](/media/giao_dien%20(3).jpg)
+![giao_dien (4)](/media/giao_dien%20(4).jpg)
+![giao_dien (5)](/media/giao_dien%20(5).jpg)
 
 ## Video minh hoạ
 [Video minh hoạ app được chạy có thể xem ở đây](https://youtu.be/rRs7ZU_NBwY)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rRs7ZU_NBwY?si=o6Oe1wi29uGs37PQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Cách xây dựng
 Đề nghị sử dụng Visual Studio Code và tối thiểu có những extensions và cài đặt như sau:
