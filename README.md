@@ -13,6 +13,9 @@ StepUP là một ứng dụng Android làm trong Flutter cho mọi người mê 
 ## Figma
 [Tài liệu Figma có thể truy cập ở đây](https://www.figma.com/design/0T63Hh4DTyMP6dsgXOlAu5/App-b%C3%A1n-gi%C3%A0y-StepUP?node-id=2002-203&t=rHzctrVxjYbV6MZ7-1)
 
+[Đăng ký và đăng nhập](/media/giao_dien%20(1).jpg)
+
+
 ## Video minh hoạ
 [Video minh hoạ app được chạy có thể xem ở đây](https://youtu.be/rRs7ZU_NBwY)
 
